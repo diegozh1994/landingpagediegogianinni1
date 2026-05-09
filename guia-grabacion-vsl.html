@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guía de Grabación VSL — Diego Giannini</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0A0E1F;--blue:#1F69FF;--blue-l:#4D8AFF;--ok:#32E5A7;--warn:#FFC34D;--bad:#FF6B7A;--text:#F5F7FB;--muted:#B8C2D4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--text);line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:40px 24px 80px}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-style:italic;text-align:center;margin-bottom:8px}
+h1 em{color:var(--blue-l)}
+.sub{text-align:center;color:var(--muted);font-size:15px;margin-bottom:48px}
+h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;margin:56px 0 24px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+h3{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+
+/* SETUP CARDS */
+.setup-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:24px 0 40px}
+.setup-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px}
+.setup-card .icon{font-size:28px;margin-bottom:12px}
+.setup-card h4{font-size:14px;font-weight:600;margin-bottom:8px}
+.setup-card p{font-size:13px;color:var(--muted);line-height:1.6}
+.setup-card .check{color:var(--ok);font-size:13px;margin-top:8px;font-family:'Space Grotesk'}
+
+/* TELEPROMPTER BLOCKS */
+.block{margin:32px 0;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.block-header{display:flex;align-items:center;gap:16px;padding:20px 24px;background:rgba(31,105,255,.08);border-bottom:1px solid rgba(31,105,255,.15)}
+.block-time{font-family:'Space Grotesk';font-weight:700;font-size:14px;color:var(--blue-l);min-width:90px;white-space:nowrap}
+.block-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;flex:1}
+.block-dur{font-family:'Space Grotesk';font-size:12px;color:var(--muted);padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.05)}
+.block-body{padding:24px}
+
+/* Script text */
+.script{font-size:clamp(18px,2.5vw,22px);line-height:1.8;color:#fff;font-weight:300;margin-bottom:20px;padding:20px 24px;background:rgba(255,255,255,.02);border-radius:12px;border-left:3px solid var(--blue)}
+.script strong{font-weight:500;color:var(--blue-l)}
+
+/* Direction */
+.direction{display:flex;gap:12px;padding:16px 20px;background:rgba(255,195,77,.06);border:1px solid rgba(255,195,77,.15);border-radius:12px;margin-bottom:16px}
+.direction::before{content:"🎬";font-size:18px;flex-shrink:0}
+.direction p{font-size:14px;color:var(--warn);line-height:1.6}
+
+/* Broll note */
+.broll{display:flex;gap:12px;padding:14px 20px;background:rgba(50,229,167,.06);border:1px solid rgba(50,229,167,.15);border-radius:12px}
+.broll::before{content:"🎥";font-size:18px;flex-shrink:0}
+.broll p{font-size:13px;color:var(--ok);line-height:1.6}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;margin:32px 0 8px}
+.tab{padding:12px 24px;border-radius:100px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);font-family:'Space Grotesk';font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.tab.active{background:rgba(31,105,255,.15);border-color:rgba(31,105,255,.3);color:var(--blue-l)}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Checklist */
+.checklist{list-style:none;margin:16px 0}
+.checklist li{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px;color:var(--muted);display:flex;gap:10px;align-items:flex-start}
+.checklist li::before{content:"☐";font-size:16px;color:var(--blue-l);flex-shrink:0}
+
+/* Teleprompter mode */
+.tele-btn{display:block;margin:40px auto 0;padding:16px 32px;background:linear-gradient(135deg,var(--blue),#004DE6);color:#fff;border:none;border-radius:999px;font-family:'Space Grotesk';font-weight:600;font-size:15px;cursor:pointer;transition:all .2s}
+.tele-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(31,105,255,.4)}
+body.teleprompter{background:#000}
+body.teleprompter .container{max-width:700px;padding-top:20vh}
+body.teleprompter .setup-section,body.teleprompter .tabs,body.teleprompter h1,body.teleprompter .sub,body.teleprompter h2,body.teleprompter .block-header,body.teleprompter .direction,body.teleprompter .broll,body.teleprompter .checklist,body.teleprompter .tele-btn,body.teleprompter .post-section{display:none !important}
+body.teleprompter .block{border:none;background:transparent;margin:0 0 60px}
+body.teleprompter .block-body{padding:0}
+body.teleprompter .script{font-size:clamp(28px,4vw,38px);line-height:2;background:none;border:none;padding:0;text-align:center}
+body.teleprompter .tab-content{display:none !important}
+body.teleprompter .tab-content.active{display:block !important}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Guía de <em>grabación</em> VSL</h1>
+<p class="sub">Diego Giannini · Coldwell Banker · Abril 2026<br>Abrí esto en la tablet y ponelo detrás de la cámara mientras grabás.</p>
+
+<!-- ============ SETUP ============ -->
+<div class="setup-section">
+<h2>Setup técnico</h2>
+
+<div class="setup-grid">
+    <div class="setup-card">
+        <div class="icon">📱</div>
+        <h4>Cámara</h4>
+        <p>iPhone 12+ o Samsung S22+ en <strong>4K 30fps</strong>. Horizontal para desktop. Vertical para Reels.</p>
+        <div class="check">✓ Grabá cada versión por separado</div>
+    </div>
+    <div class="setup-card">
+        <div class="icon">💡</div>
+        <h4>Iluminación</h4>
+        <p>Luz natural: ponete <strong>frente a una ventana grande</strong>. Sin ventana: aro de luz (ring light ~USD 30) a 1m de tu cara.</p>
+        <div class="check">✓ Evitá luz detrás tuyo (contraluz)</div>
+    </div>
+    <div class="setup-card">
+        <div class="icon">🎤</div>
+        <h4>Audio</h4>
+        <p><strong>Micrófono corbatero Boya BY-M1</strong> (~USD 25). El audio del celular a 1m suena amateur. El audio es el 60% de la calidad percibida.</p>
+        <div class="check">✓ Grabá 10s de silencio para piso de ruido</div>
+    </div>
+    <div class="setup-card">
+        <div class="icon">🏢</div>
+        <h4>Fondo</h4>
+        <p><strong>Opción ganadora:</strong> un departamento vacío "en venta" (da credibilidad brutal). <strong>Alternativa:</strong> oficina CB con logo de fondo.</p>
+        <div class="check">✓ Nada de desorden ni puertas abiertas</div>
+    </div>
+    <div class="setup-card">
+        <div class="icon">👔</div>
+        <h4>Vestimenta</h4>
+        <p>Camisa clara lisa o saco oscuro. <strong>Evitar:</strong> rayas, estampados, blanco puro (brilla en cámara).</p>
+        <div class="check">✓ Colores sólidos, sin logos grandes</div>
+    </div>
+    <div class="setup-card">
+        <div class="icon">📐</div>
+        <h4>Encuadre</h4>
+        <p>Cámara <strong>a la altura de tus ojos</strong> (no desde abajo). Media figura. Mirá AL LENTE, no a la pantalla.</p>
+        <div class="check">✓ Regla: tu cabeza en el tercio superior</div>
+    </div>
+</div>
+
+<h3>Reglas de oro</h3>
+<ul class="checklist">
+    <li>Grabá cada bloque 3 veces por separado. En edición elegís la mejor toma.</li>
+    <li>Hablá un 10% más lento y un 20% más enérgico que lo normal.</li>
+    <li>Mirá AL LENTE. Esto es lo que diferencia un video profesional de uno amateur.</li>
+    <li>Pausas de 2 segundos después de cada idea clave.</li>
+    <li>No improvises los números — los datos específicos generan confianza.</li>
+    <li>No leas. Memorizá el arco de cada bloque y hablá natural.</li>
+</ul>
+</div>
+
+<!-- ============ TABS ============ -->
+<div class="tabs">
+    <button class="tab active" onclick="showTab('prop')">VSL Propietarios (2:47)</button>
+    <button class="tab" onclick="showTab('comp')">VSL Compradores (2:50)</button>
+</div>
+
+<!-- ============ VSL PROPIETARIOS ============ -->
+<div class="tab-content active" id="tab-prop">
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">0:00 – 0:12</div>
+        <div class="block-title">Gancho</div>
+        <div class="block-dur">12 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Si estás pensando en vender tu departamento en <strong>Palermo, Recoleta o Puerto Madero</strong>, quiero que me prestes 3 minutos. En este video te voy a mostrar por qué el <strong>70% de las propiedades en Buenos Aires se venden mal</strong>, por debajo de su valor, y qué hacemos diferente en Coldwell Banker para que la tuya no sea una de esas."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Energía alta. Tono directo, casi confrontativo. NO sonreír al principio. Los primeros 12 segundos definen si se quedan o se van.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">0:12 – 0:30</div>
+        <div class="block-title">Presentación</div>
+        <div class="block-dur">18 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Soy <strong>Diego Giannini</strong>, asesor inmobiliario en <strong>Coldwell Banker Livello</strong>. En los últimos años vendí propiedades en las mejores zonas de Buenos Aires trabajando con una red que llega a compradores en <strong>45 países</strong>. Pero lo interesante no es eso. Lo interesante es <strong>el método</strong>."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Tono más cálido. Empezar a construir confianza. Una sonrisa breve al decir "lo interesante es el método".</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">0:30 – 1:15</div>
+        <div class="block-title">Problema</div>
+        <div class="block-dur">45 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "El error número uno que comete el dueño que vende su propiedad es pensar que la mejor inmobiliaria es la que le promete el <strong>precio más alto</strong>. Y lo entiendo: todos queremos vender caro.<br><br>Pero acá está el dato que nadie te dice: una propiedad publicada <strong>3 meses sin ofertas pierde, en promedio, un 12% de su valor percibido</strong>. Se 'quema'. Los compradores entran a ver por qué nadie la quiso, en vez de por qué deberían comprarla.<br><br>Entonces terminás vendiendo <strong>más barato, más tarde, y con más desgaste</strong> del que esperabas."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Bajar la energía. Hablar despacio. Mirar al lente fijo. Esta es la parte que más escuchan.</p></div>
+        <div class="broll"><p><strong>B-roll:</strong> Anuncios viejos con "hace 6 meses", propiedades con carteles desde hace meses, pantalla de Zonaprop con scroll largo.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">1:15 – 2:00</div>
+        <div class="block-title">Solución (el método)</div>
+        <div class="block-dur">45 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Nosotros trabajamos con un método de <strong>3 pasos</strong>.<br><br><strong>Primero:</strong> tasación honesta basada en datos reales de operaciones de los últimos 60 días, no en lo que vos o yo querríamos cobrar.<br><br><strong>Segundo:</strong> marketing profesional — fotografía arquitectónica, video, tour virtual 360, y publicación simultánea en las plataformas de Coldwell en <strong>45 países</strong>. Tu propiedad la ven inversores de Miami, Madrid y San Pablo el mismo día que sale al mercado.<br><br><strong>Y tercero:</strong> filtrado de compradores. Solo traemos a visitar a gente <strong>pre-calificada</strong>. Tu tiempo vale."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Energía media-alta. Ritmo más rápido — estás enumerando. Usá los dedos para marcar "primero, segundo, tercero".</p></div>
+        <div class="broll"><p><strong>B-roll:</strong> Fotos arquitectónicas pro, mapa mundi con pines en 45 países, handshake en escritura.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">2:00 – 2:30</div>
+        <div class="block-title">Prueba social (números)</div>
+        <div class="block-dur">30 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "El mes pasado vendí un <strong>3 ambientes en Palermo Soho en 47 días</strong>. La tasación inicial era 285 mil dólares. Lo vendimos en <strong>298</strong>. Un 4,5% arriba de la tasación.<br><br>Y otro caso: un PH en Recoleta, tasado en 520, vendido en <strong>545 en 62 días</strong>.<br><br>No son milagros: es método, es red, y es elegir bien al comprador."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Tono firme, factual. Mirar al lente fijo. ADAPTÁ estos números a tus casos reales.</p></div>
+        <div class="broll"><p><strong>B-roll:</strong> Screenshots de WhatsApp con clientes agradeciendo (pixelear nombres), fotos de la propiedad vendida, cartel VENDIDO.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">2:30 – 2:50</div>
+        <div class="block-title">Call to Action</div>
+        <div class="block-dur">20 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Si estás pensando en vender — o incluso si todavía no decidiste y querés saber cuánto vale tu propiedad hoy — completá el formulario que está acá al lado. Te hago una <strong>tasación gratis, sin compromiso, en menos de 48 horas</strong>. Y si después de verla decidís no vender, no pasa nada: te queda el número actualizado para cuando lo necesites."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Sonreír. Bajar energía. Tono de "te estoy haciendo un favor, no te estoy vendiendo". La garantía del "sin compromiso" baja la fricción.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">2:50 – 3:00</div>
+        <div class="block-title">Cierre</div>
+        <div class="block-dur">10 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Soy <strong>Diego Giannini, Coldwell Banker</strong>. Hablamos pronto."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Sonrisa tranquila, asentimiento leve con la cabeza. Silencio 2 segundos antes de cortar.</p></div>
+    </div>
+</div>
+</div>
+
+<!-- ============ VSL COMPRADORES ============ -->
+<div class="tab-content" id="tab-comp">
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">0:00 – 0:15</div>
+        <div class="block-title">Gancho</div>
+        <div class="block-dur">15 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Si estás buscando propiedad en Buenos Aires — para vivir o para invertir — hay algo que tenés que saber: <strong>las mejores propiedades nunca llegan a los portales inmobiliarios</strong>. Se venden antes. En este video te muestro cómo accedés a ese mercado."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Tono de "secreto bien guardado". Casi conspirativo al principio. Mirada fija al lente.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">0:15 – 0:35</div>
+        <div class="block-title">Presentación</div>
+        <div class="block-dur">20 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Soy <strong>Diego Giannini</strong>, de Coldwell Banker. Trabajo con una red de brokers que compartimos oportunidades <strong>off-market</strong>: propiedades que no se publican porque los dueños no quieren carteles, no quieren visitas de curiosos, y quieren vender solo a compradores serios. Esas propiedades circulan entre nosotros <strong>antes de salir al mercado abierto</strong>."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Tono de autoridad. Hablar con ritmo medio.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">0:35 – 1:15</div>
+        <div class="block-title">Problema</div>
+        <div class="block-dur">40 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Si buscás en Zonaprop o Argenprop estás compitiendo con <strong>cinco mil personas más</strong> que ven exactamente lo mismo. Y cuando aparece una joya, tenés <strong>72 horas para decidir</strong>.<br><br>El 80% de los compradores pierde esa propiedad porque está mal asesorado, tiene miedo de moverse rápido, o no tiene la información clave para decidir: ¿está bien valuada? ¿qué expensas reales tiene? ¿qué potencial de revalorización?<br><br>Sin esos datos, estás haciendo <strong>apuestas, no inversiones</strong>."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Bajar energía, más reflexivo. Muchos compradores se reconocen acá.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">1:15 – 2:00</div>
+        <div class="block-title">Solución</div>
+        <div class="block-dur">45 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Cuando trabajás conmigo pasan <strong>tres cosas</strong>.<br><br><strong>Primero:</strong> te sumo a mi red de alertas privadas. Cada semana te mando 2 o 3 propiedades <strong>antes de que salgan publicadas</strong>, filtradas según lo que me digas que buscás.<br><br><strong>Segundo:</strong> te doy análisis de <strong>rentabilidad real</strong> — no proyecciones infladas. Precio por metro, expensas, proyección de alquiler, tiempo de repago si es inversión.<br><br><strong>Y tercero:</strong> te acompaño en toda la operación. Escritura, mudanza, hasta el cambio de nombre de los servicios. No te dejo solo cuando firmás la reserva."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Energía media-alta. Contar cada punto con seguridad.</p></div>
+        <div class="broll"><p><strong>B-roll:</strong> Planos, calculadora, cartel de "VENDIDO", handshake.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">2:00 – 2:30</div>
+        <div class="block-title">Prueba social</div>
+        <div class="block-dur">30 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Este año coloqué un <strong>2 ambientes en Palermo que nunca apareció en portales</strong>. Mi cliente lo compró en <strong>185 mil dólares</strong>. Hoy, propiedades comparables que sí se publicaron se están cerrando arriba de los 205.<br><br>Eso son <strong>20 mil dólares de diferencia</strong>, solo por acceder al mercado correcto. Y a él le tomó menos de tres semanas decidirse porque tenía toda la información en la mesa."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Firme, específico. Si tenés una captura de la escritura o del mensaje del cliente agradeciendo, meter en pantalla partida.</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">2:30 – 2:50</div>
+        <div class="block-title">Call to Action</div>
+        <div class="block-dur">20 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "Si querés acceso a este tipo de oportunidades, completá el formulario de al lado. Decime qué zona te interesa, qué presupuesto manejás, y si es para vivir o invertir. En menos de <strong>48 horas te mando las primeras 3 propiedades</strong> que encajan con tu perfil. Sin costo, sin compromiso."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Sonrisa, tono amigable, "te sumo al club".</p></div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-header">
+        <div class="block-time">2:50 – 3:00</div>
+        <div class="block-title">Cierre</div>
+        <div class="block-dur">10 seg</div>
+    </div>
+    <div class="block-body">
+        <div class="script">
+            "<strong>Diego Giannini, Coldwell Banker.</strong> Nos vemos del otro lado."
+        </div>
+        <div class="direction"><p><strong>Dirección:</strong> Guiño leve o medio sonrisa. Corte seco después de 2 segundos.</p></div>
+    </div>
+</div>
+</div>
+
+<!-- ============ POST-PRODUCCIÓN ============ -->
+<div class="post-section">
+<h2>Post-producción: checklist</h2>
+
+<h3>Edición</h3>
+<ul class="checklist">
+    <li><strong>Subtítulos incrustados SIEMPRE</strong> — el 85% ve videos sin sonido</li>
+    <li>Corte cada 3-5 seg (cambio de plano) para mantener atención</li>
+    <li>B-roll en mínimo el 40% del video (propiedades, calles, planos)</li>
+    <li>Música de fondo instrumental al 20% volumen (Artlist o Epidemic Sound)</li>
+    <li>Logo de Coldwell Banker en esquina inferior derecha, sutil</li>
+    <li>Lower third: "Diego Giannini · Coldwell Banker · +54 9 11 5727-4477" en el segundo 15</li>
+</ul>
+
+<h3>Versiones a exportar</h3>
+<ul class="checklist">
+    <li><strong>Desktop horizontal 16:9</strong> (1920×1080) → para las landings</li>
+    <li><strong>Mobile vertical 9:16</strong> (1080×1920) → Reels, TikTok, Shorts</li>
+    <li><strong>Cuadrado 1:1</strong> (1080×1080) → feed Instagram y Facebook</li>
+    <li><strong>Cortes de 15s, 30s, 60s</strong> del mejor momento → para ads pagos</li>
+</ul>
+
+<h3>Hosting y embed</h3>
+<ul class="checklist">
+    <li><strong>Vimeo Plus</strong> (USD 7/mes) para las landings — carga rápido, sin recomendaciones, custom player</li>
+    <li>Subir también a <strong>YouTube como "no listado"</strong> — backup + SEO orgánico</li>
+    <li>Una vez subido, pasame el link de Vimeo y lo embedo en propietarios.html y compradores.html (ya están los placeholders listos)</li>
+</ul>
+</div>
+
+<button class="tele-btn" onclick="document.body.classList.toggle('teleprompter');this.textContent=document.body.classList.contains('teleprompter')?'Salir de modo teleprompter':'Activar modo teleprompter';">
+    Activar modo teleprompter
+</button>
+
+</div>
+
+<script>
+function showTab(id){
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /privacidad.html
+
+Sitemap: https://gianninirealestate.com.ar/sitemap.xml

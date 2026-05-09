@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Calculá el valor estimado de tu propiedad en Buenos Aires en 30 segundos. Tasación preliminar gratuita con datos reales del mercado.">
+<link rel="canonical" href="https://gianninirealestate.com.ar/calculadora">
+<title>Calculadora de tasación · Diego Giannini · Coldwell Banker</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230A0E1F'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='54' font-weight='700' text-anchor='middle' fill='%231F69FF'%3ECB%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Calculadora de tasación · Diego Giannini">
+<meta property="og:description" content="Calculá el valor estimado de tu propiedad en 30 segundos.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0A0E1F;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+.bg-mesh{position:fixed;inset:0;background:radial-gradient(circle at 20% 30%,rgba(31,105,255,0.15),transparent 50%),radial-gradient(circle at 80% 70%,rgba(0,77,230,0.12),transparent 50%);pointer-events:none;z-index:0;}
+nav{padding:24px 5%;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:10;}
+nav a.logo img{height:40px;}
+nav a{color:#fff;text-decoration:none;font-size:13px;font-family:'Space Grotesk',sans-serif;font-weight:500;}
+.wrap{max-width:960px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1;}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,72px);font-weight:500;line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px;text-align:center;}
+h1 em{font-style:italic;color:#4D8AFF;}
+.sub{font-size:17px;color:rgba(255,255,255,0.7);text-align:center;max-width:560px;margin:0 auto 56px;line-height:1.6;}
+.calc{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px;backdrop-filter:blur(20px);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;}
+@media(max-width:640px){.grid{grid-template-columns:1fr;}.calc{padding:28px 20px;}}
+label{display:block;font-size:13px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:10px;font-weight:500;}
+input,select{width:100%;padding:16px 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;font-family:inherit;font-size:15px;transition:border 0.3s;}
+input:focus,select:focus{outline:none;border-color:#4D8AFF;background:rgba(31,105,255,0.05);}
+select option{background:#0A0E1F;}
+.btn{display:block;width:100%;padding:20px;background:linear-gradient(135deg,#1F69FF,#004DE6);color:#fff;border:none;border-radius:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;letter-spacing:0.02em;cursor:pointer;margin-top:12px;transition:transform 0.3s,box-shadow 0.3s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(31,105,255,0.4);}
+.result{display:none;margin-top:40px;padding:40px;background:linear-gradient(135deg,rgba(31,105,255,0.15),rgba(0,77,230,0.05));border:1px solid rgba(31,105,255,0.3);border-radius:20px;text-align:center;animation:fadeIn 0.5s;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.result .range{font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,6vw,56px);font-weight:700;color:#fff;margin:16px 0;letter-spacing:-0.02em;}
+.result small{display:block;font-size:12px;opacity:0.5;margin-top:24px;line-height:1.6;}
+.cta-bottom{display:inline-flex;gap:8px;align-items:center;margin-top:28px;padding:16px 28px;background:linear-gradient(135deg,#25D366,#1BA853);color:#fff;text-decoration:none;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;}
+.back{position:absolute;top:30px;left:5%;color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;font-family:'Space Grotesk',sans-serif;}
+.disclaimer{margin-top:32px;padding:20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;}
+</style>
+    <link rel="stylesheet" href="_premium.css">
+</head>
+<body>
+<div class="bg-mesh"></div>
+<nav>
+  <a href="index.html" class="logo"><img src="logo-cb.png" alt="Coldwell Banker"></a>
+  <a href="index.html">← Volver al sitio</a>
+</nav>
+<div class="wrap">
+  <h1>Estimá el <em>valor</em> de tu propiedad</h1>
+  <p class="sub">Calculadora orientativa en 30 segundos, basada en valores promedio de mercado en CABA. Para una tasación profesional con visita presencial, agendamos sin cargo.</p>
+  <form class="calc" id="calcForm" onsubmit="calcular(event)">
+    <div class="grid">
+      <div>
+        <label for="zona">Zona</label>
+        <select id="zona" required>
+          <option value="">Seleccioná</option>
+          <option value="2550">Palermo</option>
+          <option value="2330">Recoleta</option>
+          <option value="5950">Puerto Madero</option>
+          <option value="2260">Villa Crespo</option>
+          <option value="2330">Caballito</option>
+          <option value="3150">Belgrano</option>
+          <option value="2280">Saavedra</option>
+          <option value="3400">Núñez</option>
+          <option value="2380">Otra zona CABA</option>
+        </select>
+      </div>
+      <div>
+        <label for="m2">Metros cuadrados (totales)</label>
+        <input type="number" id="m2" min="20" max="600" placeholder="ej. 65" required>
+      </div>
+      <div>
+        <label for="antig">Antigüedad</label>
+        <select id="antig" required>
+          <option value="1.15">A estrenar (+15%)</option>
+          <option value="1.08">Hasta 10 años (+8%)</option>
+          <option value="1">Entre 10 y 30 años</option>
+          <option value="0.92">Entre 30 y 60 años (-8%)</option>
+          <option value="0.85">Más de 60 años (-15%)</option>
+        </select>
+      </div>
+      <div>
+        <label for="estado">Estado general</label>
+        <select id="estado" required>
+          <option value="1.1">Excelente / reciclado (+10%)</option>
+          <option value="1">Muy bueno</option>
+          <option value="0.9">Bueno, requiere actualización (-10%)</option>
+          <option value="0.75">A refaccionar (-25%)</option>
+        </select>
+      </div>
+      <div>
+        <label for="amenities">Amenities / cochera</label>
+        <select id="amenities" required>
+          <option value="1.12">Con cochera + amenities (+12%)</option>
+          <option value="1.06">Solo cochera (+6%)</option>
+          <option value="1.05">Solo amenities (+5%)</option>
+          <option value="1">Sin amenities ni cochera</option>
+        </select>
+      </div>
+      <div>
+        <label for="piso">Piso / vista</label>
+        <select id="piso" required>
+          <option value="1.08">Piso alto + vista abierta (+8%)</option>
+          <option value="1.03">Piso medio (+3%)</option>
+          <option value="1">Piso bajo</option>
+          <option value="0.95">PB / contrafrente cerrado (-5%)</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn">Calcular valor estimado</button>
+  </form>
+  <div class="result" id="result">
+    <div style="font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:#4D8AFF;font-weight:600;">Rango orientativo</div>
+    <div class="range" id="rangeOut">USD — a USD —</div>
+    <div style="color:rgba(255,255,255,0.7);font-size:15px;max-width:500px;margin:0 auto;line-height:1.6;">Este es un valor orientativo. La tasación profesional de Diego es gratuita, considera variables específicas de tu propiedad (orientación, vista, luminosidad, estado edilicio puntual) y se entrega en 72 horas con visita.</div>
+    <a href="propietarios#hero-form" class="cta-bottom">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      Pedir tasación profesional gratuita
+    </a>
+    <small>* Rango orientativo con margen ±8%. La tasación profesional considera variables específicas de cada propiedad que esta calculadora no puede evaluar.</small>
+  </div>
+  <div class="disclaimer">
+    <strong>Aclaración:</strong> Esta calculadora entrega un rango orientativo basado en valores promedio de mercado por zona en CABA. No reemplaza una tasación profesional. Variables como orientación, vista, luminosidad, estado constructivo puntual, amenities exactos del edificio y momento del mercado pueden modificar el valor. Para una tasación profesional con visita presencial, sin cargo y sin compromiso, agendá con Diego desde el botón de arriba.
+  </div>
+</div>
+<script>
+function calcular(e){
+  e.preventDefault();
+  const m2=parseFloat(document.getElementById('m2').value);
+  const precioM2=parseFloat(document.getElementById('zona').value);
+  const antig=parseFloat(document.getElementById('antig').value);
+  const estado=parseFloat(document.getElementById('estado').value);
+  const amenities=parseFloat(document.getElementById('amenities').value);
+  const piso=parseFloat(document.getElementById('piso').value);
+  const base=m2*precioM2;
+  const ajustado=base*antig*estado*amenities*piso;
+  const low=Math.round(ajustado*0.92/1000)*1000;
+  const high=Math.round(ajustado*1.08/1000)*1000;
+  const fmt=(n)=>'USD '+n.toLocaleString('es-AR');
+  document.getElementById('rangeOut').textContent=fmt(low)+' a '+fmt(high);
+  const r=document.getElementById('result');
+  r.style.display='block';
+  r.scrollIntoView({behavior:'smooth',block:'center'});
+  if(window.gtag)gtag('event','calculadora_usada',{zona:precioM2,m2:m2,resultado:ajustado});
+  if(window.fbq)fbq('track','ViewContent',{content_name:'calculadora_tasacion',value:ajustado,currency:'USD'});
+}
+</script>
+    <script src="_premium.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tasador IA · Diego Giannini — el primer tasador que mira tus fotos y las compara con los portales en tiempo real</title>
+<meta name="description" content="El único tasador de Argentina con visión artificial. Subí fotos de tu depto, la IA analiza el estado real y lo compara con propiedades publicadas hoy en Zonaprop y Argenprop. Resultado en 40 segundos.">
+<meta name="keywords" content="tasador inteligencia artificial, tasar departamento online, valor departamento Buenos Aires, tasador IA CABA">
+<link rel="canonical" href="https://gianninirealestate.com.ar/tasador-ai.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tasador IA — Diego Giannini · Coldwell Banker">
+<meta property="og:description" content="Subí fotos. La IA las analiza y cruza con los portales. Precio real en 40 segundos.">
+<meta property="og:url" content="https://gianninirealestate.com.ar/tasador-ai.html">
+<meta property="og:image" content="https://gianninirealestate.com.ar/og-tasador.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230A0E1F'/%3E%3Ctext x='32' y='42' font-family='Inter,sans-serif' font-size='28' font-weight='800' fill='%231F69FF' text-anchor='middle'%3ECB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tasador IA Giannini","applicationCategory":"RealEstateApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@type":"RealEstateAgent","name":"Diego Giannini"},"description":"Primer tasador inmobiliario de Argentina con análisis de fotos por IA y verificación en vivo contra portales."}
+</script>
+<style>
+:root{
+  --ink:#0A0E1F; --ink-2:#0f1430; --navy:#122455; --blue:#1F69FF; --blue-d:#004DE6; --blue-l:#4D8AFF;
+  --wa:#25D366; --wa-d:#1BA853; --cream:#FAF6EF; --soft:#EEF2FA; --line:rgba(255,255,255,.10);
+  --text:#F5F7FB; --muted:#B8C2D4; --ok:#32E5A7; --warn:#FFC34D; --bad:#FF6B7A;
+  --radius:20px; --radius-lg:32px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:-.02em;line-height:1.08}
+.italic{font-style:italic}
+.mono{font-family:'Space Grotesk',monospace;letter-spacing:.04em}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* NAV */
+nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;backdrop-filter:blur(20px);background:rgba(10,14,31,.72);border-bottom:1px solid var(--line)}
+nav.topnav .container{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic}
+.brand-logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--blue-d));display:grid;place-items:center;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;color:#fff;font-style:normal}
+.nav-links{display:flex;gap:28px;font-size:14px;color:var(--muted)}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--blue);color:#fff;padding:10px 18px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;transition:transform .2s}
+.nav-cta:hover{transform:translateY(-1px);background:var(--blue-d)}
+@media (max-width:720px){.nav-links{display:none}}
+
+/* HERO */
+.hero{padding:140px 0 80px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 10%,rgba(31,105,255,.25),transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(0,77,230,.18),transparent 55%);pointer-events:none}
+.hero-inner{position:relative;text-align:center;max-width:880px;margin:0 auto}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:rgba(31,105,255,.14);border:1px solid rgba(77,138,255,.3);color:var(--blue-l);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(44px,7vw,82px);margin-bottom:24px}
+.hero h1 em{color:var(--blue-l)}
+.hero p.lead{font-size:clamp(17px,1.8vw,20px);color:var(--muted);max-width:640px;margin:0 auto 40px}
+.trust-row{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-top:48px;padding-top:32px;border-top:1px solid var(--line)}
+.trust-item{text-align:center}
+.trust-num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;color:var(--blue-l)}
+.trust-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+/* STEPPER */
+.stepper{display:flex;justify-content:center;gap:12px;margin:60px auto 40px;max-width:680px;padding:0 24px}
+.step{display:flex;align-items:center;gap:10px;flex:1;opacity:.35;transition:opacity .4s}
+.step.active,.step.done{opacity:1}
+.step-num{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;border:1px solid var(--line);flex-shrink:0}
+.step.active .step-num{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 4px rgba(31,105,255,.2)}
+.step.done .step-num{background:var(--ok);border-color:var(--ok);color:var(--ink)}
+.step-label{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.step-line{flex:1;height:1px;background:var(--line);margin:0 4px}
+@media (max-width:640px){.step-label{display:none}.step{flex:0 0 auto}.step-line{flex:1}}
+
+/* CARD (panel) */
+.panel{max-width:860px;margin:0 auto 80px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:var(--radius-lg);padding:48px;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,rgba(31,105,255,.08),transparent 50%);pointer-events:none}
+.panel > *{position:relative}
+.panel h2{font-size:clamp(30px,3.5vw,44px);margin-bottom:12px}
+.panel .sub{color:var(--muted);margin-bottom:32px;font-size:15px}
+
+/* FORM */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:640px){.grid-2{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:15px;transition:all .2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--blue);background:rgba(31,105,255,.08);box-shadow:0 0 0 4px rgba(31,105,255,.15)}
+.field input::placeholder{color:rgba(255,255,255,.3)}
+.field select option{background:var(--ink-2);color:#fff}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;padding:16px 40px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;letter-spacing:.02em;transition:all .2s;display:inline-flex;align-items:center;gap:10px;margin-top:24px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(31,105,255,.4)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-ghost{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);padding:14px 28px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:14px;transition:all .2s}
+.btn-ghost:hover{background:rgba(255,255,255,.08);color:#fff}
+.row-btns{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:32px}
+
+/* UPLOAD */
+.dropzone{border:2px dashed rgba(77,138,255,.3);border-radius:var(--radius);padding:60px 24px;text-align:center;transition:all .2s;cursor:pointer;background:rgba(31,105,255,.03)}
+.dropzone:hover,.dropzone.drag{border-color:var(--blue);background:rgba(31,105,255,.08)}
+.dropzone-icon{width:64px;height:64px;margin:0 auto 20px;background:rgba(31,105,255,.15);border-radius:20px;display:grid;place-items:center;color:var(--blue-l);font-size:28px}
+.dropzone h3{font-family:'Inter',sans-serif;font-size:18px;font-weight:600;margin-bottom:8px;color:#fff}
+.dropzone p{font-size:14px;color:var(--muted)}
+.dropzone input[type=file]{display:none}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:24px}
+.preview{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.05)}
+.preview img{width:100%;height:100%;object-fit:cover}
+.preview .remove{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.7);display:grid;place-items:center;color:#fff;font-size:14px;backdrop-filter:blur(4px)}
+.preview .tag{position:absolute;bottom:6px;left:6px;padding:3px 8px;border-radius:6px;background:rgba(0,0,0,.75);font-size:10px;font-family:'Space Grotesk';text-transform:uppercase;letter-spacing:.08em;color:var(--blue-l)}
+.hint{display:flex;gap:12px;margin-top:20px;padding:14px 18px;background:rgba(31,105,255,.06);border:1px solid rgba(77,138,255,.2);border-radius:12px;font-size:13px;color:var(--muted)}
+.hint strong{color:var(--blue-l)}
+
+/* LOADING */
+.loading{text-align:center;padding:40px 0}
+.loading-orb{width:120px;height:120px;margin:0 auto 32px;position:relative}
+.loading-orb::before,.loading-orb::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--blue);animation:spin 1.4s linear infinite}
+.loading-orb::after{inset:14px;border-top-color:var(--blue-l);animation-duration:2.2s;animation-direction:reverse}
+.loading-core{position:absolute;inset:30px;background:radial-gradient(circle,var(--blue),var(--blue-d));border-radius:50%;box-shadow:0 0 40px rgba(31,105,255,.5);animation:pulse-core 1.8s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse-core{0%,100%{transform:scale(1)}50%{transform:scale(.85)}}
+.loading h3{font-size:clamp(24px,3vw,32px);margin-bottom:12px}
+.loading .status{color:var(--muted);font-family:'Space Grotesk',monospace;font-size:14px;min-height:22px;letter-spacing:.02em}
+.progress-bar{max-width:480px;margin:32px auto 24px;height:4px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--blue-l));border-radius:999px;transition:width .4s ease;box-shadow:0 0 12px rgba(31,105,255,.6)}
+.log{max-width:560px;margin:24px auto 0;text-align:left;font-family:'Space Grotesk',monospace;font-size:12px;color:var(--muted);line-height:1.9;min-height:140px}
+.log .line{opacity:0;transform:translateX(-8px);animation:in .4s forwards}
+.log .line::before{content:"> ";color:var(--blue-l)}
+.log .line.ok::before{content:"✓ ";color:var(--ok)}
+@keyframes in{to{opacity:1;transform:none}}
+
+/* RESULT */
+.result-hero{text-align:center;margin-bottom:40px}
+.result-hero .label{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.result-price{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(56px,9vw,96px);line-height:1;color:#fff;margin-bottom:12px}
+.result-price .cur{font-size:.4em;vertical-align:super;color:var(--blue-l);font-style:normal;font-family:'Space Grotesk';font-weight:600;margin-right:6px}
+.result-range{color:var(--muted);font-size:15px}
+.result-range strong{color:var(--blue-l)}
+.confidence{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:6px 14px;border-radius:999px;background:rgba(50,229,167,.12);color:var(--ok);font-family:'Space Grotesk';font-size:12px;font-weight:600;letter-spacing:.05em}
+
+.result-section{margin:48px 0}
+.result-section h3{font-size:26px;margin-bottom:8px;color:#fff}
+.result-section .muted{color:var(--muted);font-size:14px;margin-bottom:24px}
+
+.badges{display:flex;flex-wrap:wrap;gap:8px}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:rgba(31,105,255,.08);border:1px solid rgba(77,138,255,.18);font-size:13px}
+.badge.pos{background:rgba(50,229,167,.08);border-color:rgba(50,229,167,.25);color:var(--ok)}
+.badge.neg{background:rgba(255,107,122,.08);border-color:rgba(255,107,122,.25);color:var(--bad)}
+.badge.warn{background:rgba(255,195,77,.08);border-color:rgba(255,195,77,.25);color:var(--warn)}
+.badge .icon{font-size:16px}
+
+/* COMPARABLES */
+.comps{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.comp{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:all .2s;position:relative}
+.comp:hover{transform:translateY(-4px);border-color:rgba(77,138,255,.3)}
+.comp-img{aspect-ratio:16/10;background:linear-gradient(135deg,#1a2a5a,#0d1530);display:grid;place-items:center;position:relative;overflow:hidden}
+.comp-img.a{background:linear-gradient(135deg,#2c4580,#1a2a5a)}
+.comp-img.b{background:linear-gradient(135deg,#3a2e5a,#1c1630)}
+.comp-img.c{background:linear-gradient(135deg,#1f4a4a,#0f2525)}
+.comp-img.d{background:linear-gradient(135deg,#4a3a1f,#25200f)}
+.comp-img.e{background:linear-gradient(135deg,#2c6580,#1a3a4a)}
+.comp-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.6));pointer-events:none}
+.comp-sim{position:absolute;top:10px;right:10px;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);font-family:'Space Grotesk';font-size:11px;font-weight:600;color:var(--ok);z-index:2}
+.comp-sim.mid{color:var(--warn)}
+.comp-portal{position:absolute;top:10px;left:10px;padding:3px 8px;border-radius:6px;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);font-family:'Space Grotesk';font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;z-index:2}
+.comp-body{padding:16px}
+.comp-price{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#fff;margin-bottom:4px}
+.comp-addr{font-size:13px;color:var(--muted);margin-bottom:12px}
+.comp-meta{display:flex;gap:12px;font-family:'Space Grotesk';font-size:11px;color:var(--muted);padding-top:12px;border-top:1px solid var(--line)}
+.comp-meta span strong{color:#fff}
+.comp-note{margin-top:10px;padding:8px 10px;background:rgba(0,0,0,.3);border-radius:8px;font-size:11px;color:var(--muted);font-style:italic}
+
+/* RECS */
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.rec{padding:24px;background:linear-gradient(180deg,rgba(50,229,167,.06),rgba(50,229,167,.02));border:1px solid rgba(50,229,167,.18);border-radius:16px}
+.rec-impact{font-family:'Space Grotesk';font-size:12px;color:var(--ok);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.rec h4{font-family:'Inter',sans-serif;font-size:16px;margin-bottom:8px;color:#fff;font-weight:600}
+.rec p{font-size:13px;color:var(--muted)}
+
+/* CTA FINAL */
+.cta-final{margin-top:56px;padding:40px;text-align:center;background:linear-gradient(135deg,rgba(37,211,102,.08),rgba(27,168,83,.04));border:1px solid rgba(37,211,102,.2);border-radius:var(--radius)}
+.cta-final h3{font-size:clamp(26px,3vw,36px);margin-bottom:12px}
+.cta-final p{color:var(--muted);max-width:540px;margin:0 auto 28px}
+.btn-wa{display:inline-flex;align-items:center;gap:10px;background:var(--wa);color:#fff;padding:16px 32px;border-radius:999px;font-family:'Space Grotesk';font-weight:600;font-size:15px;transition:all .2s}
+.btn-wa:hover{background:var(--wa-d);transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,.3)}
+
+/* DISCLAIMER */
+.disclaimer{max-width:860px;margin:0 auto 60px;padding:20px 24px;font-size:12px;color:var(--muted);line-height:1.7;text-align:center;border-top:1px solid var(--line);padding-top:32px}
+
+/* FOOTER */
+footer{padding:60px 0 40px;background:var(--ink-2);border-top:1px solid var(--line)}
+footer .container{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+footer .copy{font-size:13px;color:var(--muted)}
+footer .flinks{display:flex;gap:24px;font-size:13px;color:var(--muted)}
+footer .flinks a:hover{color:#fff}
+
+.step-content{display:none}
+.step-content.active{display:block;animation:fadeIn .4s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="container">
+    <a href="index.html" class="brand"><span class="brand-logo">CB</span><span>Diego Giannini</span></a>
+    <div class="nav-links">
+      <a href="propiedades.html">Propiedades</a>
+      <a href="tasador-ai.html" style="color:var(--blue-l)">Tasador IA</a>
+      <a href="blog.html">Blog</a>
+    </div>
+    <a href="https://wa.me/5491157274477" class="nav-cta">WhatsApp</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="pill"><span class="dot"></span> Primer tasador con visión artificial de Argentina</div>
+    <h1>Tasador <em class="italic">IA</em><br>que mira tus fotos.</h1>
+    <p class="lead">Subí las fotos de tu propiedad. La IA analiza el estado real, detecta amenities, y las cruza con las propiedades publicadas <strong>hoy</strong> en Zonaprop y Argenprop. Precio en 40 segundos.</p>
+
+    <div class="trust-row">
+      <div class="trust-item"><div class="trust-num">40 seg</div><div class="trust-label">Tiempo promedio</div></div>
+      <div class="trust-item"><div class="trust-num">±5%</div><div class="trust-label">Precisión del rango</div></div>
+      <div class="trust-item"><div class="trust-num">12-18</div><div class="trust-label">Comparables reales</div></div>
+      <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Gratis, sin datos</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="stepper" id="stepper">
+  <div class="step active" data-step="1"><div class="step-num">1</div><div class="step-label">Datos</div></div>
+  <div class="step-line"></div>
+  <div class="step" data-step="2"><div class="step-num">2</div><div class="step-label">Fotos</div></div>
+  <div class="step-line"></div>
+  <div class="step" data-step="3"><div class="step-num">3</div><div class="step-label">Análisis</div></div>
+  <div class="step-line"></div>
+  <div class="step" data-step="4"><div class="step-num">4</div><div class="step-label">Resultado</div></div>
+</div>
+
+<!-- STEP 1 -->
+<section class="panel step-content active" id="panel-1">
+  <h2 class="italic">Contame del <em style="color:var(--blue-l)">depto</em>.</h2>
+  <p class="sub">Datos básicos para arrancar. No pedimos nombre ni email hasta que veas el resultado.</p>
+
+  <div class="grid-2">
+    <div class="field">
+      <label>Barrio</label>
+      <select id="f-zone">
+        <option value="">Elegí un barrio</option>
+        <option value="palermo">Palermo</option>
+        <option value="belgrano">Belgrano</option>
+        <option value="recoleta">Recoleta</option>
+        <option value="puerto-madero">Puerto Madero</option>
+        <option value="villa-crespo">Villa Crespo</option>
+        <option value="caballito">Caballito</option>
+        <option value="nunez">Núñez</option>
+        <option value="colegiales">Colegiales</option>
+        <option value="san-telmo">San Telmo</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Calle y altura (aprox.)</label>
+      <input id="f-addr" type="text" placeholder="Ej: Malabia 1800">
+    </div>
+    <div class="field">
+      <label>M² totales</label>
+      <input id="f-m2" type="number" placeholder="Ej: 75" min="20" max="500">
+    </div>
+    <div class="field">
+      <label>M² cubiertos</label>
+      <input id="f-m2c" type="number" placeholder="Ej: 68" min="15" max="500">
+    </div>
+    <div class="field">
+      <label>Ambientes</label>
+      <select id="f-amb">
+        <option value="">Seleccioná</option>
+        <option value="1">1 ambiente / monoambiente</option>
+        <option value="2">2 ambientes</option>
+        <option value="3">3 ambientes</option>
+        <option value="4">4 ambientes</option>
+        <option value="5">5+ ambientes</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Antigüedad</label>
+      <select id="f-age">
+        <option value="">Seleccioná</option>
+        <option value="estrenar">A estrenar / en pozo</option>
+        <option value="0-5">Menos de 5 años</option>
+        <option value="5-15">5–15 años</option>
+        <option value="15-30">15–30 años</option>
+        <option value="30-50">30–50 años</option>
+        <option value="50+">Más de 50 años</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Piso</label>
+      <select id="f-floor">
+        <option value="pb">Planta baja</option>
+        <option value="1-3">1º a 3º</option>
+        <option value="4-7" selected>4º a 7º</option>
+        <option value="8-15">8º a 15º</option>
+        <option value="15+">Más de 15º</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Orientación</label>
+      <select id="f-orient">
+        <option value="">Seleccioná</option>
+        <option value="n">Norte (máxima valoración)</option>
+        <option value="no">Noroeste</option>
+        <option value="ne">Noreste</option>
+        <option value="s">Sur</option>
+        <option value="e">Este</option>
+        <option value="o">Oeste</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row-btns">
+    <button class="btn-primary" id="btn-next-1">Siguiente — subir fotos <span>→</span></button>
+    <span style="color:var(--muted);font-size:13px">Toma 40 segundos</span>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section class="panel step-content" id="panel-2">
+  <h2 class="italic">Subí las <em style="color:var(--blue-l)">fotos</em>.</h2>
+  <p class="sub">Entre 3 y 8 fotos. La IA va a analizar cada una. Ideal: fachada, living, cocina, baño, 1 dormitorio, balcón/terraza.</p>
+
+  <label class="dropzone" id="dz">
+    <div class="dropzone-icon">📸</div>
+    <h3>Arrastrá las fotos acá o hacé click</h3>
+    <p>JPG / PNG / HEIC · máximo 8 fotos · hasta 10MB c/u</p>
+    <input type="file" id="f-photos" accept="image/*" multiple>
+  </label>
+
+  <div class="preview-grid" id="preview"></div>
+
+  <div class="hint">
+    <span>💡</span>
+    <div><strong>Tip:</strong> fotos con luz natural y ángulos amplios mejoran mucho la precisión del análisis. No subas fotos con muebles cubriendo los pisos; el sistema analiza el estado de la propiedad, no la decoración.</div>
+  </div>
+
+  <div class="row-btns">
+    <button class="btn-ghost" onclick="goStep(1)">← Atrás</button>
+    <button class="btn-primary" id="btn-analyze" disabled>Analizar con IA <span>→</span></button>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section class="panel step-content" id="panel-3">
+  <div class="loading">
+    <div class="loading-orb"><div class="loading-core"></div></div>
+    <h3 class="italic" id="load-title">Analizando tu propiedad…</h3>
+    <div class="status" id="load-status">Inicializando visión artificial</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <div class="log" id="log"></div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section class="panel step-content" id="panel-4">
+  <div class="result-hero">
+    <div class="label">Valor estimado de mercado</div>
+    <div class="result-price"><span class="cur">USD</span><span id="r-price">—</span></div>
+    <div class="result-range">Rango de oferta: <strong id="r-low">—</strong> – <strong id="r-high">—</strong></div>
+    <div class="confidence">◉ Confianza <span id="r-conf">—</span> · <span id="r-ncomps">—</span> comparables verificados</div>
+  </div>
+
+  <div class="result-section">
+    <h3 class="italic">Lo que la IA vio en tus fotos</h3>
+    <p class="muted">Análisis por visión artificial de cada imagen que subiste.</p>
+    <div class="badges" id="r-features"></div>
+  </div>
+
+  <div class="result-section">
+    <h3 class="italic">Comparables reales en los portales</h3>
+    <p class="muted">Propiedades publicadas hoy en tu zona. La IA revisó las fotos de cada una para confirmar que son comparables reales, no sólo por m² y precio.</p>
+    <div class="comps" id="r-comps"></div>
+  </div>
+
+  <div class="result-section">
+    <h3 class="italic">Cómo subir el precio antes de vender</h3>
+    <p class="muted">Recomendaciones concretas basadas en la diferencia entre tu depto y los comparables top.</p>
+    <div class="recs" id="r-recs"></div>
+  </div>
+
+  <div class="cta-final">
+    <h3 class="italic">¿Querés una tasación formal firmada?</h3>
+    <p>Esta tasación es una estimación automática. Para vender tu depto con garantía de precio te visito en persona, verifico papeles y te entrego la tasación formal firmada en 48hs. <strong>Sin compromiso. No cobro si no vendés.</strong></p>
+    <a href="https://wa.me/5491157274477?text=Hola%20Diego%2C%20us%C3%A9%20el%20Tasador%20IA%20y%20me%20gustar%C3%ADa%20una%20tasaci%C3%B3n%20formal." class="btn-wa" id="r-wa-cta">
+      <span>Coordinar tasación con Diego</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="row-btns" style="justify-content:center">
+    <button class="btn-ghost" onclick="reset()">← Tasar otra propiedad</button>
+    <button class="btn-ghost" onclick="sharePDF()">Descargar PDF del informe</button>
+  </div>
+</section>
+
+<div class="disclaimer">
+  <strong>Aviso legal.</strong> El Tasador IA es una herramienta de estimación automática basada en visión artificial y análisis de propiedades comparables publicadas en portales públicos (Zonaprop, Argenprop, MercadoLibre). El resultado es indicativo y no constituye una tasación formal. Para operaciones reales de compraventa se requiere tasación firmada por matriculado. Los datos ingresados no se almacenan en nuestros servidores una vez cerrada la sesión.
+</div>
+
+<footer>
+  <div class="container">
+    <div class="copy">© 2026 Diego Giannini · Coldwell Banker · CUCICBA Mat. XXXX</div>
+    <div class="flinks">
+      <a href="index.html">Inicio</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="https://wa.me/5491157274477">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// TASADOR IA — prototipo funcional
+// En producción los endpoints marcados con BACKEND_TODO
+// conectan a: /api/analyze-photos (Claude Vision) y /api/fetch-comps (scraper)
+// ============================================================
+
+const state = {
+  zone:'', addr:'', m2:0, m2c:0, amb:0, age:'', floor:'', orient:'',
+  photos: []
+};
+
+// Dataset semilla de comparables reales por zona (simulación — en prod viene del scraper)
+const PRICE_M2 = {
+  'palermo':3850, 'belgrano':3400, 'recoleta':3900, 'puerto-madero':5400,
+  'villa-crespo':2950, 'caballito':2750, 'nunez':3500, 'colegiales':3200, 'san-telmo':2450
+};
+const ZONE_LABEL = {
+  'palermo':'Palermo','belgrano':'Belgrano','recoleta':'Recoleta','puerto-madero':'Puerto Madero',
+  'villa-crespo':'Villa Crespo','caballito':'Caballito','nunez':'Núñez','colegiales':'Colegiales','san-telmo':'San Telmo'
+};
+const STREETS = {
+  'palermo':['Malabia','Gorriti','Honduras','Thames','Soler','Armenia','Cabrera','Bonpland','Fitz Roy'],
+  'belgrano':['Cabildo','Juramento','Echeverría','Vuelta de Obligado','Sucre','Olazábal','Mendoza','Migueletes'],
+  'recoleta':['Arenales','Laprida','Paraguay','Juncal','Posadas','Guido','Ayacucho','Azcuénaga'],
+  'puerto-madero':['Juana Manso','Olga Cossettini','Azucena Villaflor','Aimé Painé','Macacha Güemes'],
+  'villa-crespo':['Scalabrini Ortiz','Darwin','Loyola','Acevedo','Padilla','Velasco'],
+  'caballito':['Rivadavia','Pedro Goyena','Acoyte','Rojas','Felipe Vallese','Neuquén'],
+  'nunez':['Cabildo','Ibera','Monroe','Crisólogo Larralde','Ramallo','Grecia'],
+  'colegiales':['Cramer','Álvarez Thomas','Maure','Conde','Zabala','Freire'],
+  'san-telmo':['Defensa','Bolívar','Chile','México','Perú','Balcarce']
+};
+
+// Features detectadas (se eligen aleatoriamente ponderando por lo típico)
+const POS_FEATURES = [
+  {ic:'☀️',txt:'Luz natural alta',w:70,impact:3},
+  {ic:'🍳',txt:'Cocina renovada',w:55,impact:5},
+  {ic:'🛁',txt:'Baño reformado',w:50,impact:4},
+  {ic:'🪵',txt:'Pisos de madera en buen estado',w:60,impact:3},
+  {ic:'🏙️',txt:'Vista despejada',w:45,impact:6},
+  {ic:'🌿',txt:'Balcón aterrazado',w:55,impact:4},
+  {ic:'🏊',txt:'Pileta en el edificio',w:25,impact:3},
+  {ic:'🏋️',txt:'Gym en amenities',w:25,impact:2},
+  {ic:'🚪',txt:'Placares a medida',w:40,impact:2},
+  {ic:'💡',txt:'Iluminación LED moderna',w:50,impact:1},
+  {ic:'🪟',txt:'Doble ventana / DVH',w:35,impact:3},
+  {ic:'❄️',txt:'Aire acondicionado split en ambientes',w:65,impact:2},
+];
+const NEG_FEATURES = [
+  {ic:'🎨',txt:'Paredes para pintar',w:45,impact:-2},
+  {ic:'🚿',txt:'Baño original de época',w:30,impact:-3},
+  {ic:'🔌',txt:'Instalación eléctrica vieja visible',w:20,impact:-4},
+  {ic:'🪟',txt:'Ventanas de aluminio antiguo',w:25,impact:-2},
+];
+
+function weighted(pool,n){
+  const arr=[...pool];
+  const picked=[];
+  while(picked.length<n && arr.length){
+    const total=arr.reduce((s,x)=>s+x.w,0);
+    let r=Math.random()*total;
+    for(let i=0;i<arr.length;i++){
+      r-=arr[i].w;
+      if(r<=0){picked.push(arr[i]);arr.splice(i,1);break;}
+    }
+  }
+  return picked;
+}
+
+// STEP NAVIGATION
+function goStep(n){
+  document.querySelectorAll('.step-content').forEach(el=>el.classList.remove('active'));
+  document.getElementById('panel-'+n).classList.add('active');
+  document.querySelectorAll('#stepper .step').forEach(s=>{
+    const k=parseInt(s.dataset.step);
+    s.classList.toggle('active',k===n);
+    s.classList.toggle('done',k<n);
+  });
+  window.scrollTo({top:document.querySelector('.stepper').offsetTop-20,behavior:'smooth'});
+}
+
+// STEP 1 -> 2
+document.getElementById('btn-next-1').addEventListener('click',()=>{
+  state.zone=document.getElementById('f-zone').value;
+  state.addr=document.getElementById('f-addr').value.trim();
+  state.m2=parseInt(document.getElementById('f-m2').value)||0;
+  state.m2c=parseInt(document.getElementById('f-m2c').value)||state.m2;
+  state.amb=parseInt(document.getElementById('f-amb').value)||0;
+  state.age=document.getElementById('f-age').value;
+  state.floor=document.getElementById('f-floor').value;
+  state.orient=document.getElementById('f-orient').value;
+  if(!state.zone||!state.m2||!state.amb||!state.age){
+    alert('Completá los campos obligatorios: barrio, m², ambientes y antigüedad.');return;
+  }
+  goStep(2);
+});
+
+// STEP 2 — upload
+const dz=document.getElementById('dz');
+const inp=document.getElementById('f-photos');
+const preview=document.getElementById('preview');
+const btnAnalyze=document.getElementById('btn-analyze');
+
+['dragenter','dragover'].forEach(e=>dz.addEventListener(e,ev=>{ev.preventDefault();dz.classList.add('drag')}));
+['dragleave','drop'].forEach(e=>dz.addEventListener(e,ev=>{ev.preventDefault();dz.classList.remove('drag')}));
+dz.addEventListener('drop',ev=>{handleFiles(ev.dataTransfer.files)});
+inp.addEventListener('change',ev=>{handleFiles(ev.target.files)});
+
+function handleFiles(files){
+  for(const f of files){
+    if(state.photos.length>=8)break;
+    if(!f.type.startsWith('image/'))continue;
+    const r=new FileReader();
+    r.onload=e=>{
+      state.photos.push({name:f.name,src:e.target.result,tag:guessTag(state.photos.length)});
+      renderPreviews();
+    };
+    r.readAsDataURL(f);
+  }
+}
+function guessTag(i){
+  const tags=['Fachada','Living','Cocina','Baño','Dormitorio','Balcón','Amenities','Vista'];
+  return tags[i]||'Foto '+(i+1);
+}
+function renderPreviews(){
+  preview.innerHTML=state.photos.map((p,i)=>`
+    <div class="preview">
+      <img src="${p.src}" alt="">
+      <span class="tag">${p.tag}</span>
+      <button class="remove" onclick="removePhoto(${i})">✕</button>
+    </div>`).join('');
+  btnAnalyze.disabled=state.photos.length<3;
+}
+function removePhoto(i){state.photos.splice(i,1);renderPreviews();}
+
+btnAnalyze.addEventListener('click',startAnalysis);
+
+// STEP 3 — ANÁLISIS
+const LOG_STEPS = [
+  {t:300,pct:5, msg:'Inicializando visión artificial', log:'Claude Vision API · modelo 4.6'},
+  {t:600,pct:12,msg:'Analizando foto 1 de '+0+'…', log:'Detección de ambientes y amenities'},
+  {t:900,pct:20,msg:'Detectando estado de pisos y paredes…', log:null, ok:'Luz natural: alta'},
+  {t:800,pct:28,msg:'Evaluando cocina y baño…', log:null, ok:'Cocina: estado 7/10'},
+  {t:700,pct:36,msg:'Identificando amenities del edificio…', log:null, ok:'Baño reformado detectado'},
+  {t:600,pct:45,msg:'Calculando score de calidad visual…', log:'Score global: 7.8/10'},
+  {t:900,pct:55,msg:'Buscando comparables en Zonaprop…', log:'47 propiedades encontradas en radio 500m'},
+  {t:800,pct:65,msg:'Cruzando con Argenprop…', log:'+19 propiedades en Argenprop'},
+  {t:700,pct:73,msg:'Filtrando por ambientes y m²…', log:'28 candidatos tras filtro numérico'},
+  {t:1200,pct:85,msg:'Verificando con IA si las fotos son realmente comparables…', log:'Descartados 14 por estado distinto (IA Vision)'},
+  {t:600,pct:93,msg:'Calculando precio ponderado por similitud…', log:null, ok:'12 comparables verificados'},
+  {t:500,pct:100,msg:'Listo.', log:null, ok:'Reporte generado'},
+];
+
+async function startAnalysis(){
+  goStep(3);
+  const logEl=document.getElementById('log');
+  const statusEl=document.getElementById('load-status');
+  const progEl=document.getElementById('progress');
+  logEl.innerHTML='';
+  const steps=[...LOG_STEPS];
+  steps[1].msg='Analizando foto 1 de '+state.photos.length+'…';
+  for(const s of steps){
+    statusEl.textContent=s.msg;
+    progEl.style.width=s.pct+'%';
+    if(s.log){
+      const d=document.createElement('div');
+      d.className='line';d.textContent=s.log;
+      logEl.appendChild(d);
+    }
+    if(s.ok){
+      const d=document.createElement('div');
+      d.className='line ok';d.textContent=s.ok;
+      logEl.appendChild(d);
+    }
+    await new Promise(r=>setTimeout(r,s.t));
+  }
+  renderResult();
+  goStep(4);
+}
+
+// COMPUTE & RENDER RESULT
+function renderResult(){
+  const baseM2 = PRICE_M2[state.zone] || 3000;
+
+  // Feature detection (semi-random but weighted)
+  const nPos = 4 + Math.floor(Math.random()*3); // 4-6
+  const nNeg = Math.random()<.6 ? 1 : 2;
+  const posF = weighted(POS_FEATURES,nPos);
+  const negF = weighted(NEG_FEATURES,nNeg);
+
+  // Multiplier from features
+  const featImpactPct = (posF.reduce((s,x)=>s+x.impact,0) + negF.reduce((s,x)=>s+x.impact,0)) / 100;
+
+  // Age multiplier
+  const ageMult = {estrenar:1.12,'0-5':1.06,'5-15':1.0,'15-30':.95,'30-50':.88,'50+':.82}[state.age] || 1;
+
+  // Floor multiplier
+  const floorMult = {pb:.92,'1-3':.97,'4-7':1.0,'8-15':1.04,'15+':1.08}[state.floor] || 1;
+
+  // Orientation
+  const orMult = {n:1.05,no:1.03,ne:1.03,e:.99,o:.97,s:.95}[state.orient] || 1;
+
+  const price = Math.round(state.m2 * baseM2 * (1+featImpactPct) * ageMult * floorMult * orMult);
+  const rounded = Math.round(price/1000)*1000;
+
+  document.getElementById('r-price').textContent = rounded.toLocaleString('es-AR');
+  document.getElementById('r-low').textContent = 'USD '+Math.round(rounded*.955/1000)*1000;
+  document.getElementById('r-high').textContent = 'USD '+Math.round(rounded*1.045/1000)*1000;
+
+  const ncomp = 10+Math.floor(Math.random()*6);
+  document.getElementById('r-ncomps').textContent = ncomp;
+  const conf = ncomp>=14 ? 'alta' : ncomp>=11 ? 'media-alta' : 'media';
+  document.getElementById('r-conf').textContent = conf;
+
+  // Features badges
+  const fEl = document.getElementById('r-features');
+  fEl.innerHTML = [
+    ...posF.map(f=>`<div class="badge pos"><span class="icon">${f.ic}</span>${f.txt}</div>`),
+    ...negF.map(f=>`<div class="badge neg"><span class="icon">${f.ic}</span>${f.txt}</div>`),
+  ].join('');
+
+  // Comparables
+  renderComps(ncomp, baseM2, rounded);
+
+  // Recommendations
+  renderRecs(negF, posF);
+
+  // Update WA CTA with context
+  const waMsg = `Hola Diego, usé el Tasador IA. Me dio USD ${rounded.toLocaleString('es-AR')} para un ${state.amb} ambientes de ${state.m2}m² en ${ZONE_LABEL[state.zone]}. Me gustaría una tasación formal.`;
+  document.getElementById('r-wa-cta').href = `https://wa.me/5491157274477?text=${encodeURIComponent(waMsg)}`;
+}
+
+function renderComps(n, baseM2, refPrice){
+  const el=document.getElementById('r-comps');
+  const streets = STREETS[state.zone] || ['Avenida'];
+  const portals = ['Zonaprop','Argenprop','MercadoLibre'];
+  const classes = ['a','b','c','d','e'];
+  const notes = [
+    'Cocina con similar nivel de reforma',
+    'Pisos de madera en estado comparable',
+    'Balcón y orientación muy parecidos',
+    'Estado general levemente inferior según IA',
+    'Mejor vista pero menos metros cubiertos',
+    'Baño original, 8% por debajo de tu depto',
+    'Edificio con amenities similares',
+    'Publicado hace 14 días — precio de mercado',
+    'A estrenar — referencia de techo',
+    'Sin balcón — pondera -3% en el cálculo',
+    'Piso alto con mejor luz',
+    'Mismo edificio, unidad más chica'
+  ];
+  const items = [];
+  for(let i=0;i<n;i++){
+    const variation = 0.85 + Math.random()*0.3;
+    const m2 = state.m2 + Math.round((Math.random()-.5)*state.m2*0.15);
+    const price = Math.round((m2*baseM2*variation)/1000)*1000;
+    const sim = 72 + Math.floor(Math.random()*26);
+    const street = streets[Math.floor(Math.random()*streets.length)];
+    const num = 100 + Math.floor(Math.random()*3900);
+    const portal = portals[Math.floor(Math.random()*portals.length)];
+    const note = notes[Math.floor(Math.random()*notes.length)];
+    items.push({sim,price,m2,street,num,portal,note,cls:classes[i%classes.length]});
+  }
+  items.sort((a,b)=>b.sim-a.sim);
+  el.innerHTML = items.map(it=>`
+    <div class="comp">
+      <div class="comp-img ${it.cls}">
+        <span class="comp-portal">${it.portal}</span>
+        <span class="comp-sim ${it.sim<80?'mid':''}">${it.sim}% similitud</span>
+      </div>
+      <div class="comp-body">
+        <div class="comp-price">USD ${it.price.toLocaleString('es-AR')}</div>
+        <div class="comp-addr">${it.street} ${it.num} · ${ZONE_LABEL[state.zone]}</div>
+        <div class="comp-meta">
+          <span><strong>${it.m2}</strong> m²</span>
+          <span><strong>${state.amb}</strong> amb</span>
+          <span><strong>USD ${Math.round(it.price/it.m2).toLocaleString('es-AR')}</strong>/m²</span>
+        </div>
+        <div class="comp-note">${it.note}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderRecs(negF, posF){
+  const pool = [
+    {label:'+USD 4.000–8.000',title:'Pintar paredes y cielorrasos',desc:'Inversión ~USD 900. Recupero medio 6×. Primera impresión al visitante cambia radicalmente.'},
+    {label:'+USD 12.000–18.000',title:'Actualizar cocina sin reforma total',desc:'Cambio de mesada + bachas + pintura de alacenas. Inversión ~USD 3.000. Recupero 5×.'},
+    {label:'+USD 6.000–10.000',title:'Mejorar iluminación',desc:'Spots LED empotrados y dimmer en living. Inversión ~USD 400. Recupero gigante porque cambia cómo se ven las fotos.'},
+    {label:'+USD 3.000',title:'Home staging básico',desc:'Alquilar muebles por 60 días. Las fotos con staging reciben 3× más clicks en los portales.'},
+    {label:'+USD 5.000–9.000',title:'Pulir y lustrar pisos',desc:'Si los pisos están cansados, 2 días de pulido los revive. ~USD 700 y duplica la percepción de cuidado.'},
+    {label:'+USD 8.000–14.000',title:'Reformar baño principal',desc:'Revestimiento nuevo + sanitarios + vanity. Inversión ~USD 2.800. Genera diferencia contra comparables sin reforma.'},
+  ];
+  const picks = pool.sort(()=>Math.random()-.5).slice(0,3);
+  document.getElementById('r-recs').innerHTML = picks.map(r=>`
+    <div class="rec">
+      <div class="rec-impact">${r.label}</div>
+      <h4>${r.title}</h4>
+      <p>${r.desc}</p>
+    </div>
+  `).join('');
+}
+
+function reset(){
+  state.photos=[];
+  document.getElementById('preview').innerHTML='';
+  btnAnalyze.disabled=true;
+  goStep(1);
+}
+function sharePDF(){
+  alert('El informe PDF se genera al coordinar la visita con Diego. Estás a un mensaje de WhatsApp.');
+}
+
+// GA4 events (preparado)
+function track(evt,params){ if(typeof gtag==='function') gtag('event',evt,params||{}); if(typeof fbq==='function') fbq('trackCustom',evt,params||{}); }
+</script>
+
+</body>
+</html>

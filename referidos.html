@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Programa de referidos Diego Giannini · Coldwell Banker Livello. USD 500 para clientes que refieren operaciones cerradas. Referral fee profesional para agentes inmobiliarios.">
+<link rel="canonical" href="https://gianninirealestate.com.ar/referidos">
+<title>Programa de referidos · Diego Giannini · Coldwell Banker Livello</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230A0E1F'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='54' font-weight='700' text-anchor='middle' fill='%231F69FF'%3ECB%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Programa de referidos · Diego Giannini">
+<meta property="og:description" content="USD 500 al cierre para clientes que recomiendan. Referral fee profesional para agentes inmobiliarios.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0A0E1F">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+body{background:#0A0E1F;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
+nav{padding:24px 5%;display:flex;justify-content:space-between;align-items:center;}
+nav a.logo img{height:40px;}
+nav a{color:#fff;text-decoration:none;font-size:13px;font-family:'Space Grotesk',sans-serif;font-weight:500;}
+.hero{padding:100px 5% 40px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(37,211,102,0.15),transparent 60%);}
+.badge{display:inline-block;padding:8px 18px;border:1px solid rgba(37,211,102,0.3);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#25D366;margin-bottom:24px;}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,7vw,88px);font-weight:500;line-height:1.05;letter-spacing:-0.02em;margin-bottom:20px;}
+h1 em{font-style:italic;color:#25D366;}
+.sub{font-size:18px;color:rgba(255,255,255,0.7);max-width:680px;margin:0 auto 56px;line-height:1.6;}
+
+/* Toggle */
+.toggle-wrap{max-width:560px;margin:0 auto 64px;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:6px;}
+.toggle-btn{padding:14px 12px;background:transparent;border:none;color:rgba(255,255,255,0.6);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:0.04em;cursor:pointer;border-radius:10px;transition:all 0.3s;}
+.toggle-btn.active{background:#25D366;color:#fff;}
+@media(max-width:480px){.toggle-btn{font-size:12px;padding:12px 8px;}}
+
+.section{display:none;max-width:1100px;margin:0 auto;padding:0 5% 80px;}
+.section.active{display:block;animation:fadeIn 0.4s ease-out;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+.amount{font-family:'Space Grotesk',sans-serif;font-size:clamp(64px,12vw,140px);font-weight:700;background:linear-gradient(135deg,#25D366,#4D8AFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;letter-spacing:-0.04em;margin:24px 0 12px;text-align:center;}
+.amount-label{text-align:center;color:rgba(255,255,255,0.55);font-size:13px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:48px;}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:40px 0;}
+.step{padding:32px 28px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;}
+.step-num{font-family:'Space Grotesk',sans-serif;font-size:48px;font-weight:700;color:#25D366;line-height:1;margin-bottom:14px;}
+.step h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;margin-bottom:10px;}
+.step p{color:rgba(255,255,255,0.65);font-size:14px;line-height:1.7;}
+
+h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,48px);font-weight:500;text-align:center;margin-bottom:14px;}
+h2 em{font-style:italic;color:#25D366;}
+
+.form-sec{max-width:640px;margin:0 auto;padding:0 5% 80px;}
+.card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:48px 40px;}
+@media(max-width:640px){.card{padding:32px 24px;}}
+label{display:block;font-size:13px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin:20px 0 8px;}
+input,textarea,select{width:100%;padding:14px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:inherit;font-size:15px;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#25D366;}
+textarea{resize:vertical;min-height:80px;}
+.btn{display:block;width:100%;padding:18px;background:linear-gradient(135deg,#25D366,#1BA853);color:#fff;border:none;border-radius:12px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;cursor:pointer;margin-top:28px;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,0.3);}
+.terms{max-width:800px;margin:40px auto 80px;padding:0 5%;font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;}
+.terms h3{color:rgba(255,255,255,0.8);font-family:'Space Grotesk',sans-serif;font-size:16px;margin:20px 0 8px;}
+footer{padding:40px 5%;text-align:center;font-size:12px;color:rgba(255,255,255,0.5);border-top:1px solid rgba(255,255,255,0.06);}
+footer a{color:rgba(255,255,255,0.6);text-decoration:none;margin:0 10px;}
+
+.fee-tier{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;background:rgba(31,105,255,0.06);border:1px solid rgba(31,105,255,0.15);border-radius:14px;margin-bottom:12px;}
+.fee-tier .tier-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:#fff;}
+.fee-tier .tier-detail{font-size:13px;color:rgba(255,255,255,0.55);margin-top:4px;}
+.fee-tier .tier-pct{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:#4D8AFF;}
+@media(max-width:480px){.fee-tier{flex-direction:column;align-items:flex-start;gap:8px;}}
+
+.conditional-fields{display:none;}
+.conditional-fields.active{display:block;}
+</style>
+    <link rel="stylesheet" href="_premium.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo"><img src="logo-cb.png" alt="Coldwell Banker"></a>
+  <a href="index.html">← Inicio</a>
+</nav>
+
+<section class="hero">
+  <div class="badge">Programa de referidos</div>
+  <h1>Recomendame.<br><em>Ganás vos.</em></h1>
+  <p class="sub">Si me referís a alguien que termine cerrando operación, vos cobrás. Tengo dos formatos según seas cliente/amigo o agente inmobiliario. Elegí el que va con vos.</p>
+
+  <div class="toggle-wrap">
+    <button class="toggle-btn active" data-target="cliente" onclick="switchTab('cliente')">Soy cliente / amigo</button>
+    <button class="toggle-btn" data-target="agente" onclick="switchTab('agente')">Soy agente inmobiliario</button>
+  </div>
+</section>
+
+<!-- ========== SECCIÓN CLIENTE ========== -->
+<section class="section active" id="section-cliente">
+  <div class="amount">USD 500</div>
+  <p class="amount-label">Al cerrar la escritura · pago en efectivo</p>
+
+  <h2>Cómo <em>funciona</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Me referís a alguien</h3>
+      <p>Llenás el formulario con los datos de la persona (nombre + WhatsApp). Mejor si la avisás antes para que no la sorprenda mi llamado.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Me contacto en 24 hs</h3>
+      <p>La atiendo personalmente. Si no hay match o no le sirve mi servicio, no pasa nada — sigue siendo amigo tuyo.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Si cierra, cobrás</h3>
+      <p>Al firmar la escritura te transfiero USD 500 (efectivo o transferencia, vos elegís). Sin vueltas, sin letra chica.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECCIÓN AGENTE ========== -->
+<section class="section" id="section-agente">
+  <div class="amount" style="background:linear-gradient(135deg,#4D8AFF,#1F69FF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">25%</div>
+  <p class="amount-label">Referral fee · % de la comisión bruta de la operación</p>
+
+  <p style="text-align:center;color:rgba(255,255,255,0.7);max-width:640px;margin:0 auto 40px;font-size:15px;line-height:1.7;">Si sos agente inmobiliario y tenés un cliente con propiedad o búsqueda en mi zona de trabajo (CABA o barrios privados zona sur), te derivo el % estándar de la industria al cerrar operación. Trabajo profesional, papeles claros y pago al momento.</p>
+
+  <div style="max-width:560px;margin:0 auto 40px;">
+    <div class="fee-tier">
+      <div>
+        <div class="tier-name">Operaciones hasta USD 200k</div>
+        <div class="tier-detail">Referral fee estándar</div>
+      </div>
+      <div class="tier-pct">25%</div>
+    </div>
+    <div class="fee-tier">
+      <div>
+        <div class="tier-name">Operaciones USD 200k–500k</div>
+        <div class="tier-detail">Tier intermedio</div>
+      </div>
+      <div class="tier-pct">25%</div>
+    </div>
+    <div class="fee-tier">
+      <div>
+        <div class="tier-name">Operaciones USD 500k+</div>
+        <div class="tier-detail">A conversar caso por caso</div>
+      </div>
+      <div class="tier-pct">20-25%</div>
+    </div>
+  </div>
+
+  <h2>Cómo <em>funciona</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Acuerdo previo</h3>
+      <p>Antes de presentarte el cliente, firmamos un acuerdo simple por WhatsApp/email confirmando el % y las condiciones. Así no hay malentendidos al cierre.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Tu cliente trabaja conmigo</h3>
+      <p>Yo me ocupo de toda la operación: marketing, visitas, negociación, escritura. Te mantengo al tanto del avance con reportes periódicos.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Cierre y liquidación</h3>
+      <p>Al firmar la escritura, te transferimos el % acordado de mi comisión bruta dentro de 5 días hábiles. Factura formal incluida.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FORMULARIO ÚNICO ========== -->
+<section class="form-sec">
+  <div class="card">
+    <h2>Enviar <em>referido</em></h2>
+    <p style="text-align:center;color:rgba(255,255,255,0.6);font-size:14px;">Toda la info es confidencial. Solo la uso para contactar a tu referido.</p>
+
+    <form onsubmit="submitRef(event)">
+      <label>¿Sos cliente o agente?</label>
+      <select name="tipo_referidor" id="tipoSelect" required onchange="toggleAgenteFields()">
+        <option value="">Seleccioná</option>
+        <option value="cliente">Soy cliente / amigo (programa USD 500)</option>
+        <option value="agente">Soy agente inmobiliario (referral fee %)</option>
+      </select>
+
+      <label>Tus datos</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <input type="text" name="tu_nombre" placeholder="Tu nombre" required>
+        <input type="tel" name="tu_whatsapp" placeholder="Tu WhatsApp" required>
+      </div>
+
+      <div class="conditional-fields" id="agenteFields">
+        <label>Inmobiliaria / Agencia</label>
+        <input type="text" name="inmobiliaria" placeholder="Nombre de tu inmobiliaria">
+      </div>
+
+      <label>Datos del referido</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <input type="text" name="ref_nombre" placeholder="Nombre del referido" required>
+        <input type="tel" name="ref_whatsapp" placeholder="WhatsApp del referido" required>
+      </div>
+
+      <label>¿Qué está buscando?</label>
+      <select name="perfil" required>
+        <option value="">Seleccioná</option>
+        <option>Vender propiedad en CABA</option>
+        <option>Vender casa o lote en barrio privado zona sur</option>
+        <option>Comprar para vivir en CABA</option>
+        <option>Comprar lote o casa en zona sur</option>
+        <option>Inversión / renta</option>
+        <option>No sé, prefiero que le preguntes vos</option>
+      </select>
+
+      <label>Contexto (opcional pero suma)</label>
+      <textarea name="contexto" placeholder="ej: vive en Palermo, está buscando lote en Pueblos del Plata, presupuesto 80k..."></textarea>
+
+      <button class="btn" type="submit">Enviar referido →</button>
+    </form>
+  </div>
+</section>
+
+<div class="terms">
+  <h3>Términos del programa</h3>
+  <p><strong>Para clientes/amigos:</strong> el pago de USD 500 se efectúa al momento de firmar la escritura traslativa de dominio (en compraventas) o el contrato de reserva con aceptación formal (en alquileres anuales en barrios privados). El programa aplica únicamente a referidos nuevos que no estén ya en mi base de contactos. Sin límite de referidos por persona.</p>
+  <p><strong>Para agentes inmobiliarios:</strong> el referral fee se acuerda formalmente por escrito antes de presentar al cliente. Se calcula sobre la comisión bruta efectivamente cobrada por Diego Giannini al cierre de la operación, y se liquida dentro de 5 días hábiles desde escrituración con factura formal. El % puede variar según la complejidad del caso o el ticket de la operación.</p>
+  <p>En caso de fraude, duplicación o intento de cobrar comisión por un cliente que ya estaba en gestión, Coldwell Banker Livello se reserva el derecho de anular el pago.</p>
+</div>
+
+<footer>
+  <a href="index.html">Inicio</a>·<a href="privacidad.html">Privacidad</a>·<a href="propiedades.html">Propiedades</a>
+  <p style="margin-top:20px;">© 2026 Coldwell Banker Livello · CUIT 30-71783116-7 · Matrícula n°4025 AGUSTINA PELAEZ</p>
+</footer>
+
+<script>
+function switchTab(target) {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-target="${target}"]`).classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + target).classList.add('active');
+  // Sync el select del form
+  const sel = document.getElementById('tipoSelect');
+  if (sel) {
+    sel.value = target;
+    toggleAgenteFields();
+  }
+}
+
+function toggleAgenteFields() {
+  const tipo = document.getElementById('tipoSelect').value;
+  const agenteFields = document.getElementById('agenteFields');
+  if (tipo === 'agente') {
+    agenteFields.classList.add('active');
+  } else {
+    agenteFields.classList.remove('active');
+  }
+}
+
+function submitRef(e) {
+  e.preventDefault();
+  const d = new FormData(e.target);
+  const tipo = d.get('tipo_referidor');
+  const tipoLabel = tipo === 'cliente' ? '🎁 REFERIDO CLIENTE (USD 500)' : '🤝 REFERIDO AGENTE (referral fee)';
+
+  let msg = `${tipoLabel}%0A%0A`;
+  msg += `Quien refiere:%0A• ${d.get('tu_nombre')}%0A• ${d.get('tu_whatsapp')}%0A`;
+  if (tipo === 'agente' && d.get('inmobiliaria')) {
+    msg += `• Inmobiliaria: ${d.get('inmobiliaria')}%0A`;
+  }
+  msg += `%0AReferido:%0A• ${d.get('ref_nombre')}%0A• ${d.get('ref_whatsapp')}%0A`;
+  msg += `• Perfil: ${d.get('perfil')}%0A%0AContexto: ${d.get('contexto') || '—'}`;
+
+  if (window.gtag) gtag('event', 'referido_enviado', { tipo: tipo });
+  if (window.fbq) fbq('track', 'Lead', { content_category: 'referido', content_name: tipo });
+
+  window.location.href = `https://wa.me/5491157274477?text=${msg}`;
+}
+</script>
+    <script src="_premium.js" defer></script>
+</body>
+</html>
