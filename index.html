@@ -181,52 +181,14 @@
         }
 
         .nav-logo {
+            height: 48px;
             display: flex;
             align-items: center;
-            text-decoration: none;
-            gap: 12px;
-            flex-shrink: 0;
         }
 
-        .nav-logo-mark {
-            width: 36px;
-            height: 36px;
-            background: var(--electric-blue);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: background 0.3s;
-        }
-        .nav-logo:hover .nav-logo-mark { background: var(--french-blue); }
-
-        .nav-logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.15;
-        }
-        .nav-logo-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: #fff;
-            letter-spacing: -0.01em;
-            line-height: 1;
-        }
-        .nav-logo-sub {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 9px;
-            font-weight: 600;
-            letter-spacing: 1.8px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.5);
-            margin-top: 3px;
-        }
-
-        @media (max-width: 500px) {
-            .nav-logo-sub { display: none; }
-            .nav-logo-name { font-size: 17px; }
+        .nav-logo img {
+            height: 100%;
+            width: auto;
         }
 
         .nav-links {
@@ -257,143 +219,28 @@
             transition: width 0.3s ease;
         }
 
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
+        .nav-links a:hover::after {
             width: 100%;
         }
 
-        .nav-links a:hover,
-        .nav-links a.active {
+        .nav-links a:hover {
             color: var(--electric-blue);
-        }
-
-        /* ── Hamburger button (mobile only) ── */
-        .nav-hamburger {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            width: 44px;
-            height: 44px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background 0.2s;
-            z-index: 200;
-            flex-shrink: 0;
-        }
-        .nav-hamburger:hover { background: rgba(255,255,255,0.06); }
-        .nav-hamburger span {
-            display: block;
-            width: 22px;
-            height: 2px;
-            background: #fff;
-            border-radius: 2px;
-            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.25s;
-            transform-origin: center;
-        }
-        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-        /* ── Mobile overlay menu ── */
-        .mobile-nav-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 150;
-            background: rgba(7,11,25,0.97);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            opacity: 0;
-            transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1);
-            padding: 80px 40px 40px;
-        }
-        .mobile-nav-overlay.open {
-            display: flex;
-            opacity: 1;
-        }
-        .mobile-nav-overlay ul {
-            list-style: none;
-            text-align: center;
-            width: 100%;
-        }
-        .mobile-nav-overlay ul li {
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-        .mobile-nav-overlay ul li:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
-        .mobile-nav-overlay ul li a {
-            display: block;
-            padding: 22px 0;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.85);
-            text-decoration: none;
-            transition: color 0.2s, padding-left 0.3s;
-        }
-        .mobile-nav-overlay ul li a:hover,
-        .mobile-nav-overlay ul li a.active {
-            color: #6AA0FF;
-            padding-left: 8px;
-        }
-        .mobile-nav-cta-group {
-            margin-top: 36px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            max-width: 320px;
-        }
-        .mobile-nav-cta-group a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 16px 24px;
-            border-radius: 100px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: all 0.25s;
-        }
-        .mobile-nav-cta-group a.mob-primary {
-            background: linear-gradient(135deg, #1F69FF, #004DE6);
-            color: #fff;
-            box-shadow: 0 8px 28px rgba(31,105,255,0.4);
-        }
-        .mobile-nav-cta-group a.mob-secondary {
-            background: transparent;
-            color: #fff;
-            border: 1.5px solid rgba(255,255,255,0.3);
         }
 
         .nav-cta {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
             color: var(--white);
-            padding: 11px 26px;
+            padding: 12px 28px;
             border: 1.5px solid var(--electric-blue);
-            border-radius: 100px;
+            border-radius: 4px;
             cursor: pointer;
             background: transparent;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            text-transform: uppercase;
         }
 
         .nav-cta::before {
@@ -638,15 +485,15 @@
         }
 
         .hero-headline {
-            font-size: clamp(56px, 8.5vw, 118px);
+            font-size: clamp(64px, 10vw, 140px);
             font-weight: 700;
             letter-spacing: -3px;
-            line-height: 1.05;
+            line-height: 1.1;
             margin-bottom: 20px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8px;
+            gap: 20px;
         }
 
         .hero-headline span {
@@ -678,12 +525,12 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(16px, 2vw, 19px);
-            color: rgba(255,255,255,0.75);
-            max-width: 680px;
-            margin: 36px auto;
+            font-size: clamp(16px, 2vw, 22px);
+            color: var(--muted);
+            max-width: 700px;
+            margin: 40px auto;
             font-weight: 400;
-            line-height: 1.75;
+            line-height: 1.7;
             animation: fadeInUp 0.8s ease-out 0.6s forwards;
             opacity: 0;
         }
@@ -711,22 +558,21 @@
 
         .btn-primary {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            padding: 18px 44px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 18px 42px;
             border: none;
-            border-radius: 100px;
+            border-radius: 4px;
             background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
             color: var(--white);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 36px rgba(31, 105, 255, 0.35);
+            box-shadow: 0 10px 40px rgba(31, 105, 255, 0.25);
             text-decoration: none;
             display: inline-block;
-            text-transform: uppercase;
         }
 
         .btn-primary::before {
@@ -749,18 +595,17 @@
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 18px 48px rgba(31, 105, 255, 0.45);
-            filter: brightness(1.06);
+            box-shadow: 0 20px 60px rgba(31, 105, 255, 0.4);
         }
 
         .btn-secondary {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
-            letter-spacing: 1.5px;
-            padding: 18px 44px;
-            border: 1.5px solid rgba(255,255,255,0.3);
-            border-radius: 100px;
+            letter-spacing: 1px;
+            padding: 18px 42px;
+            border: 1.5px solid var(--muted);
+            border-radius: 4px;
             background: transparent;
             color: var(--white);
             cursor: pointer;
@@ -768,14 +613,13 @@
             position: relative;
             text-decoration: none;
             display: inline-block;
-            text-transform: uppercase;
         }
 
         .btn-secondary:hover {
-            border-color: rgba(31,105,255,0.7);
+            border-color: var(--electric-blue);
             background: rgba(31, 105, 255, 0.1);
             transform: translateY(-2px);
-            color: #6AA0FF;
+            color: var(--electric-blue);
         }
 
         /* Urgency badge */
@@ -814,17 +658,16 @@
 
         /* Hero mini-form */
         .hero-miniform-wrap {
-            margin: 40px auto 0;
+            margin: 36px auto 0;
             max-width: 520px;
-            padding: 32px 32px 28px;
-            background: linear-gradient(160deg, rgba(31,105,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-            border: 1.5px solid rgba(31,105,255,0.25);
-            border-radius: 20px;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            padding: 28px 28px 24px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             animation: fadeInUp 0.8s ease-out 0.9s forwards;
             opacity: 0;
-            box-shadow: 0 24px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
         }
         .hero-miniform-title {
             font-family: 'Cormorant Garamond', serif;
@@ -832,16 +675,15 @@
             font-size: 22px;
             color: #fff;
             text-align: center;
-            margin-bottom: 6px;
-            font-weight: 500;
+            margin-bottom: 4px;
         }
         .hero-miniform-sub {
             font-size: 12px;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.55);
             text-align: center;
-            margin-bottom: 22px;
+            margin-bottom: 18px;
             font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
         }
         .hero-miniform-row {
             display: grid;
@@ -849,118 +691,59 @@
             gap: 10px;
             margin-bottom: 10px;
         }
-        .hero-miniform-wrap input {
+        .hero-miniform-wrap input,
+        .hero-miniform-wrap select {
             width: 100%;
-            padding: 13px 16px;
-            border: 1.5px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.05);
+            padding: 13px 14px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.03);
             color: #fff;
-            border-radius: 10px;
+            border-radius: 8px;
             font-family: 'Inter', sans-serif;
             font-size: 14px;
-            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+            transition: border-color 0.2s, background 0.2s;
         }
         .hero-miniform-wrap input::placeholder {
-            color: rgba(255,255,255,0.45);
+            color: rgba(255,255,255,0.35);
         }
-        .hero-miniform-wrap input:focus {
+        .hero-miniform-wrap input:focus,
+        .hero-miniform-wrap select:focus {
             outline: none;
             border-color: var(--electric-blue);
-            background: rgba(31,105,255,0.1);
-            box-shadow: 0 0 0 4px rgba(31,105,255,0.15);
+            background: rgba(31,105,255,0.06);
         }
-        /* ── Selector de intención (reemplaza <select> nativo) ── */
-        .mf-options {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+        .hero-miniform-wrap select {
             margin-bottom: 12px;
-        }
-        .mf-opt {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            padding: 13px 6px 11px;
-            background: rgba(255,255,255,0.04);
-            border: 1.5px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.5);
-            line-height: 1.2;
-            text-align: center;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        .mf-opt:hover {
-            border-color: rgba(31,105,255,0.55);
-            background: rgba(31,105,255,0.09);
-            color: rgba(255,255,255,0.85);
-            transform: translateY(-2px);
-        }
-        .mf-opt.active {
-            border-color: #1F69FF;
-            background: linear-gradient(145deg, rgba(31,105,255,0.22), rgba(0,77,230,0.12));
-            color: #fff;
-            box-shadow:
-                0 0 0 1px rgba(31,105,255,0.4),
-                0 6px 20px rgba(31,105,255,0.25),
-                inset 0 1px 0 rgba(255,255,255,0.08);
-            transform: translateY(-2px);
-        }
-        .mf-opt svg {
-            opacity: 0.55;
-            transition: opacity 0.2s, transform 0.2s;
-            flex-shrink: 0;
-        }
-        .mf-opt:hover svg  { opacity: 0.9; transform: scale(1.1); }
-        .mf-opt.active svg { opacity: 1;   transform: scale(1.1); }
-        .mf-opt.mf-error {
-            border-color: rgba(255,107,122,0.6) !important;
-            animation: mfShake 0.35s ease;
-        }
-        @keyframes mfShake {
-            0%,100%{ transform:translateX(0); }
-            25%    { transform:translateX(-4px); }
-            75%    { transform:translateX(4px); }
-        }
-        @media (max-width: 420px) {
-            .mf-options { grid-template-columns: repeat(2, 1fr); }
-            .mf-opt     { padding: 12px 6px; font-size: 10px; }
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff80' d='M6 8.5L1.5 4h9z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
         }
         .hero-miniform-submit {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
             color: #fff;
             border: none;
-            border-radius: 100px;
+            border-radius: 8px;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.3s, filter 0.2s;
+            transition: transform 0.2s, box-shadow 0.3s;
             text-transform: uppercase;
-            box-shadow: 0 8px 28px rgba(31, 105, 255, 0.35);
         }
         .hero-miniform-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 16px 40px rgba(31, 105, 255, 0.45);
-            filter: brightness(1.06);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(31, 105, 255, 0.4);
         }
         .hero-miniform-privacy {
-            font-size: 12px;
-            color: rgba(255,255,255,0.6);
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
             text-align: center;
-            margin-top: 14px;
+            margin-top: 12px;
             font-family: 'Inter', sans-serif;
         }
 
@@ -1344,8 +1127,8 @@
             top: 15px;
             right: 15px;
             background: rgba(0, 0, 0, 0.7);
-            padding: 7px 14px;
-            border-radius: 100px;
+            padding: 8px 16px;
+            border-radius: 4px;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 12px;
             font-weight: 700;
@@ -1392,8 +1175,8 @@
         }
 
         .property-detail-label {
-            font-size: 12px;
-            color: rgba(255,255,255,0.65);
+            font-size: 11px;
+            color: var(--muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -1502,15 +1285,15 @@
             inset: 0;
             background-image: url('https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=2400&q=85');
             background-size: cover;
-            background-position: center 40%;
-            filter: brightness(0.45) saturate(1.1);
+            background-position: center 55%;
+            filter: brightness(0.55) saturate(1.1);
             animation: ctaKenBurns 26s ease-in-out infinite alternate;
             z-index: 0;
             will-change: transform;
         }
         @keyframes ctaKenBurns {
-            0%   { transform: scale(1.04); }
-            100% { transform: scale(1.14) translate(1.5%, -1%); }
+            0%   { transform: scale(1.05); }
+            100% { transform: scale(1.18) translate(2%, -1%); }
         }
 
         .final-cta-section::after {
@@ -1519,11 +1302,10 @@
             inset: 0;
             background:
                 linear-gradient(180deg,
-                    rgba(10,14,31,0.5)  0%,
-                    rgba(10,14,31,0.3)  25%,
-                    rgba(10,14,31,0.45) 60%,
-                    rgba(10,14,31,0.88) 100%),
-                radial-gradient(ellipse at 50% 35%, rgba(31,105,255,0.28) 0%, transparent 60%);
+                    rgba(10,14,31,0.55) 0%,
+                    rgba(10,14,31,0.7) 40%,
+                    rgba(10,14,31,0.92) 100%),
+                radial-gradient(ellipse at 50% 30%, rgba(31,105,255,0.18) 0%, transparent 60%);
             z-index: 1;
         }
 
@@ -1531,20 +1313,19 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 9px 20px;
-            background: rgba(10,14,31,0.6);
-            border: 1px solid rgba(106,160,255,0.5);
+            padding: 8px 18px;
+            background: rgba(31,105,255,0.18);
+            border: 1px solid rgba(106,160,255,0.45);
             border-radius: 100px;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(12px);
             font-family: 'Space Grotesk', sans-serif;
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: #8BBEFF;
-            margin-bottom: 28px;
-            box-shadow: 0 0 28px rgba(31,105,255,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
+            color: #6AA0FF;
+            margin-bottom: 24px;
+            box-shadow: 0 0 24px rgba(31,105,255,0.25);
             opacity: 0;
             animation: fadeInUp 0.8s ease-out forwards;
         }
@@ -1562,38 +1343,39 @@
         }
         .final-cta-trust-item {
             text-align: center;
-            padding: 26px 18px;
-            background: rgba(10,14,31,0.65);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 16px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            transition: transform 0.3s, border-color 0.3s, background 0.3s, box-shadow 0.3s;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 20px rgba(0,0,0,0.3);
+            padding: 22px 18px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(106,160,255,0.18);
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, border-color 0.3s, background 0.3s;
         }
         .final-cta-trust-item:hover {
-            transform: translateY(-4px);
-            border-color: rgba(106,160,255,0.55);
-            background: rgba(31,105,255,0.15);
-            box-shadow: 0 12px 32px rgba(31,105,255,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+            border-color: rgba(106,160,255,0.5);
+            background: rgba(31,105,255,0.08);
         }
         .final-cta-trust-item .num {
             display: block;
             font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 38px;
+            font-size: 36px;
             font-weight: 600;
             line-height: 1;
-            color: #fff;
-            text-shadow: 0 0 24px rgba(106,160,255,0.6);
+            background: linear-gradient(135deg, #FFFFFF 0%, #6AA0FF 60%, #FFFFFF 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: heroAccentShine 6s linear infinite;
         }
         .final-cta-trust-item .label {
             display: block;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
-            letter-spacing: 1.4px;
+            font-size: 10px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.75);
-            margin-top: 9px;
+            color: rgba(255,255,255,0.55);
+            margin-top: 8px;
         }
         @media (max-width: 640px) {
             .final-cta-trust { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -1608,32 +1390,27 @@
         }
 
         .final-cta-section h2 {
-            font-size: clamp(38px, 5vw, 62px);
+            font-size: clamp(42px, 6vw, 64px);
             font-weight: 700;
-            line-height: 1.12;
-            letter-spacing: -0.02em;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             opacity: 0;
-            animation: fadeInUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
-            color: #fff;
-            text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+            animation: fadeInUp 0.8s ease-out forwards;
         }
 
         .final-cta-section p {
-            font-size: 17px;
-            color: rgba(255,255,255,0.88);
-            margin-bottom: 16px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.72;
+            font-size: 18px;
+            color: var(--muted);
+            margin-bottom: 50px;
             opacity: 0;
-            animation: fadeInUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.22s forwards;
+            animation: fadeInUp 0.8s ease-out 0.1s forwards;
         }
 
         .cta-panel {
-            background: transparent;
-            padding: 28px 0 0;
+            background: rgba(31, 105, 255, 0.08);
+            border: 1px solid rgba(31, 105, 255, 0.2);
+            border-radius: 8px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
             opacity: 0;
             animation: fadeInUp 0.8s ease-out 0.2s forwards;
         }
@@ -1647,12 +1424,11 @@
 
         .btn-cta {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
             padding: 18px 42px;
-            border-radius: 100px;
-            text-transform: uppercase;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
@@ -1674,19 +1450,15 @@
         }
 
         .btn-cta-secondary {
-            border: 1.5px solid rgba(255,255,255,0.55);
-            background: rgba(10,14,31,0.55);
-            color: #fff;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid var(--muted);
+            background: transparent;
+            color: var(--white);
         }
 
         .btn-cta-secondary:hover {
-            border-color: #6AA0FF;
-            background: rgba(31, 105, 255, 0.18);
-            color: #8BBEFF;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(31,105,255,0.25);
+            border-color: var(--electric-blue);
+            background: rgba(31, 105, 255, 0.1);
+            color: var(--electric-blue);
         }
 
         /* WhatsApp floating button — branding oficial */
@@ -1828,12 +1600,9 @@
                 display: none;
             }
 
-            .nav-hamburger {
-                display: flex;
-            }
-
             .nav-cta {
-                display: none;
+                padding: 10px 20px;
+                font-size: 12px;
             }
 
             .hero {
@@ -1931,53 +1700,20 @@
     <link rel="stylesheet" href="_premium.css">
 </head>
 <body>
-    <!-- Skip link (accesibilidad) -->
-    <a href="#main-content" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;background:#1F69FF;padding:12px 20px;border-radius:0 0 8px 0;text-decoration:none;" onfocus="this.style.left='0';this.style.width='auto';this.style.height='auto';" onblur="this.style.left='-9999px';this.style.width='1px';this.style.height='1px';">Ir al contenido principal</a>
-
     <!-- Navigation -->
-    <nav id="nav" role="navigation" aria-label="Navegación principal">
-        <a href="/" class="nav-logo" aria-label="Diego Giannini · Coldwell Banker — Inicio">
-            <div class="nav-logo-mark" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </div>
-            <div class="nav-logo-text">
-                <span class="nav-logo-name">Diego Giannini</span>
-                <span class="nav-logo-sub">Coldwell Banker · Buenos Aires</span>
-            </div>
-        </a>
-        <ul class="nav-links" role="list">
-            <li><a href="#home">Home</a></li>
-            <li><a href="propietarios">Propietarios</a></li>
-            <li><a href="compradores">Compradores</a></li>
-            <li><a href="#about">Nosotros</a></li>
-            <li><a href="#contact">Contacto</a></li>
-        </ul>
-        <button class="nav-cta" onclick="openWhatsApp()" aria-label="Llamar a Diego Giannini">+54 9 11 5727-4477</button>
-        <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileNav">
-            <span></span><span></span><span></span>
-        </button>
-    </nav>
-
-    <!-- Mobile overlay menu -->
-    <div class="mobile-nav-overlay" id="mobileNav" role="dialog" aria-modal="true" aria-label="Menú de navegación">
-        <ul role="list">
-            <li><a href="#home" class="mobile-nav-link">Home</a></li>
-            <li><a href="propietarios" class="mobile-nav-link">Propietarios</a></li>
-            <li><a href="compradores" class="mobile-nav-link">Compradores</a></li>
-            <li><a href="#about" class="mobile-nav-link">Nosotros</a></li>
-            <li><a href="#contact" class="mobile-nav-link">Contacto</a></li>
-        </ul>
-        <div class="mobile-nav-cta-group">
-            <a href="propietarios" class="mob-primary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                Vender mi propiedad
-            </a>
-            <a href="compradores" class="mob-secondary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                Buscar propiedad
-            </a>
+    <nav id="nav">
+        <div class="nav-logo">
+            <img src="logo-cb.png" alt="Coldwell Banker Logo" decoding="async" loading="eager" width="120">
         </div>
-    </div>
+        <ul class="nav-links">
+            <li><a href="#home">HOME</a></li>
+            <li><a href="propietarios">PROPIETARIOS</a></li>
+            <li><a href="compradores">COMPRADORES</a></li>
+            <li><a href="#about">NOSOTROS</a></li>
+            <li><a href="#contact">CONTACTO</a></li>
+        </ul>
+        <button class="nav-cta" onclick="openWhatsApp()">+54 9 11 5727-4477</button>
+    </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -2011,42 +1747,14 @@
                     <input type="text" name="nombre" required placeholder="Tu nombre">
                     <input type="tel" name="whatsapp" required placeholder="+54 9 11 XXXX-XXXX">
                 </div>
-                <!-- Input oculto que recibe el valor seleccionado -->
-                <input type="hidden" name="intencion" id="mfIntencion">
-
-                <!-- Selector visual de intención (3 opciones) -->
-                <div class="mf-options" role="group" aria-label="¿En qué te ayudo?">
-
-                    <button type="button" class="mf-opt" data-val="vender"
-                            aria-pressed="false" title="Quiero vender mi propiedad">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-                             stroke="#1F69FF" stroke-width="2" stroke-linecap="round"
-                             stroke-linejoin="round" aria-hidden="true">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                        Quiero<br>vender
-                    </button>
-
-                    <button type="button" class="mf-opt" data-val="comprar"
-                            aria-pressed="false" title="Quiero comprar para vivir">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-                             stroke="#1F69FF" stroke-width="2" stroke-linecap="round"
-                             stroke-linejoin="round" aria-hidden="true">
-                            <circle cx="11" cy="11" r="8"/>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                        </svg>
-                        Quiero<br>comprar
-                    </button>
-
-
-                </div>
-
-                <button type="submit" class="hero-miniform-submit" id="mfSubmit">Que Diego me contacte →</button>
-                <p class="hero-miniform-privacy">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline;vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                    Sin spam. Sin terceros. Solo Diego.
-                </p>
+                <select name="intencion" required>
+                    <option value="">¿En qué te ayudo?</option>
+                    <option value="vender">Quiero vender mi propiedad</option>
+                    <option value="comprar">Quiero comprar para vivir</option>
+                    <option value="invertir">Quiero invertir / generar renta</option>
+                </select>
+                <button type="submit" class="hero-miniform-submit">Que Diego me contacte →</button>
+                <p class="hero-miniform-privacy">🔒 Sin spam. Sin terceros. Tus datos solo los ve Diego.</p>
             </form>
         </div>
     </section>
@@ -2176,10 +1884,7 @@
                 </tbody>
             </table>
             <div style="text-align:center;margin-top:36px;">
-                <a href="#" class="btn-cta btn-cta-primary" data-action="open-booking" style="display:inline-flex;align-items:center;gap:10px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Agendar 15 min con Diego
-                </a>
+                <a href="#" class="btn-cta btn-cta-primary" data-action="open-booking" style="display:inline-flex;align-items:center;gap:10px;">📅 Agendar 15 minutos con Diego</a>
             </div>
         </div>
     </section>
@@ -2228,23 +1933,14 @@
     <!-- ════════════ BOOKING CTA — GHL Calendar ════════════ -->
     <section class="booking-cta-section fade-in" id="agendar">
         <div class="booking-cta-inner">
-            <div style="display:inline-flex;align-items:center;gap:7px;font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6AA0FF;margin-bottom:14px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                Sin formularios largos
-            </div>
+            <div style="display:inline-block;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6AA0FF;margin-bottom:14px;">⚡ Sin formularios largos</div>
             <h2>Agendá <em>15 minutos</em> con Diego<br>en el horario que te quede mejor</h2>
             <p>Una conversación honesta, sin compromisos. Te cuento exactamente qué se está moviendo en tu zona y cómo te puedo ayudar — vendas, compres o estés explorando.</p>
             <div class="booking-cta-buttons">
-                <a href="#" class="btn-primary" data-action="open-booking" style="display:inline-flex;align-items:center;gap:10px;">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Reservar llamada gratis
-                </a>
+                <a href="#" class="btn-primary" data-action="open-booking">📅 Reservar llamada gratis</a>
                 <a href="#hero-form" class="btn-secondary">O dejá tus datos en el form ↓</a>
             </div>
-            <p style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,0.65);margin-top:22px;display:flex;align-items:center;justify-content:center;gap:6px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                100% confidencial · Sin spam · Respuesta en 24 hs
-            </p>
+            <p style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,0.4);margin-top:22px;">🔒 100% confidencial · Sin spam · Respuesta en 24 hs</p>
         </div>
     </section>
 
@@ -2290,10 +1986,7 @@
                     <input type="email" placeholder="tu@email.com" required>
                     <button type="submit">Recibir PDF →</button>
                 </form>
-                <p class="lead-magnet-privacy" style="display:flex;align-items:center;gap:6px;">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                    Tu email es 100% confidencial · Ley 25.326
-                </p>
+                <p class="lead-magnet-privacy">🔒 Tu email es 100% confidencial · Respetamos la Ley 25.326</p>
             </div>
         </div>
     </section>
@@ -2334,7 +2027,7 @@
     <section class="video-testimonios fade-in" style="display:none;padding:120px 5% 80px;background:#0A0E1F;position:relative;">
         <div style="max-width:1280px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:80px;">
-                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#6AA0FF;margin-bottom:24px;">En sus propias palabras</div>
+                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#4D8AFF;margin-bottom:24px;">En sus propias palabras</div>
                 <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,80px);font-weight:500;color:#fff;line-height:1.05;letter-spacing:-0.02em;">Testimonios <em style="font-style:italic;color:#4D8AFF;">en video.</em></h2>
             </div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;">
@@ -2379,7 +2072,7 @@
     <section class="market-dashboard fade-in" style="display:none;padding:100px 5%;background:linear-gradient(180deg,#0A0E1F,#0F1730);">
         <div style="max-width:1280px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:60px;">
-                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(37,211,102,0.3);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#32E5A7;margin-bottom:24px;">Mercado CABA · Q1 2026</div>
+                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(37,211,102,0.3);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#25D366;margin-bottom:24px;">Mercado CABA · Q1 2026</div>
                 <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,72px);font-weight:500;color:#fff;line-height:1.05;letter-spacing:-0.02em;">El mercado <em style="font-style:italic;color:#4D8AFF;">hoy.</em></h2>
                 <p style="font-size:16px;color:rgba(255,255,255,0.6);max-width:580px;margin:20px auto 0;font-family:'Inter',sans-serif;">Precios promedio por m² en dólares. Datos de portales de mercado (Zonaprop / Mudafy), Q1 2026.</p>
             </div>
@@ -2419,7 +2112,7 @@
     <section class="faq-section fade-in" id="faq" style="padding:120px 5%;background:#0A0E1F;">
         <div style="max-width:860px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:80px;">
-                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#6AA0FF;margin-bottom:24px;">Respuestas directas</div>
+                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#4D8AFF;margin-bottom:24px;">Respuestas directas</div>
                 <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,80px);font-weight:500;color:#fff;line-height:1.05;letter-spacing:-0.02em;">Preguntas <em style="font-style:italic;color:#4D8AFF;">frecuentes.</em></h2>
             </div>
             <div class="faq-list" style="display:flex;flex-direction:column;gap:16px;">
@@ -2496,13 +2189,10 @@
     </section>
 
     <!-- Final CTA section -->
-    <section class="final-cta-section" id="contact">
+    <section class="final-cta-section fade-in" id="contact">
         <div class="cta-content">
-            <div class="final-cta-eyebrow">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                +50 propiedades vendidas · Coldwell Banker Livello
-            </div>
-            <h2>¿Listo para tu <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#8BBEFF;">próxima operación</em>?</h2>
+            <div class="final-cta-eyebrow">⭐ +50 propiedades vendidas · Coldwell Banker Livello</div>
+            <h2>¿Listo para tu <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#6AA0FF;">próxima operación</em>?</h2>
             <p>Vender, comprar o invertir. Diego te lleva al resultado — con la red inmobiliaria más grande del mundo respaldando cada movimiento.</p>
 
             <div class="final-cta-trust">
@@ -2525,19 +2215,10 @@
             </div>
 
             <div class="cta-panel">
-                <div class="cta-buttons" data-blur-in style="--i:2">
-                    <a href="propietarios" class="btn-cta btn-cta-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                        Quiero vender
-                    </a>
-                    <a href="compradores" class="btn-cta btn-cta-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        Quiero comprar
-                    </a>
-                    <a href="#" class="btn-cta btn-cta-secondary" data-action="open-booking">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        Agendar 15 min
-                    </a>
+                <div class="cta-buttons">
+                    <a href="propietarios" class="btn-cta btn-cta-primary">📈 Quiero vender</a>
+                    <a href="compradores" class="btn-cta btn-cta-secondary">🏠 Quiero comprar</a>
+                    <a href="#" class="btn-cta btn-cta-secondary" data-action="open-booking">📅 Agendar 15 min</a>
                 </div>
             </div>
         </div>
@@ -2581,7 +2262,7 @@
             <a href="mailto:diego.giannini@coldwellbanker.com.ar" style="color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;">Contacto</a>
         </div>
         <div class="footer-legal" style="padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 32px;">
-            <p style="font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.55); max-width: 1100px; margin: 0 auto; font-weight: 300; letter-spacing: 0.2px; text-align: left;">
+            <p style="font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.45); max-width: 1100px; margin: 0 auto; font-weight: 300; letter-spacing: 0.2px; text-align: left;">
                 ©️ 2026 Coldwell Banker. Todos los derechos reservados. Coldwell Banker y los logotipos de Coldwell Banker son marcas de servicio de propiedad de Coldwell Banker Real Estate LLC. El sistema Coldwell Banker está compuesto por oficinas propias de propiedad de una subsidiaria de Anywhere Advisors LLC y por oficinas adheridas al Sistema Coldwell Banker que son de propiedad y operación independientes. En cumplimiento con la normativa vigente, los asistentes NO ejercen el corretaje inmobiliario. La intermediación y conclusión de las operaciones inmobiliarias es desarrollada por Martilleros y Corredores Públicos. Esta Oficina Inmobiliaria se encuentra a cargo de <strong style="color: rgba(255,255,255,0.7); font-weight: 500;">AGUSTINA PELAEZ</strong> — Matrícula n°4025, folio 4025, tomo 9 y Matrícula n°9084, folio 39, tomo 2 — adherida al Sistema Coldwell Banker Livello. C.U.I.T.: 30-71783116-7. Av. Córdoba 5637, oficina 4B, C.A.B.A.
             </p>
         </div>
@@ -2704,10 +2385,7 @@
     <div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies" style="display:none;position:fixed;bottom:20px;left:20px;right:20px;max-width:560px;margin:0 auto;background:rgba(10,14,31,0.98);backdrop-filter:blur(20px);border:1px solid rgba(31,105,255,0.3);border-radius:16px;padding:20px 24px;z-index:10000;font-family:'Inter',sans-serif;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
       <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
         <div style="flex:1;min-width:220px;">
-          <div style="font-weight:600;margin-bottom:6px;font-size:14px;display:flex;align-items:center;gap:7px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4M12 16h.01"/></svg>
-            Usamos cookies
-          </div>
+          <div style="font-weight:600;margin-bottom:6px;font-size:14px;">🍪 Usamos cookies</div>
           <div style="font-size:13px;opacity:0.8;line-height:1.5;">Usamos cookies propias y de terceros (Google Analytics, Meta Pixel) para analizar el tráfico y mejorar tu experiencia. <a href="privacidad.html" style="color:#4D8AFF;text-decoration:underline;">Ver política de privacidad</a>.</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -2737,70 +2415,5 @@
     <script src="_properties.js" defer></script>
     <script src="_premium.js" defer></script>
     <script src="_three.js" defer></script>
-
-    <!-- ── Hamburger menu ── -->
-    <script>
-    (function(){
-        var btn = document.getElementById('navHamburger');
-        var overlay = document.getElementById('mobileNav');
-        if(!btn || !overlay) return;
-        function openMenu(){
-            btn.classList.add('open');
-            btn.setAttribute('aria-expanded','true');
-            overlay.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMenu(){
-            btn.classList.remove('open');
-            btn.setAttribute('aria-expanded','false');
-            overlay.classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        btn.addEventListener('click', function(){ btn.classList.contains('open') ? closeMenu() : openMenu(); });
-        overlay.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
-        document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeMenu(); });
-    })();
-    </script>
-
-    <!-- ── Mini-form custom option selector ── -->
-    <script>
-    (function(){
-        var opts    = document.querySelectorAll('.mf-opt');
-        var hidden  = document.getElementById('mfIntencion');
-        var submit  = document.getElementById('mfSubmit');
-        if(!opts.length || !hidden) return;
-
-        /* Seleccionar opción */
-        opts.forEach(function(btn){
-            btn.addEventListener('click', function(){
-                opts.forEach(function(b){
-                    b.classList.remove('active');
-                    b.setAttribute('aria-pressed','false');
-                });
-                btn.classList.add('active');
-                btn.setAttribute('aria-pressed','true');
-                hidden.value = btn.getAttribute('data-val');
-                /* Quitar estado de error si lo había */
-                opts.forEach(function(b){ b.classList.remove('mf-error'); });
-            });
-        });
-
-        /* Validar que haya una opción seleccionada antes de submit */
-        var form = document.getElementById('hero-form');
-        if(form){
-            form.addEventListener('submit', function(e){
-                if(!hidden.value){
-                    e.preventDefault();
-                    opts.forEach(function(b){ b.classList.add('mf-error'); });
-                    /* Quitar el shake después de la animación */
-                    setTimeout(function(){
-                        opts.forEach(function(b){ b.classList.remove('mf-error'); });
-                    }, 400);
-                }
-            }, true); /* capture: true para interceptar antes del handler existente */
-        }
-    })();
-    </script>
-
-    </body>
+</body>
 </html>
