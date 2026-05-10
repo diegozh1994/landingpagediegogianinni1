@@ -157,24 +157,46 @@
         }
 
         .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, var(--electric-blue), var(--soft-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px;
             text-decoration: none;
+            flex-shrink: 0;
         }
-
-        .logo img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+            background: var(--electric-blue);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .logo-text-wrap {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        .logo-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 19px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+        .logo-sub {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-top: 3px;
+        }
+        @media (max-width: 480px) {
+            .logo-sub { display: none; }
         }
 
         .nav-cta {
@@ -183,9 +205,9 @@
             font-weight: 600;
             letter-spacing: 1px;
             color: var(--white);
-            padding: 12px 28px;
+            padding: 11px 26px;
             border: 1.5px solid var(--electric-blue);
-            border-radius: 4px;
+            border-radius: 100px;
             cursor: pointer;
             transition: all 0.3s ease;
             background: transparent;
@@ -284,7 +306,7 @@
 
         .hero-subtitle {
             font-size: clamp(16px, 2vw, 18px);
-            color: var(--muted);
+            color: rgba(255,255,255,0.78);
             max-width: 500px;
             margin-bottom: 40px;
             font-weight: 400;
@@ -337,14 +359,15 @@
 
         /* Form in hero */
         .hero-form-panel {
-            background: rgba(31, 105, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(31, 105, 255, 0.25);
-            border-radius: 16px;
-            padding: 50px 40px;
+            background: linear-gradient(160deg, rgba(31,105,255,0.1) 0%, rgba(10,14,31,0.6) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1.5px solid rgba(31, 105, 255, 0.35);
+            border-radius: 24px;
+            padding: 48px 40px;
             position: relative;
             z-index: 10;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(31,105,255,0.1), inset 0 1px 0 rgba(255,255,255,0.06);
         }
 
         .form-title {
@@ -375,24 +398,24 @@
         input, select {
             width: 100%;
             padding: 14px 16px;
-            border: 1px solid rgba(31, 105, 255, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(31, 105, 255, 0.25);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
             color: var(--white);
             font-family: 'Inter', sans-serif;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
-        input::placeholder, select {
-            color: rgba(255, 255, 255, 0.5);
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.45);
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: var(--electric-blue);
-            background: rgba(31, 105, 255, 0.15);
-            box-shadow: 0 0 20px rgba(31, 105, 255, 0.2);
+            background: rgba(31, 105, 255, 0.12);
+            box-shadow: 0 0 0 4px rgba(31, 105, 255, 0.15);
         }
 
         select option {
@@ -423,20 +446,21 @@
         .btn-submit {
             width: 100%;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            padding: 16px 32px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 17px 32px;
             border: none;
-            border-radius: 8px;
+            border-radius: 100px;
             background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
             color: var(--white);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(31, 105, 255, 0.25);
+            box-shadow: 0 8px 28px rgba(31, 105, 255, 0.35);
             margin-top: 20px;
+            text-transform: uppercase;
         }
 
         .btn-submit::before {
@@ -459,12 +483,13 @@
 
         .btn-submit:hover {
             transform: translateY(-3px);
-            box-shadow: 0 20px 60px rgba(31, 105, 255, 0.4);
+            box-shadow: 0 18px 44px rgba(31, 105, 255, 0.45);
+            filter: brightness(1.06);
         }
 
         .form-privacy {
-            font-size: 11px;
-            color: var(--muted);
+            font-size: 12px;
+            color: rgba(255,255,255,0.65);
             margin-top: 16px;
             text-align: center;
             line-height: 1.6;
@@ -757,7 +782,7 @@
 
         .property-type {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 1px;
             color: var(--electric-blue);
@@ -1146,10 +1171,18 @@
     <link rel="stylesheet" href="_premium.css">
 </head>
 <body>
+    <a href="#leadForm" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;background:#1F69FF;padding:12px 20px;border-radius:0 0 8px 0;text-decoration:none;" onfocus="this.style.left='0';this.style.width='auto';this.style.height='auto';" onblur="this.style.left='-9999px';this.style.width='1px';this.style.height='1px';">Ir al contenido principal</a>
+
     <!-- Navigation -->
     <nav>
-        <a href="index.html" class="logo" style="display:flex;align-items:center;gap:10px;">
-            <img src="logo-cb.png" alt="Coldwell Banker" style="height:44px;width:auto;display:block;">
+        <a href="/" class="logo" aria-label="Diego Giannini · Coldwell Banker — Inicio">
+            <div class="logo-mark" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="logo-text-wrap">
+                <span class="logo-name">Diego Giannini</span>
+                <span class="logo-sub">Coldwell Banker · Buenos Aires</span>
+            </div>
         </a>
         <a href="https://wa.me/5491157274477?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20oportunidades%20de%20compra" class="nav-cta" style="background:linear-gradient(135deg,#25D366,#1BA853);border:none;color:#fff;display:inline-flex;align-items:center;gap:8px;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.35);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.2-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -1181,7 +1214,7 @@
             <!-- Lead Capture Form -->
             <div class="hero-form-panel">
                 <h3 class="form-title">Tu búsqueda comienza aquí</h3>
-                <div style="text-align:center;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,0.45);font-family:'Space Grotesk',sans-serif;">Diego te responde en menos de 2 horas.</div>
+                <div style="text-align:center;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,0.7);font-family:'Space Grotesk',sans-serif;letter-spacing:0.04em;">Diego te responde en menos de 2 horas.</div>
                 <form id="leadForm" onsubmit="handleFormSubmit(event)">
                     <div class="form-group">
                         <label class="form-label">Tu nombre <span class="required">*</span></label>
@@ -1262,9 +1295,15 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-submit">Quiero recibir oportunidades →</button>
+                    <button type="submit" class="btn-submit" id="compSubmitBtn">
+                        <span class="btn-text">Quiero recibir oportunidades</span>
+                        <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        <svg class="btn-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" style="display:none;animation:spin 0.8s linear infinite;"><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                    </button>
+                    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
                     <div class="form-privacy">
-                        🔒 Solo te contactamos nosotros.<br>Sin spam, sin terceros.
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline;vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                        Solo te contactamos nosotros. Sin spam, sin terceros.
                     </div>
                 </form>
             </div>
@@ -1329,7 +1368,9 @@
     <section class="paths-section">
         <div class="paths-content">
             <div class="path-card">
-                <div class="path-icon">🏠</div>
+                <div class="path-icon">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6AA0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
                 <h3 class="path-title">Comprar para vivir</h3>
                 <ul class="path-bullets">
                     <li>Búsqueda personalizada según tu perfil y presupuesto</li>
@@ -1342,7 +1383,9 @@
             </div>
 
             <div class="path-card">
-                <div class="path-icon">📈</div>
+                <div class="path-icon">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6AA0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                </div>
                 <h3 class="path-title">Invertir</h3>
                 <ul class="path-bullets">
                     <li>Oportunidades off-market antes que el resto</li>
@@ -1359,7 +1402,7 @@
     <!-- Why Me Section -->
     <section class="why-section">
         <div class="why-header">
-            <h2>Por qué elegirnos</h2>
+            <h2>Por qué trabajar <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#4D8AFF;">con Diego</em></h2>
         </div>
         <div class="why-grid">
             <div class="why-card">
@@ -1469,8 +1512,8 @@
                 <p class="stat-label">Experiencia</p>
             </div>
             <div class="stat-item">
-                <div class="stat-number" style="font-size:clamp(28px,4vw,44px);">25k–600k</div>
-                <p class="stat-label">Ticket USD</p>
+                <div class="stat-number" style="font-size:clamp(28px,4vw,44px);">47 días</div>
+                <p class="stat-label">Promedio de cierre</p>
             </div>
         </div>
     </section>
@@ -1533,16 +1576,16 @@
             <!-- Trust metrics -->
             <div style="display:flex;gap:32px;justify-content:center;flex-wrap:wrap;padding-top:32px;border-top:1px solid rgba(255,255,255,0.06);">
                 <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#4D8AFF;">+100</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">operaciones cerradas</div>
+                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:#6AA0FF;line-height:1;">+100</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;">operaciones cerradas</div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#32E5A7;">6 años</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">de trayectoria</div>
+                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:#32E5A7;line-height:1;">6 años</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;">de trayectoria</div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#FFC34D;">Off-market</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">acceso a oportunidades</div>
+                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:#FFC34D;line-height:1;">Off-market</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;">acceso exclusivo</div>
                 </div>
             </div>
         </div>
@@ -1568,10 +1611,10 @@
         <div style="text-align:center;padding:16px 5% 0;font-size:12px;">
             <a href="privacidad.html" style="color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;">Política de Privacidad</a>
             <span style="color:rgba(255,255,255,0.2);">·</span>
-            <a href="index.html" style="color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;">Inicio</a>
+            <a href="/" style="color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;">Inicio</a>
         </div>
         <div style="padding: 28px 5% 32px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 28px;">
-            <p style="font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.45); max-width: 1100px; margin: 0 auto; font-weight: 300; letter-spacing: 0.2px;">
+            <p style="font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.55); max-width: 1100px; margin: 0 auto; font-weight: 300; letter-spacing: 0.2px;">
                 ©️ 2026 Coldwell Banker. Todos los derechos reservados. Coldwell Banker y los logotipos de Coldwell Banker son marcas de servicio de propiedad de Coldwell Banker Real Estate LLC. El sistema Coldwell Banker está compuesto por oficinas propias de propiedad de una subsidiaria de Anywhere Advisors LLC y por oficinas adheridas al Sistema Coldwell Banker que son de propiedad y operación independientes. En cumplimiento con la normativa vigente, los asistentes NO ejercen el corretaje inmobiliario. La intermediación y conclusión de las operaciones inmobiliarias es desarrollada por Martilleros y Corredores Públicos. Esta Oficina Inmobiliaria se encuentra a cargo de <strong style="color: rgba(255,255,255,0.7); font-weight: 500;">AGUSTINA PELAEZ</strong> — Matrícula n°4025, folio 4025, tomo 9 y Matrícula n°9084, folio 39, tomo 2 — adherida al Sistema Coldwell Banker Livello. C.U.I.T.: 30-71783116-7. Av. Córdoba 5637, oficina 4B, C.A.B.A.
             </p>
         </div>
@@ -1604,8 +1647,18 @@
         // Form submission
         function handleFormSubmit(e) {
             e.preventDefault();
-
             const form = e.target;
+            // Loading state
+            const btn = form.querySelector('[type="submit"]');
+            if(btn){
+                btn.disabled = true;
+                const txt = btn.querySelector('.btn-text');
+                const arrow = btn.querySelector('.btn-arrow');
+                const spinner = btn.querySelector('.btn-spinner');
+                if(txt) txt.textContent = 'Enviando...';
+                if(arrow) arrow.style.display = 'none';
+                if(spinner) spinner.style.display = 'inline';
+            }
             const formData = new FormData(form);
             const data = {
                 nombre: formData.get('nombre'),
@@ -1628,15 +1681,10 @@
             if(window.gtag){gtag('event','generate_lead',{form:'compradores',perfil:data.perfil});}
             if(window.fbq){fbq('track','Lead',{content_category:'compradores'});}
 
-            // Send WhatsApp message
-            const message = `Hola Diego, soy ${data.nombre}. Estoy interesado en ${data.perfil === 'comprar' ? 'comprar' : 'invertir'} en propiedades. Mi email es ${data.email}`;
-            window.open(`https://wa.me/5491157274477?text=${encodeURIComponent(message)}`, '_blank');
-
-            // Show success message
-            alert('¡Gracias! Nos contactaremos dentro de 48 horas con oportunidades exclusivas para ti.');
-            form.reset();
-            document.getElementById('perfilSelect').value = '';
-            toggleConditionalFields();
+            // Redirigir a WhatsApp con mensaje personalizado
+            const perfilLabel = data.perfil === 'comprar' ? 'comprar para vivir' : 'invertir en propiedades';
+            const rawMsg = `Hola Diego, soy ${data.nombre}. Estoy interesado en ${perfilLabel}.${data.zona ? '\nZona: '+data.zona : ''}${data.presupuesto ? '\nPresupuesto: '+data.presupuesto : ''}${data.ticket ? '\nTicket: '+data.ticket : ''}${data.email ? '\nEmail: '+data.email : ''}`;
+            window.location.href = `https://wa.me/5491157274477?text=${encodeURIComponent(rawMsg)}`;
         }
 
         // Intersection Observer for animations on scroll
@@ -1706,7 +1754,10 @@
     <div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies" style="display:none;position:fixed;bottom:20px;left:20px;right:20px;max-width:560px;margin:0 auto;background:rgba(10,14,31,0.98);backdrop-filter:blur(20px);border:1px solid rgba(31,105,255,0.3);border-radius:16px;padding:20px 24px;z-index:10000;font-family:'Inter',sans-serif;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
       <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
         <div style="flex:1;min-width:220px;">
-          <div style="font-weight:600;margin-bottom:6px;font-size:14px;">🍪 Usamos cookies</div>
+          <div style="font-weight:600;margin-bottom:6px;font-size:14px;display:flex;align-items:center;gap:7px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4M12 16h.01"/></svg>
+            Usamos cookies
+          </div>
           <div style="font-size:13px;opacity:0.8;line-height:1.5;">Usamos cookies para analizar el tráfico y mejorar tu experiencia. <a href="privacidad.html" style="color:#4D8AFF;text-decoration:underline;">Política de privacidad</a>.</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -1718,6 +1769,67 @@
     <script>
       (function(){var key='cb_cookie_consent';var stored=localStorage.getItem(key);if(!stored){document.getElementById('cookie-banner').style.display='block';}else if(stored==='granted'){if(window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}if(window.fbq){fbq('consent','grant');}}window.cookieConsent=function(v){localStorage.setItem(key,v);document.getElementById('cookie-banner').style.display='none';if(v==='granted'&&window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}if(v==='granted'&&window.fbq){fbq('consent','grant');}};})();
     </script>
+    <!-- ========== STICKY MOBILE CTA BAR ========== -->
+    <div class="sticky-mobile-cta" id="stickyMobileCta" aria-hidden="true">
+        <div class="sticky-mobile-cta-row">
+            <a href="https://wa.me/5491157274477?text=Hola%20Diego%2C%20estoy%20buscando%20propiedades.%20%C2%BFPod%C3%A9s%20mandarme%20opciones%3F" class="smc-wa" rel="noopener noreferrer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.2-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                WhatsApp
+            </a>
+            <a href="#leadForm" onclick="document.getElementById('leadForm').scrollIntoView({behavior:'smooth'});document.querySelector('#leadForm input').focus();return false;" class="smc-call">
+                Ver oportunidades →
+            </a>
+        </div>
+    </div>
+
+    <!-- ========== EXIT INTENT POPUP (compradores) ========== -->
+    <div class="exit-intent-overlay" id="exitIntentOverlay" role="dialog" aria-modal="true" aria-label="Antes de irte">
+        <div class="exit-intent-box">
+            <button class="exit-intent-close" onclick="closeExitIntent()" aria-label="Cerrar">×</button>
+            <div class="exit-intent-eyebrow">Antes de irte</div>
+            <h2 class="exit-intent-title">Las mejores propiedades <em>no llegan a los portales.</em></h2>
+            <p class="exit-intent-sub">Decime qué buscás y te mando 3 opciones off-market filtradas por WhatsApp en menos de 24 horas. Sin registrarte en nada.</p>
+            <a href="https://wa.me/5491157274477?text=Hola%20Diego%2C%20estoy%20buscando%20propiedades.%20%C2%BFPod%C3%A9s%20mandarme%20opciones%3F" class="exit-intent-cta" rel="noopener noreferrer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.2-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                Pedirle opciones a Diego
+            </a>
+        </div>
+    </div>
+    <script>
+        (function exitIntent(){
+            var key = 'exit_compradores';
+            if(localStorage.getItem(key)) return;
+            var shown = false;
+            function show(){
+                if(shown) return;
+                shown = true;
+                var el = document.getElementById('exitIntentOverlay');
+                if(el){ el.style.display='flex'; requestAnimationFrame(function(){ el.classList.add('visible'); }); }
+            }
+            document.addEventListener('mouseleave', function(e){
+                if(e.clientY < 20) show();
+            });
+        })();
+        function closeExitIntent(){
+            var el = document.getElementById('exitIntentOverlay');
+            if(el){ el.classList.remove('visible'); setTimeout(function(){ el.style.display='none'; },400); }
+            localStorage.setItem('exit_compradores','1');
+        }
+        // Show sticky bar after scrolling past hero
+        (function(){
+            var bar = document.getElementById('stickyMobileCta');
+            if(!bar) return;
+            var hero = document.querySelector('.hero');
+            function check(){
+                if(!hero) return;
+                var heroBottom = hero.getBoundingClientRect().bottom;
+                if(heroBottom < 0){ bar.classList.add('visible'); bar.removeAttribute('aria-hidden'); }
+                else { bar.classList.remove('visible'); bar.setAttribute('aria-hidden','true'); }
+            }
+            window.addEventListener('scroll', check, { passive: true });
+        })();
+    </script>
+
     <script src="_premium.js" defer></script>
 </body>
 </html>

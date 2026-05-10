@@ -256,9 +256,10 @@
 
   // ═══ 6. Reveal observer ═══
   function setupRevealObserver() {
+    const ALL_REVEAL = '[data-stagger], .premium-section-underline, [data-3d-reveal], [data-sweep], [data-blur-in], [data-scale-in], [data-line-grow], [data-count-in]';
+
     if (!('IntersectionObserver' in window)) {
-      document.querySelectorAll('[data-stagger]').forEach(el => el.classList.add('visible'));
-      document.querySelectorAll('.premium-section-underline').forEach(el => el.classList.add('visible'));
+      document.querySelectorAll(ALL_REVEAL).forEach(el => el.classList.add('visible'));
       return;
     }
     const obs = new IntersectionObserver((entries) => {
@@ -268,8 +269,46 @@
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('[data-stagger], .premium-section-underline, [data-3d-reveal]').forEach(el => obs.observe(el));
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll(ALL_REVEAL).forEach(el => obs.observe(el));
+  }
+
+  // ═══ 6b. Auto-tag cinematic reveals on index page ═══
+  function autoCinematicTags() {
+    // Section headings → sweep reveal
+    document.querySelectorAll('section h2:not(.hero h2):not([data-sweep])').forEach((el, i) => {
+      el.setAttribute('data-sweep', '');
+      el.style.setProperty('--i', '0');
+    });
+
+    // Eyebrow labels → blur-in
+    document.querySelectorAll('.final-cta-eyebrow, .hero-urgency').forEach(el => {
+      if (!el.hasAttribute('data-blur-in')) el.setAttribute('data-blur-in', '');
+    });
+
+    // Trust / stat items → scale-in con stagger
+    document.querySelectorAll('.final-cta-trust-item, .stat-item, .why-card').forEach((el, i) => {
+      if (!el.hasAttribute('data-scale-in')) {
+        el.setAttribute('data-scale-in', '');
+        el.style.setProperty('--i', i % 4);
+      }
+    });
+
+    // Service / solution cards → scale-in
+    document.querySelectorAll('.service-card, .solution-card, .path-card').forEach((el, i) => {
+      if (!el.hasAttribute('data-scale-in') && !el.hasAttribute('data-stagger')) {
+        el.setAttribute('data-scale-in', '');
+        el.style.setProperty('--i', i % 3);
+      }
+    });
+
+    // Paragraphs inside sections (not hero) → blur-in
+    document.querySelectorAll('section:not(.hero) p.hero-subtitle, section:not(.hero) > div > p').forEach((el, i) => {
+      if (!el.hasAttribute('data-blur-in') && !el.hasAttribute('data-stagger')) {
+        el.setAttribute('data-blur-in', '');
+        el.style.setProperty('--i', '1');
+      }
+    });
   }
 
   // ═══ 7. Scroll progress ═══
@@ -579,6 +618,7 @@
     autoTagWAFloats();
     tagPremiumCards();
     autoStaggerGrids();
+    autoCinematicTags();
     tagPropertyImages();
     setupRevealObserver();
     setupScrollProgress();

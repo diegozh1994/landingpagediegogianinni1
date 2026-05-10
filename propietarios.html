@@ -147,14 +147,46 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+            background: var(--electric-blue);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .logo-text-wrap {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        .logo-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(18px, 4vw, 28px);
-            font-weight: 700;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, var(--electric-blue), var(--soft-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 19px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+        .logo-sub {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-top: 3px;
+        }
+        @media (max-width: 480px) {
+            .logo-sub { display: none; }
         }
 
         .nav-cta {
@@ -163,9 +195,9 @@
             font-weight: 600;
             letter-spacing: 1px;
             color: var(--white);
-            padding: 12px 28px;
+            padding: 11px 26px;
             border: 1.5px solid var(--electric-blue);
-            border-radius: 4px;
+            border-radius: 100px;
             cursor: pointer;
             transition: all 0.3s ease;
             background: transparent;
@@ -245,14 +277,14 @@
         }
 
         .hero-headline {
-            font-size: clamp(48px, 8vw, 140px);
+            font-size: clamp(42px, 6vw, 86px);
             font-weight: 700;
-            letter-spacing: -3px;
+            letter-spacing: -2px;
             line-height: 1.1;
             margin-bottom: 30px;
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 16px;
         }
 
         .hero-headline span {
@@ -291,12 +323,12 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(15px, 2vw, 18px);
-            color: var(--muted);
+            font-size: clamp(16px, 2vw, 18px);
+            color: rgba(255,255,255,0.78);
             max-width: 550px;
             margin: 20px 0 40px 0;
             font-weight: 400;
-            line-height: 1.7;
+            line-height: 1.75;
             animation: fadeInUp 0.8s ease-out 0.6s forwards;
             opacity: 0;
         }
@@ -320,7 +352,7 @@
             letter-spacing: 1px;
             padding: 16px 36px;
             border: none;
-            border-radius: 4px;
+            border-radius: 100px;
             background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
             color: var(--white);
             cursor: pointer;
@@ -356,12 +388,13 @@
         }
 
         .hero-form {
-            background: rgba(31, 105, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(31, 105, 255, 0.3);
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 25px 80px rgba(31, 105, 255, 0.15);
+            background: linear-gradient(160deg, rgba(31,105,255,0.1) 0%, rgba(10,14,31,0.6) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1.5px solid rgba(31, 105, 255, 0.35);
+            border-radius: 24px;
+            padding: 44px 40px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(31,105,255,0.1), inset 0 1px 0 rgba(255,255,255,0.06);
             animation: fadeInUp 0.8s ease-out 0.8s forwards;
             opacity: 0;
         }
@@ -477,11 +510,11 @@
         }
 
         .pain-list li::before {
-            content: '✓';
+            content: '✗';
             position: absolute;
             left: 0;
             top: 0;
-            color: #E63946;
+            color: #FF6B7A;
             font-weight: bold;
             font-size: 18px;
         }
@@ -536,14 +569,13 @@
         }
 
         .solution-card {
-            background: rgba(31, 105, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(31, 105, 255, 0.2);
-            border-radius: 12px;
-            padding: 50px 40px;
+            background: linear-gradient(155deg, rgba(31,105,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(31, 105, 255, 0.18);
+            border-radius: 20px;
+            padding: 48px 36px;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s, border-color 0.4s;
         }
 
         .solution-card::before {
@@ -552,16 +584,16 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: var(--electric-blue);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--electric-blue), transparent);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
 
         .solution-card:hover {
-            background: rgba(31, 105, 255, 0.1);
             border-color: rgba(31, 105, 255, 0.4);
-            transform: translateY(-10px);
+            transform: translateY(-8px);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(31,105,255,0.25);
         }
 
         .solution-card:hover::before {
@@ -569,26 +601,32 @@
         }
 
         .solution-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 120px;
-            font-weight: 700;
-            color: rgba(31, 105, 255, 0.15);
-            line-height: 1;
-            margin-bottom: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 96px;
+            font-weight: 500;
+            background: linear-gradient(135deg, rgba(31,105,255,0.5), rgba(106,160,255,0.25));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 0.95;
+            margin-bottom: 24px;
         }
 
         .solution-card h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 14px;
             color: var(--white);
+            letter-spacing: -0.01em;
         }
 
         .solution-card p {
-            font-size: 16px;
-            color: var(--muted);
-            line-height: 1.8;
+            font-size: 15px;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.75;
         }
 
         /* Horizontal scroll section */
@@ -670,8 +708,8 @@
             right: 15px;
             background: var(--electric-blue);
             color: var(--primary-dark);
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 7px 14px;
+            border-radius: 100px;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 14px;
             font-weight: 700;
@@ -953,43 +991,43 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 12px;
-            font-weight: 600;
-            color: var(--white);
+            font-weight: 700;
+            color: rgba(255,255,255,0.9);
             margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(31, 105, 255, 0.3);
-            border-radius: 6px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid rgba(31, 105, 255, 0.25);
+            border-radius: 10px;
             color: var(--white);
             font-family: 'Inter', sans-serif;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
         .form-group input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.45);
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: var(--electric-blue);
-            background: rgba(31, 105, 255, 0.1);
-            box-shadow: 0 0 20px rgba(31, 105, 255, 0.2);
+            background: rgba(31, 105, 255, 0.12);
+            box-shadow: 0 0 0 4px rgba(31, 105, 255, 0.15);
         }
 
         .form-group select {
@@ -1011,24 +1049,26 @@
 
         .form-submit {
             width: 100%;
-            padding: 14px;
+            padding: 17px;
             background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
             border: none;
-            border-radius: 6px;
+            border-radius: 100px;
             color: var(--white);
             font-family: 'Space Grotesk', sans-serif;
             font-size: 13px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            margin-top: 15px;
+            margin-top: 20px;
+            box-shadow: 0 8px 28px rgba(31, 105, 255, 0.35);
         }
 
         .form-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(31, 105, 255, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 18px 44px rgba(31, 105, 255, 0.45);
+            filter: brightness(1.06);
         }
 
         /* WhatsApp floating button */
@@ -1246,10 +1286,18 @@
     <link rel="stylesheet" href="_premium.css">
 </head>
 <body>
+    <a href="#hero" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;background:#1F69FF;padding:12px 20px;border-radius:0 0 8px 0;text-decoration:none;" onfocus="this.style.left='0';this.style.width='auto';this.style.height='auto';" onblur="this.style.left='-9999px';this.style.width='1px';this.style.height='1px';">Ir al contenido principal</a>
+
     <!-- Navigation -->
     <nav>
-        <a href="index.html" class="logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-            <img src="logo-cb.png" alt="Coldwell Banker" style="height:44px;width:auto;display:block;">
+        <a href="/" class="logo" aria-label="Diego Giannini · Coldwell Banker — Inicio">
+            <div class="logo-mark" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="logo-text-wrap">
+                <span class="logo-name">Diego Giannini</span>
+                <span class="logo-sub">Coldwell Banker · Buenos Aires</span>
+            </div>
         </a>
         <button class="nav-cta" onclick="window.location.href='https://wa.me/5491157274477?text=Hola%2C%20quiero%20consultar%20sobre%20la%20venta%20de%20mi%20propiedad'" style="background:linear-gradient(135deg,#25D366,#1BA853);border:none;color:#fff;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(37,211,102,0.35);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.2-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -1276,7 +1324,7 @@
                     <span style="width:7px;height:7px;border-radius:50%;background:#32E5A7;box-shadow:0 0 10px rgba(50,229,167,0.6);animation:pulse 1.8s infinite;"></span>
                     <span style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:#32E5A7;">Tasación gratuita en 72 horas</span>
                 </div>
-                <button class="hero-cta" onclick="document.getElementById('hero-form').focus()" style="margin-top:24px;">
+                <button class="hero-cta" onclick="document.getElementById('hero-form').scrollIntoView({behavior:'smooth'});setTimeout(function(){document.querySelector('#hero-form input')?.focus();},400);" style="margin-top:24px;" aria-label="Solicitar tasación gratuita">
                     QUIERO MI TASACIÓN →
                 </button>
             </div>
@@ -1315,12 +1363,20 @@
                             <option value="otra">Otra zona</option>
                         </select>
                     </div>
-                    <button type="submit" class="form-submit">QUIERO MI TASACIÓN GRATUITA →</button>
-                    <p class="form-privacy">🔒 Sin spam. Diego te escribe en menos de 2 horas.</p>
+                    <button type="submit" class="form-submit" id="propSubmitBtn">
+                        <span class="btn-text">QUIERO MI TASACIÓN GRATUITA</span>
+                        <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        <svg class="btn-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" style="display:none;animation:spin 0.8s linear infinite;"><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                    </button>
+                    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+                    <p class="form-privacy" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                        Sin spam. Diego te escribe en menos de 2 horas.
+                    </p>
                     <div style="display:flex;gap:16px;justify-content:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
-                        <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#4D8AFF;">+100</div><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">operaciones</div></div>
-                        <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#4D8AFF;">6 años</div><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">trayectoria</div></div>
-                        <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#4D8AFF;">BA + Madrid</div><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">experiencia</div></div>
+                        <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#6AA0FF;">+100</div><div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;">operaciones</div></div>
+                        <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#6AA0FF;">6 años</div><div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;">trayectoria</div></div>
+                        <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#6AA0FF;">BA + Madrid</div><div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;">experiencia</div></div>
                     </div>
                 </form>
             </div>
@@ -1396,7 +1452,7 @@
     <section class="pain-section fade-in" style="padding:100px 5% 80px;background:linear-gradient(180deg,#0A0E1F,#0d1228);position:relative;">
         <div style="max-width:1100px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:48px;">
-                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#4D8AFF;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;">Identificate</div>
+                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#4D8AFF;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;">Identificate</div>
                 <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-weight:500;color:#fff;line-height:1.1;letter-spacing:-0.02em;">¿En cuál de estas situaciones <em style="font-style:italic;color:#4D8AFF;">estás hoy?</em></h2>
             </div>
 
@@ -1434,10 +1490,10 @@
                     </div>
                     <div style="background:linear-gradient(135deg,rgba(31,105,255,0.08),rgba(0,77,230,0.04));border:1px solid rgba(31,105,255,0.15);border-radius:24px;padding:48px 36px;text-align:center;">
                         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:72px;color:#4D8AFF;line-height:1;">8</div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-top:8px;">meses promedio vendiendo solo</div>
+                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-top:8px;">meses promedio vendiendo solo</div>
                         <div style="width:60px;height:1px;background:rgba(255,255,255,0.1);margin:24px auto;"></div>
                         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:72px;color:#32E5A7;line-height:1;">47<span style="font-size:32px;"> d</span></div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-top:8px;">promedio con Diego + CB</div>
+                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-top:8px;">promedio con Diego + CB</div>
                     </div>
                 </div>
 
@@ -1466,7 +1522,7 @@
                     </div>
                     <div style="background:linear-gradient(135deg,rgba(255,107,122,0.08),rgba(255,107,122,0.03));border:1px solid rgba(255,107,122,0.15);border-radius:24px;padding:48px 36px;text-align:center;">
                         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:48px;color:#FF6B7A;line-height:1.1;">"Hay que<br>bajar"</div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-top:12px;">La frase que no vas a escuchar</div>
+                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-top:12px;">La frase que no vas a escuchar</div>
                         <div style="width:60px;height:1px;background:rgba(255,255,255,0.1);margin:24px auto;"></div>
                         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#32E5A7;line-height:1.4;">Mi tasación es el precio<br>real desde el día 1.</div>
                     </div>
@@ -1496,9 +1552,9 @@
                         </div>
                     </div>
                     <div style="background:linear-gradient(135deg,rgba(255,195,77,0.08),rgba(255,195,77,0.03));border:1px solid rgba(255,195,77,0.15);border-radius:24px;padding:48px 36px;text-align:center;">
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;">Tiempo promedio de venta</div>
+                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;">Tiempo promedio de venta</div>
                         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:72px;color:#FFC34D;line-height:1;margin:12px 0;">45<span style="font-size:32px;"> d</span></div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;">para inversores con CB</div>
+                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;">para inversores con CB</div>
                         <div style="width:60px;height:1px;background:rgba(255,255,255,0.1);margin:0 auto 24px;"></div>
                         <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;">Reporting semanal<br>Comparables con cap rate<br>Red Coldwell Banker</div>
                     </div>
@@ -1526,7 +1582,7 @@
     <!-- Solution Section -->
     <section class="solution-section fade-in">
         <div class="solution-header">
-            <h2>Mi método</h2>
+            <h2>Cómo vendo en <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#4D8AFF;">47 días</em></h2>
         </div>
         <div class="solution-grid">
             <div class="solution-card fade-in">
@@ -1536,8 +1592,8 @@
             </div>
             <div class="solution-card fade-in">
                 <div class="solution-number">02</div>
-                <h3>Marketing internacional Coldwell Banker</h3>
-                <p>Trato directo con un único interlocutor: hablás conmigo desde la primera llamada hasta la firma. Sin pasarte entre asistentes ni perder seguimiento.</p>
+                <h3>Interlocutor único: solo hablás conmigo</h3>
+                <p>Trato directo desde la primera llamada hasta la firma. Sin pasarte entre asistentes ni perder seguimiento. Y con el respaldo de la red internacional Coldwell Banker.</p>
             </div>
             <div class="solution-card fade-in">
                 <div class="solution-number">03</div>
@@ -1558,7 +1614,7 @@
                 <!-- Objeción 1 -->
                 <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px 28px;position:relative;overflow:hidden;">
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B7A,transparent);"></div>
-                    <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #1</div>
+                    <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #1</div>
                     <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:#fff;margin-bottom:16px;line-height:1.2;">"La comisión es cara, puedo vender solo."</h3>
                     <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;margin-bottom:20px;">Podés. Pero el propietario promedio que vende solo tarda 8 meses y termina aceptando USD 30k–50k menos. Mi comisión se paga sola con el sobreprecio que logro y el tiempo que ahorrás.</p>
                     <div style="padding:14px 18px;background:rgba(50,229,167,0.06);border-radius:10px;border-left:3px solid #32E5A7;">
@@ -1569,7 +1625,7 @@
                 <!-- Objeción 2 -->
                 <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px 28px;position:relative;overflow:hidden;">
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B7A,transparent);"></div>
-                    <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #2</div>
+                    <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #2</div>
                     <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:#fff;margin-bottom:16px;line-height:1.2;">"Ya probé con una inmobiliaria y fue un desastre."</h3>
                     <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;margin-bottom:20px;">Lo entiendo. El 60% de mis clientes viene de una mala experiencia previa. La diferencia: yo te mando reporte semanal con métricas reales, no promesas vacías. Si no funciona, lo ves en los datos antes de que yo tenga que decirte.</p>
                     <div style="padding:14px 18px;background:rgba(50,229,167,0.06);border-radius:10px;border-left:3px solid #32E5A7;">
@@ -1580,7 +1636,7 @@
                 <!-- Objeción 3 -->
                 <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px 28px;position:relative;overflow:hidden;">
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B7A,transparent);"></div>
-                    <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #3</div>
+                    <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #3</div>
                     <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:#fff;margin-bottom:16px;line-height:1.2;">"Me van a atar con una exclusiva y después no hacen nada."</h3>
                     <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;margin-bottom:20px;">Trabajo con exclusiva porque me permite invertir en marketing de verdad: fotos profesionales, video y publicación premium en los principales portales. Pero si en algún momento no estás conforme, te libero. Por escrito.</p>
                     <div style="padding:14px 18px;background:rgba(50,229,167,0.06);border-radius:10px;border-left:3px solid #32E5A7;">
@@ -1591,7 +1647,9 @@
 
             <!-- Garantía -->
             <div style="max-width:780px;margin:0 auto;text-align:center;padding:48px 40px;background:linear-gradient(135deg,rgba(50,229,167,0.06),rgba(50,229,167,0.02));border:1px solid rgba(50,229,167,0.2);border-radius:24px;">
-                <div style="width:64px;height:64px;margin:0 auto 20px;background:rgba(50,229,167,0.12);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;">🛡️</div>
+                <div style="width:64px;height:64px;margin:0 auto 20px;background:rgba(50,229,167,0.12);border-radius:16px;display:flex;align-items:center;justify-content:center;">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#32E5A7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
                 <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,40px);font-style:italic;color:#fff;margin-bottom:16px;line-height:1.15;">No vendemos, <span style="color:#32E5A7;">no cobrás.</span></h3>
                 <p style="color:rgba(255,255,255,0.65);font-size:16px;line-height:1.7;max-width:560px;margin:0 auto;">Mi comisión se cobra al cierre de la escritura. Si no vendemos tu propiedad, no pagás un peso. Sin costos ocultos, sin gastos de marketing a tu cargo, sin sorpresas. Así de simple.</p>
             </div>
@@ -1686,12 +1744,12 @@
                 <p>Operaciones cerradas</p>
             </div>
             <div class="stat-item">
-                <h3 data-target="6">0</h3>
-                <p>Años de trayectoria</p>
+                <h3 style="font-size:clamp(36px,5vw,56px);">47 días</h3>
+                <p>Promedio de venta</p>
             </div>
             <div class="stat-item">
-                <h3 style="font-size:clamp(36px,5vw,56px);">BA + Madrid</h3>
-                <p>Experiencia local + internacional</p>
+                <h3 data-target="6">0</h3>
+                <p>Años de trayectoria</p>
             </div>
             <div class="stat-item">
                 <h3 style="font-size:clamp(36px,5vw,56px);">1 a 1</h3>
@@ -1762,16 +1820,16 @@
             <!-- Micro social proof -->
             <div style="display:flex;gap:32px;justify-content:center;flex-wrap:wrap;padding-top:32px;border-top:1px solid rgba(255,255,255,0.06);">
                 <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#4D8AFF;">+100</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">operaciones cerradas</div>
+                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:#6AA0FF;line-height:1;">+100</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;">operaciones cerradas</div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#32E5A7;">6 años</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">de trayectoria</div>
+                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:#32E5A7;line-height:1;">6 años</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;">de trayectoria</div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#FFC34D;">BA + Madrid</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">experiencia</div>
+                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:#FFC34D;line-height:1;">BA + Madrid</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;">experiencia</div>
                 </div>
             </div>
         </div>
@@ -1791,7 +1849,7 @@
                 <p>Instagram: <a href="https://instagram.com/gianninirealestate">@gianninirealestate</a></p>
                 <p style="margin-top:12px;font-size:12px;"><a href="privacidad.html" style="color:rgba(255,255,255,0.55);">Política de Privacidad</a></p>
                 <div class="footer-legal" style="padding-top: 28px; margin-top: 28px; border-top: 1px solid rgba(255,255,255,0.08);">
-                    <p style="font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.45); max-width: 1100px; font-weight: 300; letter-spacing: 0.2px;">
+                    <p style="font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.55); max-width: 1100px; font-weight: 300; letter-spacing: 0.2px;">
                         ©️ 2026 Coldwell Banker. Todos los derechos reservados. Coldwell Banker y los logotipos de Coldwell Banker son marcas de servicio de propiedad de Coldwell Banker Real Estate LLC. El sistema Coldwell Banker está compuesto por oficinas propias de propiedad de una subsidiaria de Anywhere Advisors LLC y por oficinas adheridas al Sistema Coldwell Banker que son de propiedad y operación independientes. En cumplimiento con la normativa vigente, los asistentes NO ejercen el corretaje inmobiliario. La intermediación y conclusión de las operaciones inmobiliarias es desarrollada por Martilleros y Corredores Públicos. Esta Oficina Inmobiliaria se encuentra a cargo de <strong style="color: rgba(255,255,255,0.7); font-weight: 500;">AGUSTINA PELAEZ</strong> — Matrícula n°4025, folio 4025, tomo 9 y Matrícula n°9084, folio 39, tomo 2 — adherida al Sistema Coldwell Banker Livello. C.U.I.T.: 30-71783116-7. Av. Córdoba 5637, oficina 4B, C.A.B.A.
                     </p>
                 </div>
@@ -1800,11 +1858,11 @@
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <div class="whatsapp-floating" onclick="window.location.href='https://wa.me/5491157274477?text=Hola%2C%20quiero%20consultar%20sobre%20la%20venta%20de%20mi%20propiedad'">
+    <a href="https://wa.me/5491157274477?text=Hola%2C%20quiero%20consultar%20sobre%20la%20venta%20de%20mi%20propiedad" class="whatsapp-floating" title="Contactar por WhatsApp" aria-label="Contactar a Diego por WhatsApp" rel="noopener noreferrer">
         <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-1.052 0-2.082.404-2.847 1.133-.735.722-1.143 1.671-1.143 2.698 0 1.025.408 1.977 1.143 2.699.765.729 1.795 1.132 2.847 1.132.969 0 1.88-.376 2.554-1.06.674-.686 1.043-1.601 1.043-2.571 0-1.027-.408-1.975-1.143-2.699-.764-.729-1.795-1.133-2.847-1.133m0 8.999c-2.357 0-4.57-.916-6.239-2.579C2.915 12.902 2 10.689 2 8.332c0-2.357.915-4.57 2.578-6.239C6.247 0.914 8.46 0 10.817 0c2.357 0 4.57.914 6.239 2.579 1.663 1.668 2.578 3.882 2.578 6.239 0 2.357-.915 4.57-2.578 6.239-1.668 1.663-3.882 2.579-6.239 2.579m10.064-14.42l.022-.035A8.323 8.323 0 0 0 10.817 0C4.844 0 0 4.844 0 10.817c0 1.905.476 3.768 1.372 5.407L0 21.929l5.91-.878c1.534.855 3.268 1.348 5.097 1.348 5.973 0 10.817-4.844 10.817-10.817 0-2.343-.794-4.53-2.143-6.264"/>
         </svg>
-    </div>
+    </a>
 
     <script>
         // Intersection Observer for scroll animations
@@ -1879,6 +1937,17 @@
         function handleFormSubmit(event) {
             event.preventDefault();
             const form = event.target;
+            // Loading state
+            const btn = form.querySelector('[type="submit"]');
+            if(btn){
+                btn.disabled = true;
+                const txt = btn.querySelector('.btn-text');
+                const arrow = btn.querySelector('.btn-arrow');
+                const spinner = btn.querySelector('.btn-spinner');
+                if(txt) txt.textContent = 'Enviando...';
+                if(arrow) arrow.style.display = 'none';
+                if(spinner) spinner.style.display = 'inline';
+            }
             const nombre = form.querySelector('input[name="nombre"]').value;
             const whatsapp = form.querySelector('input[name="whatsapp"]')?.value || '';
             const email = form.querySelector('input[name="email"]')?.value || '';
@@ -1899,8 +1968,8 @@
 
             // 3) Abrir WhatsApp con mensaje limpio hacia Diego
             const zonaLabel = zona !== 'No especificada' ? zona : '';
-            const message = `Hola Diego, quiero una tasación gratuita.%0A%0ANombre: ${nombre}${zonaLabel ? '%0AZona: '+zonaLabel : ''}${whatsapp ? '%0AWhatsApp: '+whatsapp : ''}`;
-            window.location.href = `https://wa.me/${DIEGO_WHATSAPP}?text=${message}`;
+            const rawMsg = `Hola Diego, quiero una tasación gratuita.\n\nNombre: ${nombre}${zonaLabel ? '\nZona: '+zonaLabel : ''}${whatsapp ? '\nWhatsApp: '+whatsapp : ''}`;
+            window.location.href = `https://wa.me/${DIEGO_WHATSAPP}?text=${encodeURIComponent(rawMsg)}`;
         }
 
         // Smooth scroll for buttons
@@ -1922,7 +1991,10 @@
     <div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies" style="display:none;position:fixed;bottom:20px;left:20px;right:20px;max-width:560px;margin:0 auto;background:rgba(10,14,31,0.98);backdrop-filter:blur(20px);border:1px solid rgba(31,105,255,0.3);border-radius:16px;padding:20px 24px;z-index:10000;font-family:'Inter',sans-serif;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
       <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
         <div style="flex:1;min-width:220px;">
-          <div style="font-weight:600;margin-bottom:6px;font-size:14px;">🍪 Usamos cookies</div>
+          <div style="font-weight:600;margin-bottom:6px;font-size:14px;display:flex;align-items:center;gap:7px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4M12 16h.01"/></svg>
+            Usamos cookies
+          </div>
           <div style="font-size:13px;opacity:0.8;line-height:1.5;">Usamos cookies para analizar el tráfico y mejorar tu experiencia. <a href="privacidad.html" style="color:#4D8AFF;text-decoration:underline;">Política de privacidad</a>.</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -1934,6 +2006,67 @@
     <script>
       (function(){var key='cb_cookie_consent';var stored=localStorage.getItem(key);if(!stored){document.getElementById('cookie-banner').style.display='block';}else if(stored==='granted'){if(window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}if(window.fbq){fbq('consent','grant');}}window.cookieConsent=function(v){localStorage.setItem(key,v);document.getElementById('cookie-banner').style.display='none';if(v==='granted'&&window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}if(v==='granted'&&window.fbq){fbq('consent','grant');}};})();
     </script>
+    <!-- ========== STICKY MOBILE CTA BAR ========== -->
+    <div class="sticky-mobile-cta" id="stickyMobileCta" aria-hidden="true">
+        <div class="sticky-mobile-cta-row">
+            <a href="https://wa.me/5491157274477?text=Hola%20Diego%2C%20quiero%20una%20tasaci%C3%B3n%20gratuita" class="smc-wa" rel="noopener noreferrer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp
+            </a>
+            <a href="#hero-form" onclick="document.getElementById('hero-form').scrollIntoView({behavior:'smooth'});document.querySelector('#hero-form input').focus();return false;" class="smc-call">
+                Tasación Gratis →
+            </a>
+        </div>
+    </div>
+
+    <!-- ========== EXIT INTENT POPUP (propietarios) ========== -->
+    <div class="exit-intent-overlay" id="exitIntentOverlay" role="dialog" aria-modal="true" aria-label="Antes de irte">
+        <div class="exit-intent-box">
+            <button class="exit-intent-close" onclick="closeExitIntent()" aria-label="Cerrar">×</button>
+            <div class="exit-intent-eyebrow">Antes de irte</div>
+            <h2 class="exit-intent-title">¿Tu propiedad lleva meses sin venderse? <em>Te ayudo.</em></h2>
+            <p class="exit-intent-sub">Una tasación gratuita puede cambiar todo. Solo lleva 72 horas y no te compromete a nada. Diego te contacta personalmente.</p>
+            <a href="https://wa.me/5491157274477?text=Hola%20Diego%2C%20quiero%20una%20tasaci%C3%B3n%20gratuita%20para%20mi%20propiedad" class="exit-intent-cta" rel="noopener noreferrer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Quiero mi tasación gratuita
+            </a>
+        </div>
+    </div>
+    <script>
+        (function exitIntent(){
+            var shown = false;
+            var key = 'exit_propietarios';
+            if(localStorage.getItem(key)) return;
+            function show(){
+                if(shown) return;
+                shown = true;
+                var el = document.getElementById('exitIntentOverlay');
+                if(el){ el.style.display='flex'; requestAnimationFrame(function(){ el.classList.add('visible'); }); }
+            }
+            document.addEventListener('mouseleave', function(e){
+                if(e.clientY < 20) show();
+            });
+        })();
+        function closeExitIntent(){
+            var el = document.getElementById('exitIntentOverlay');
+            if(el){ el.classList.remove('visible'); setTimeout(function(){ el.style.display='none'; },400); }
+            localStorage.setItem('exit_propietarios','1');
+        }
+        // Show sticky bar after scrolling past hero
+        (function(){
+            var bar = document.getElementById('stickyMobileCta');
+            if(!bar) return;
+            var hero = document.getElementById('hero');
+            function check(){
+                if(!hero) return;
+                var heroBottom = hero.getBoundingClientRect().bottom;
+                if(heroBottom < 0){ bar.classList.add('visible'); bar.removeAttribute('aria-hidden'); }
+                else { bar.classList.remove('visible'); bar.setAttribute('aria-hidden','true'); }
+            }
+            window.addEventListener('scroll', check, { passive: true });
+        })();
+    </script>
+
     <script src="_premium.js" defer></script>
 </body>
 </html>
