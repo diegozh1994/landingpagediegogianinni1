@@ -972,11 +972,13 @@
     });
     target.appendChild(canvas);
 
-    const w = target.clientWidth || 480;
-    const h = target.clientHeight || 480;
+    // Use getBoundingClientRect for accurate dimensions post-layout
+    const rect = target.getBoundingClientRect();
+    const w = Math.round(rect.width) || 480;
+    const h = Math.round(rect.height) || 480;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, precision: 'highp' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 3));
     renderer.setSize(w, h, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -995,11 +997,11 @@
     const globeGroup = new THREE.Group();
     scene.add(globeGroup);
 
-    const sphereGeo = new THREE.IcosahedronGeometry(2, 6);
+    const sphereGeo = new THREE.IcosahedronGeometry(2, 10);
     const sphereMat = new THREE.MeshBasicMaterial({
-      color: 0x122455,
+      color: 0x1a3a7a,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.45,
       wireframe: true
     });
     const sphere = new THREE.Mesh(sphereGeo, sphereMat);
@@ -1007,13 +1009,13 @@
 
     // Solid inner sphere (slightly smaller, for depth)
     const innerSphere = new THREE.Mesh(
-      new THREE.SphereGeometry(1.95, 32, 32),
+      new THREE.SphereGeometry(1.95, 64, 64),
       new THREE.MeshPhongMaterial({
         color: 0x0A0E1F,
         transparent: true,
-        opacity: 0.7,
-        emissive: 0x122455,
-        emissiveIntensity: 0.2
+        opacity: 0.75,
+        emissive: 0x1a3a7a,
+        emissiveIntensity: 0.35
       })
     );
     globeGroup.add(innerSphere);

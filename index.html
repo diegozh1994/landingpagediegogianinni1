@@ -269,9 +269,9 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 120px 60px 60px;
+            justify-content: center;
+            padding: 90px 40px 48px;
             position: relative;
             overflow: hidden;
         }
@@ -346,6 +346,18 @@
 
         /* Hero content stays above the photo overlay */
         .hero > * { position: relative; z-index: 3; }
+
+        /* Hero — contenedor centrado único */
+        .hero-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 580px;
+            position: relative;
+            z-index: 3;
+        }
 
         /* TITLE — much more impact */
         .hero .hero-headline {
@@ -444,31 +456,24 @@
         }
 
         .glow-orb-1 {
-            width: 400px;
-            height: 400px;
-            top: 10%;
-            left: 10%;
-            background: radial-gradient(circle, rgba(31, 105, 255, 0.4), transparent);
+            width: 300px;
+            height: 300px;
+            top: 20%;
+            left: 5%;
+            background: radial-gradient(circle, rgba(31, 105, 255, 0.25), transparent);
             animation-delay: 0s;
         }
 
         .glow-orb-2 {
-            width: 300px;
-            height: 300px;
-            top: 50%;
-            right: 15%;
-            background: radial-gradient(circle, rgba(0, 77, 230, 0.3), transparent);
+            width: 250px;
+            height: 250px;
+            bottom: 15%;
+            right: 5%;
+            background: radial-gradient(circle, rgba(0, 77, 230, 0.2), transparent);
             animation-delay: 2s;
         }
 
-        .glow-orb-3 {
-            width: 350px;
-            height: 350px;
-            bottom: 10%;
-            left: 50%;
-            background: radial-gradient(circle, rgba(77, 138, 255, 0.25), transparent);
-            animation-delay: 4s;
-        }
+        .glow-orb-3 { display: none; }
 
         @keyframes float {
             0%, 100% { transform: translate(0, 0); }
@@ -480,20 +485,20 @@
         .hero-content {
             position: relative;
             z-index: 1;
-            text-align: center;
-            max-width: 1000px;
+            text-align: left;
+            width: 100%;
         }
 
         .hero-headline {
-            font-size: clamp(64px, 10vw, 140px);
+            font-size: clamp(44px, 6vw, 88px);
             font-weight: 700;
-            letter-spacing: -3px;
-            line-height: 1.1;
+            letter-spacing: -2px;
+            line-height: 1.05;
             margin-bottom: 20px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
         }
 
         .hero-headline span {
@@ -525,12 +530,13 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(16px, 2vw, 22px);
-            color: var(--muted);
-            max-width: 700px;
-            margin: 40px auto;
+            font-size: clamp(15px, 1.4vw, 18px);
+            color: rgba(255,255,255,0.75);
+            max-width: 520px;
+            margin: 0 auto 28px;
             font-weight: 400;
             line-height: 1.7;
+            text-align: center;
             animation: fadeInUp 0.8s ease-out 0.6s forwards;
             opacity: 0;
         }
@@ -548,12 +554,87 @@
 
         .hero-cta-group {
             display: flex;
-            gap: 20px;
+            gap: 12px;
             justify-content: center;
-            margin-top: 50px;
             flex-wrap: wrap;
+            margin-bottom: 28px;
+            width: 100%;
             animation: fadeInUp 0.8s ease-out 0.75s forwards;
             opacity: 0;
+        }
+
+        .btn-hero {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 18px 32px;
+            border-radius: 100px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 180px;
+            max-width: 260px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+
+        .btn-hero-vender {
+            background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
+            color: #fff;
+            border: none;
+            box-shadow: 0 8px 28px rgba(31,105,255,0.4);
+            animation: fadeInUp 0.8s ease-out 0.75s forwards;
+        }
+
+        .btn-hero-comprar {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.5);
+            animation: fadeInUp 0.8s ease-out 0.85s forwards;
+        }
+
+        .btn-hero-comprar:hover {
+            border-color: var(--electric-blue);
+            background: rgba(31,105,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-hero-vender:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px rgba(31,105,255,0.6);
+        }
+
+        /* Pulse ring usando ::after con transform — sin paint triggers */
+        .btn-hero-vender::after,
+        .btn-hero-comprar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 100px;
+            border: 2px solid rgba(31,105,255,0.6);
+            animation: ringPulse 2.2s ease-out 2s infinite;
+            pointer-events: none;
+        }
+
+        .btn-hero-comprar::after {
+            border-color: rgba(255,255,255,0.35);
+            animation-delay: 2.5s;
+        }
+
+        @keyframes ringPulse {
+            0%   { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.45); opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .btn-hero { min-width: 0; max-width: 100%; width: 100%; font-size: 16px; padding: 20px 24px; }
+            .hero-cta-group { flex-direction: column; gap: 10px; }
         }
 
         .btn-primary {
@@ -658,7 +739,8 @@
 
         /* Hero mini-form */
         .hero-miniform-wrap {
-            margin: 36px auto 0;
+            margin: 0;
+            width: 100%;
             max-width: 520px;
             padding: 28px 28px 24px;
             background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
@@ -747,6 +829,61 @@
             font-family: 'Inter', sans-serif;
         }
 
+        .hero-miniform-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .hero-miniform-choice {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 18px 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1.5px solid rgba(255,255,255,0.14);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.75);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+            user-select: none;
+        }
+
+        .hero-miniform-choice svg {
+            width: 22px;
+            height: 22px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .hero-miniform-choice:hover {
+            border-color: rgba(106,160,255,0.5);
+            background: rgba(31,105,255,0.08);
+            color: #fff;
+        }
+
+        .hero-miniform-choice:hover svg {
+            opacity: 1;
+        }
+
+        .hero-miniform-choice.selected {
+            border-color: var(--electric-blue);
+            background: rgba(31,105,255,0.14);
+            color: #fff;
+        }
+
+        .hero-miniform-choice.selected svg {
+            opacity: 1;
+        }
+
         /* Marquee ticker */
         .marquee-section {
             width: 100%;
@@ -780,24 +917,86 @@
 
         /* Stats section */
         .stats-section {
-            padding: 120px 60px;
+            padding: 48px 0;
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--navy) 100%);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 60px;
-            align-items: center;
+            overflow: hidden;
         }
 
-        .stat-item {
+        .stats-section-header {
             text-align: center;
-            opacity: 0;
-            animation: fadeIn 0.8s ease-out forwards;
+            margin-bottom: 32px;
+            padding: 0 60px;
         }
 
-        .stat-item:nth-child(1) { animation-delay: 0.2s; }
-        .stat-item:nth-child(2) { animation-delay: 0.4s; }
-        .stat-item:nth-child(3) { animation-delay: 0.6s; }
-        .stat-item:nth-child(4) { animation-delay: 0.8s; }
+        .stats-section-eyebrow {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 12px;
+        }
+
+        .stats-section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .stats-section-title em {
+            font-style: italic;
+            color: var(--soft-blue);
+        }
+
+        .stats-marquee-wrap {
+            width: 100%;
+            overflow: hidden;
+            border-top: 1px solid rgba(31, 105, 255, 0.15);
+            border-bottom: 1px solid rgba(31, 105, 255, 0.15);
+            padding: 22px 0;
+        }
+
+        .stats-marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: scroll 22s linear infinite;
+        }
+
+        .stats-marquee-item {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 10px;
+            padding: 0 48px;
+            flex-shrink: 0;
+        }
+
+        .stats-marquee-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(28px, 3.5vw, 44px);
+            font-weight: 700;
+            color: var(--electric-blue);
+            line-height: 1;
+        }
+
+        .stats-marquee-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .stats-marquee-sep {
+            font-size: 20px;
+            color: rgba(31, 105, 255, 0.3);
+            padding: 0 8px;
+            align-self: center;
+        }
 
         @keyframes fadeIn {
             from {
@@ -827,15 +1026,38 @@
 
         /* Servicios / Services section */
         .servicios-section {
-            padding: 120px 60px;
+            padding: 56px 60px;
             background: var(--primary-dark);
         }
 
-        .section-title {
-            font-size: clamp(48px, 6vw, 72px);
-            font-weight: 700;
-            margin-bottom: 60px;
+        .section-header {
             text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-eyebrow {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(40px, 5vw, 64px);
+            font-weight: 600;
+            margin-bottom: 0;
+            text-align: center;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .section-title em {
+            font-style: italic;
+            color: var(--soft-blue);
         }
 
         .servicios-grid {
@@ -908,11 +1130,11 @@
 
         /* About section */
         .about-section {
-            padding: 120px 60px;
+            padding: 56px 60px;
             background: linear-gradient(135deg, var(--navy) 0%, var(--primary-dark) 100%);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 80px;
+            gap: 60px;
             align-items: center;
         }
 
@@ -1042,7 +1264,7 @@
 
         /* Properties scroll section */
         .properties-section {
-            padding: 120px 60px;
+            padding: 56px 60px;
             background: var(--primary-dark);
         }
 
@@ -1064,12 +1286,18 @@
             color: var(--muted);
         }
 
+        .properties-cta {
+            margin-top: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .properties-scroll {
             display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
             gap: 30px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            scroll-snap-type: x mandatory;
             padding: 20px 0;
         }
 
@@ -1183,7 +1411,7 @@
 
         /* Testimonials section */
         .testimonials-section {
-            padding: 120px 60px;
+            padding: 56px 60px;
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--navy) 100%);
             text-align: center;
         }
@@ -1270,9 +1498,397 @@
             border-radius: 5px;
         }
 
+        /* ── Comparativa cards ── */
+        .comparativa-section {
+            padding: 48px 60px;
+            background: linear-gradient(180deg, var(--navy) 0%, var(--primary-dark) 100%);
+        }
+
+        .comparativa-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .comparativa-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .comparativa-header h2 em { font-style: italic; color: var(--soft-blue); }
+
+        .comparativa-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .comp-card {
+            background: rgba(31,105,255,0.07);
+            border: 1px solid rgba(31,105,255,0.18);
+            border-radius: 14px;
+            padding: 20px 16px;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+        }
+
+        .comp-card:hover {
+            background: rgba(31,105,255,0.14);
+            border-color: rgba(31,105,255,0.4);
+            transform: translateY(-3px);
+        }
+
+        .comp-icon { font-size: 22px; margin-bottom: 8px; }
+
+        .comp-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .comp-desc {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .comparativa-cta {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .comparativa-section { padding: 40px 20px; }
+            .comparativa-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        }
+
+        /* ── About Diego — rediseño editorial ── */
+        .about-section {
+            padding: 64px 60px;
+            background: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 56px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Halo azul central */
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(31,105,255,0.09) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        /* Tarjeta fotográfica */
+        .about-photo-card {
+            flex-shrink: 0;
+            width: 280px;
+            background: #edf0f6;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 2px var(--electric-blue),
+                0 28px 70px rgba(31,105,255,0.28),
+                0 0 100px rgba(31,105,255,0.08);
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-photo-card img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .about-photo-footer {
+            background: var(--primary-dark);
+            border-top: 1px solid rgba(31,105,255,0.3);
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+        .about-photo-footer .pfname {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            display: block;
+            line-height: 1.2;
+        }
+
+        .about-photo-footer .pftitle {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* Panel de contenido */
+        .about-content {
+            max-width: 520px;
+            position: relative;
+            z-index: 1;
+            padding: 0;
+        }
+
+        .about-eyebrow {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 14px;
+        }
+
+        .about-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(40px, 5vw, 64px);
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.02em;
+            line-height: 1.0;
+            margin-bottom: 0;
+        }
+
+        .about-content h2 em {
+            font-style: italic;
+            color: var(--soft-blue);
+        }
+
+        .about-divider {
+            width: 48px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--electric-blue), transparent);
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+
+        .about-content p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        /* Stats strip */
+        .about-stats {
+            display: flex;
+            gap: 0;
+            margin: 24px 0 28px;
+            border: 1px solid rgba(31,105,255,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .about-stat {
+            flex: 1;
+            text-align: center;
+            padding: 14px 10px;
+            border-right: 1px solid rgba(31,105,255,0.15);
+            background: rgba(31,105,255,0.05);
+        }
+
+        .about-stat:last-child { border-right: none; }
+
+        .about-stat-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(18px, 2.2vw, 26px);
+            font-weight: 700;
+            color: var(--electric-blue);
+            display: block;
+            line-height: 1;
+        }
+
+        .about-stat-label {
+            font-size: 9px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .about-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 28px;
+            background: #25D366;
+            color: #fff;
+            border-radius: 100px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 24px rgba(37,211,102,0.3);
+        }
+
+        .about-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 36px rgba(37,211,102,0.45);
+        }
+
+        .about-cta-ig {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            box-shadow: 0 8px 24px rgba(131,58,180,0.3);
+        }
+
+        .about-cta-ig:hover {
+            box-shadow: 0 14px 36px rgba(131,58,180,0.45);
+        }
+
+        @media (max-width: 768px) {
+            .about-section { flex-direction: column; padding: 48px 20px; gap: 36px; }
+            .about-photo-card { width: 240px; }
+            .about-photo-card img { height: 300px; }
+            .about-content { max-width: 100%; }
+        }
+
+        /* Split section: comparativa + globo */
+        .split-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 560px;
+            background: var(--primary-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .split-left {
+            padding: 56px 48px 56px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid rgba(31, 105, 255, 0.12);
+        }
+
+        .split-left h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 3.5vw, 48px);
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin: 12px 0 6px;
+        }
+
+        .split-left h2 em {
+            font-style: italic;
+            color: var(--soft-blue);
+        }
+
+        .split-left > p {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .advantage-list {
+            list-style: none;
+            margin: 0 0 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .advantage-list li {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.5;
+        }
+
+        .advantage-list li::before {
+            content: '✓';
+            color: var(--electric-blue);
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .split-right {
+            background: linear-gradient(135deg, #0d1a3a 0%, #0A0E1F 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 40px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .split-globe-mount {
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 1/1;
+            position: relative;
+        }
+
+        .split-globe-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 16px;
+        }
+
+        .split-globe-stat {
+            text-align: center;
+        }
+
+        .split-globe-stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--electric-blue);
+            line-height: 1;
+            display: block;
+        }
+
+        .split-globe-stat-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-top: 4px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .split-section { grid-template-columns: 1fr; }
+            .split-left { padding: 40px 20px; border-right: none; border-bottom: 1px solid rgba(31,105,255,0.12); }
+            .split-right { padding: 32px 20px; }
+        }
+
         /* Final CTA section */
         .final-cta-section {
-            padding: 140px 60px;
+            padding: 72px 60px;
             background: var(--primary-dark);
             text-align: center;
             position: relative;
@@ -1513,59 +2129,120 @@
 
         /* Footer */
         footer {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--primary-dark) 100%);
-            padding: 100px 60px 40px;
-            border-top: 1px solid rgba(31, 105, 255, 0.2);
+            background: var(--navy);
+            border-top: 1px solid rgba(31, 105, 255, 0.15);
         }
 
-        .footer-brand {
-            font-size: clamp(42px, 8vw, 96px);
-            font-weight: 700;
-            letter-spacing: -2px;
-            margin-bottom: 80px;
-            background: linear-gradient(135deg, var(--electric-blue), var(--soft-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .footer-content {
+        .footer-main {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 60px;
-            margin-bottom: 60px;
+            grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
+            gap: 40px;
+            padding: 40px 60px 32px;
+            max-width: 1280px;
+            margin: 0 auto;
         }
 
-        .footer-column h3 {
+        .footer-brand-col {}
+
+        .footer-brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.01em;
+            margin-bottom: 4px;
+        }
+
+        .footer-brand-sub {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 16px;
+        }
+
+        .footer-brand-col p,
+        .footer-brand-col a {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 6px;
+            transition: color 0.2s;
+            line-height: 1.5;
+        }
+
+        .footer-brand-col a:hover { color: var(--electric-blue); }
+
+        .footer-col-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--muted);
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
 
-        .footer-column a,
-        .footer-column p {
-            font-size: 16px;
-            color: var(--white);
-            text-decoration: none;
-            margin-bottom: 12px;
-            transition: color 0.3s ease;
-            display: block;
-        }
-
-        .footer-column a:hover {
-            color: var(--electric-blue);
-        }
-
-        .footer-legal {
-            padding-top: 30px;
-            border-top: 1px solid rgba(31, 105, 255, 0.2);
+        .footer-col a {
             font-size: 13px;
-            color: var(--muted);
-            text-align: center;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover { color: var(--electric-blue); }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 16px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .footer-bottom-legal {
+            font-size: 10px;
+            color: rgba(255,255,255,0.3);
+            line-height: 1.6;
+            max-width: 820px;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .footer-bottom-links a {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+
+        .footer-bottom-links a:hover { color: var(--electric-blue); }
+
+        @media (max-width: 768px) {
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+                padding: 32px 20px 24px;
+                gap: 28px;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 16px 20px;
+            }
         }
 
         /* Fade in animation for scroll sections */
@@ -1606,21 +2283,25 @@
             }
 
             .hero {
-                padding: 100px 20px 40px;
+                padding: 80px 20px 40px;
+            }
+
+            .hero-center {
+                max-width: 100%;
             }
 
             .hero-headline {
-                gap: 10px;
-                font-size: clamp(32px, 8vw, 64px);
+                font-size: clamp(36px, 8vw, 64px);
+                align-items: center;
             }
 
             .hero-subtitle {
-                font-size: 16px;
+                font-size: 15px;
             }
 
             .hero-cta-group {
-                flex-direction: column;
-                gap: 15px;
+                justify-content: center;
+                gap: 12px;
             }
 
             .btn-primary, .btn-secondary {
@@ -1630,7 +2311,7 @@
             .stats-section,
             .servicios-section,
             .about-section {
-                padding: 60px 20px;
+                padding: 40px 20px;
             }
 
             .about-section {
@@ -1652,7 +2333,7 @@
             .properties-section,
             .testimonials-section,
             .final-cta-section {
-                padding: 60px 20px;
+                padding: 40px 20px;
             }
 
             .properties-scroll {
@@ -1712,18 +2393,15 @@
             <li><a href="#about">NOSOTROS</a></li>
             <li><a href="#contact">CONTACTO</a></li>
         </ul>
-        <button class="nav-cta" onclick="openWhatsApp()">+54 9 11 5727-4477</button>
+        <a class="nav-cta" href="tel:+5491157274477">+54 9 11 5727-4477</a>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-light-streak"></div>
         <div class="hero-light-streak s2"></div>
-        <div class="glow-orb glow-orb-1"></div>
-        <div class="glow-orb glow-orb-2"></div>
-        <div class="glow-orb glow-orb-3"></div>
 
-        <div class="hero-content">
+        <div class="hero-center">
             <div class="hero-urgency">
                 <span class="dot"></span>
                 <span>Tasación gratuita en 72 horas</span>
@@ -1733,13 +2411,11 @@
                 <span>vendida en</span>
                 <span class="italic">47 días.</span>
             </div>
-            <p class="hero-subtitle">Asesor inmobiliario en Capital Federal y barrios privados zona sur — Canning, Berazategui, Pueblos del Plata. Lotes desde USD 25k, casas, departamentos y alquileres premium. Diego Giannini · Coldwell Banker Livello.</p>
+            <p class="hero-subtitle">Asesor inmobiliario en Capital Federal y barrios privados zona sur — Canning, Berazategui, Pueblos del Plata. Diego Giannini · Coldwell Banker Livello.</p>
             <div class="hero-cta-group">
-                <a href="propietarios" class="btn-primary">Tasar mi propiedad gratis →</a>
-                <a href="compradores" class="btn-secondary">Ver oportunidades de inversión →</a>
+                <a href="propietarios" class="btn-hero btn-hero-vender">🏠 Quiero vender</a>
+                <a href="compradores" class="btn-hero btn-hero-comprar">🔍 ¿Querés comprar?</a>
             </div>
-
-            <!-- Mini-form de captura — 3 campos -->
             <form class="hero-miniform-wrap" id="hero-form" onsubmit="handleHomeMiniForm(event)">
                 <div class="hero-miniform-title">¿Querés que Diego te contacte?</div>
                 <div class="hero-miniform-sub">Te escribe en menos de 2 horas · Sin compromiso</div>
@@ -1747,14 +2423,19 @@
                     <input type="text" name="nombre" required placeholder="Tu nombre">
                     <input type="tel" name="whatsapp" required placeholder="+54 9 11 XXXX-XXXX">
                 </div>
-                <select name="intencion" required>
-                    <option value="">¿En qué te ayudo?</option>
-                    <option value="vender">Quiero vender mi propiedad</option>
-                    <option value="comprar">Quiero comprar para vivir</option>
-                    <option value="invertir">Quiero invertir / generar renta</option>
-                </select>
+                <input type="hidden" name="intencion" id="intencion-hidden" required>
+                <div class="hero-miniform-selector">
+                    <div class="hero-miniform-choice" onclick="selectIntencion(this,'vender')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>QUIERO<br>VENDER</span>
+                    </div>
+                    <div class="hero-miniform-choice" onclick="selectIntencion(this,'comprar')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <span>QUIERO<br>COMPRAR</span>
+                    </div>
+                </div>
                 <button type="submit" class="hero-miniform-submit">Que Diego me contacte →</button>
-                <p class="hero-miniform-privacy">🔒 Sin spam. Sin terceros. Tus datos solo los ve Diego.</p>
+                <p class="hero-miniform-privacy">🔒 Sin spam. Sin terceros. Solo Diego.</p>
             </form>
         </div>
     </section>
@@ -1779,29 +2460,50 @@
         </div>
     </section>
 
-    <!-- Stats section — todos los números son verificables -->
+    <!-- Stats section -->
     <section class="stats-section fade-in">
-        <div class="stat-item">
-            <h3>+100</h3>
-            <p>Operaciones cerradas</p>
+        <div class="stats-section-header">
+            <div class="stats-section-eyebrow">Trayectoria</div>
+            <h2 class="stats-section-title">Lo que dicen <em>los números.</em></h2>
         </div>
-        <div class="stat-item">
-            <h3>6</h3>
-            <p>Años en real estate</p>
-        </div>
-        <div class="stat-item">
-            <h3>BA + Madrid</h3>
-            <p>Experiencia local + internacional</p>
-        </div>
-        <div class="stat-item">
-            <h3>1 a 1</h3>
-            <p>Atención personal directa</p>
+        <div class="stats-marquee-wrap">
+            <div class="stats-marquee-track">
+                <!-- Set 1 -->
+                <div class="stats-marquee-item"><span class="stats-marquee-num">+100</span><span class="stats-marquee-label">Operaciones cerradas</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">6</span><span class="stats-marquee-label">Años en real estate</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">BA + Madrid</span><span class="stats-marquee-label">Experiencia internacional</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">1 a 1</span><span class="stats-marquee-label">Atención personal directa</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">47 días</span><span class="stats-marquee-label">Promedio de venta</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">3.000+</span><span class="stats-marquee-label">Oficinas Coldwell Banker</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <!-- Set 2 (duplicado para loop infinito) -->
+                <div class="stats-marquee-item"><span class="stats-marquee-num">+100</span><span class="stats-marquee-label">Operaciones cerradas</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">6</span><span class="stats-marquee-label">Años en real estate</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">BA + Madrid</span><span class="stats-marquee-label">Experiencia internacional</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">1 a 1</span><span class="stats-marquee-label">Atención personal directa</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">47 días</span><span class="stats-marquee-label">Promedio de venta</span></div>
+                <span class="stats-marquee-sep">·</span>
+                <div class="stats-marquee-item"><span class="stats-marquee-num">3.000+</span><span class="stats-marquee-label">Oficinas Coldwell Banker</span></div>
+                <span class="stats-marquee-sep">·</span>
+            </div>
         </div>
     </section>
 
     <!-- Servicios section -->
     <section class="servicios-section fade-in">
-        <h2 class="section-title">Servicios</h2>
+        <div class="section-header">
+            <div class="section-eyebrow">¿En qué te ayudo?</div>
+            <h2 class="section-title">Servicios <em>inmobiliarios.</em></h2>
+        </div>
         <div class="servicios-grid">
             <div class="service-card">
                 <div class="service-number">01</div>
@@ -1819,175 +2521,100 @@
                 <div class="service-number">03</div>
                 <h3>Alquileres en barrios privados</h3>
                 <p>Gestión integral de alquileres en barrios privados de zona sur. Desde búsqueda de inquilinos calificados hasta administración mensual. Tu propiedad rendida con tranquilidad.</p>
-                <a href="#contact" class="service-link">Consultar →</a>
+                <a href="propietarios" class="service-link">Consultar →</a>
             </div>
         </div>
     </section>
 
-    <!-- ════════════ COMPARATIVA CB vs Otras inmobiliarias ════════════ -->
-    <section class="comparison-section fade-in" id="comparativa">
-        <div class="comparison-inner">
-            <div class="comparison-header">
-                <span class="eyebrow">Por qué Coldwell Banker</span>
-                <h2>La diferencia que <em>importa</em></h2>
-                <p>Comparación honesta entre lo que ofrecemos y lo que vas a encontrar en una inmobiliaria tradicional de barrio.</p>
+    <!-- ════════════ Red global Coldwell Banker ════════════ -->
+    <section class="globe-section fade-in" id="red-global" data-3d-reveal>
+        <div class="globe-bg-grid"></div>
+        <div class="globe-inner">
+            <div class="globe-content">
+                <span class="eyebrow">🌍 Red global Coldwell Banker</span>
+                <h2>Tu propiedad accede a una red de<br><em>3.000+ oficinas</em> en 40 países</h2>
+                <p>Cuando trabajás conmigo, tu propiedad no se queda en Buenos Aires. Llega automáticamente a la red internacional de Coldwell Banker — donde hay agentes activos con <strong>compradores reales pagando dólares</strong> desde New York, Madrid, Miami y más.</p>
+                <div class="globe-stats">
+                    <div class="globe-stat"><span class="globe-stat-num">3.000+</span><span class="globe-stat-label">Oficinas</span></div>
+                    <div class="globe-stat"><span class="globe-stat-num">40</span><span class="globe-stat-label">Países</span></div>
+                    <div class="globe-stat"><span class="globe-stat-num">100K+</span><span class="globe-stat-label">Agentes</span></div>
+                </div>
             </div>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th class="col-criterion">Criterio</th>
-                        <th class="col-cb">Coldwell Banker</th>
-                        <th>Inmobiliaria tradicional</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="col-criterion">Red de compradores</td>
-                        <td class="col-cb"><span class="comparison-check">3.000+ oficinas en 40 países</span></td>
-                        <td><span class="comparison-cross">Solo locales</span></td>
-                    </tr>
-                    <tr>
-                        <td class="col-criterion">Marketing digital</td>
-                        <td class="col-cb"><span class="comparison-check">Estrategia digital propia + Google/Meta Ads</span></td>
-                        <td><span class="comparison-cross">Solo Zonaprop</span></td>
-                    </tr>
-                    <tr>
-                        <td class="col-criterion">Tasación con datos reales</td>
-                        <td class="col-cb"><span class="comparison-check">ACM con operaciones cerradas</span></td>
-                        <td><span class="comparison-cross">Estimaciones infladas</span></td>
-                    </tr>
-                    <tr>
-                        <td class="col-criterion">Tiempo promedio de venta</td>
-                        <td class="col-cb"><span class="comparison-check">45 días</span></td>
-                        <td><span class="comparison-cross">+90 días</span></td>
-                    </tr>
-                    <tr>
-                        <td class="col-criterion">Capacitación y certificación</td>
-                        <td class="col-cb"><span class="comparison-check">Certificación internacional CB</span></td>
-                        <td><span class="comparison-cross">Variable</span></td>
-                    </tr>
-                    <tr>
-                        <td class="col-criterion">Reportes semanales al propietario</td>
-                        <td class="col-cb"><span class="comparison-check">Sí, transparente</span></td>
-                        <td><span class="comparison-cross">Por consulta</span></td>
-                    </tr>
-                    <tr>
-                        <td class="col-criterion">Cartera off-market exclusiva</td>
-                        <td class="col-cb"><span class="comparison-check">Sí, propiedades antes que el mercado</span></td>
-                        <td><span class="comparison-cross">No</span></td>
-                    </tr>
-                    <tr>
-                        <td class="col-criterion">Atención personal del agente</td>
-                        <td class="col-cb"><span class="comparison-check">Diego Giannini directo</span></td>
-                        <td><span class="comparison-cross">Cambia por turno</span></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="text-align:center;margin-top:36px;">
-                <a href="#" class="btn-cta btn-cta-primary" data-action="open-booking" style="display:inline-flex;align-items:center;gap:10px;">📅 Agendar 15 minutos con Diego</a>
-            </div>
+            <div class="globe-mount" data-globe-mount aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <!-- ════════════ Comparativa ════════════ -->
+    <section class="comparativa-section fade-in" id="comparativa">
+        <div class="comparativa-header">
+            <span class="eyebrow">Por qué Coldwell Banker</span>
+            <h2>La diferencia que <em>importa</em></h2>
+        </div>
+        <div class="comparativa-grid">
+            <div class="comp-card"><div class="comp-icon">🌐</div><div class="comp-title">Red global</div><div class="comp-desc">3.000+ oficinas en 40 países vs. solo locales</div></div>
+            <div class="comp-card"><div class="comp-icon">📣</div><div class="comp-title">Marketing digital</div><div class="comp-desc">Google/Meta Ads propios vs. solo Zonaprop</div></div>
+            <div class="comp-card"><div class="comp-icon">📊</div><div class="comp-title">Tasación real</div><div class="comp-desc">ACM con operaciones cerradas vs. estimaciones infladas</div></div>
+            <div class="comp-card"><div class="comp-icon">⚡</div><div class="comp-title">47 días promedio</div><div class="comp-desc">Tiempo de venta vs. +90 días del mercado</div></div>
+            <div class="comp-card"><div class="comp-icon">📋</div><div class="comp-title">Reporte semanal</div><div class="comp-desc">Métricas transparentes vs. "llamame si hay algo"</div></div>
+            <div class="comp-card"><div class="comp-icon">🔑</div><div class="comp-title">Off-market exclusivo</div><div class="comp-desc">Propiedades antes que el mercado vs. ninguna</div></div>
+            <div class="comp-card"><div class="comp-icon">🎓</div><div class="comp-title">Certificación CB</div><div class="comp-desc">Formación internacional vs. variable</div></div>
+            <div class="comp-card"><div class="comp-icon">👤</div><div class="comp-title">Diego directo</div><div class="comp-desc">Un solo interlocutor vs. cambia por turno</div></div>
+        </div>
+        <div class="comparativa-cta">
+            <a href="propietarios" class="btn-primary">Tasar mi propiedad gratis →</a>
         </div>
     </section>
 
     <!-- About section -->
     <section class="about-section fade-in" id="about">
-        <div class="about-visual">
-            <!-- FOTO PROFESIONAL DE DIEGO
-                 Cuando tengas la foto, guardá el archivo en esta misma carpeta como "diego-giannini.jpg"
-                 (vertical 4:5, idealmente 1200×1500 px o más, fondo neutro o de oficina/ciudad).
-                 Después borrá el div .about-photo-placeholder y descomentá la línea <img>. -->
-            <div class="about-photo-frame">
-                <img src="fotoperfil.jpg" alt="Diego Giannini, broker en Coldwell Banker Buenos Aires" loading="lazy" decoding="async">
-            </div>
-            <div class="about-name-tag">
-                Diego Giannini
-                <em>Broker · Coldwell Banker</em>
+
+        <!-- Tarjeta fotográfica con glow azul -->
+        <div class="about-photo-card">
+            <img src="fotoperfil.jpg" alt="Diego Giannini, broker en Coldwell Banker Buenos Aires" loading="lazy" decoding="async">
+            <div class="about-photo-footer">
+                <span class="pfname">Diego Giannini</span>
+                <span class="pftitle">Broker · Coldwell Banker Livello</span>
             </div>
         </div>
-        <div class="about-content">
-            <h2>Sobre Diego</h2>
-            <p>Hace 6 años trabajo como asesor inmobiliario en Coldwell Banker Livello, Buenos Aires. En 2024 me sumé a una de las inmobiliarias más activas de Madrid, donde durante 1,5 años trabajé con un mercado distinto, exigente y muy estructurado. Esa experiencia internacional me dio herramientas que hoy aplico en cada operación que cierro acá.</p>
-            <p>Mi foco son los barrios privados de zona sur — Canning y Berazategui — y propiedades en Capital Federal. Cada propiedad recibe atención directa, sin intermediarios ni asistentes. Cada cliente trabaja conmigo de principio a fin: tasación, marketing, negociación y escritura.</p>
 
-            <div class="about-credentials">
-                <div class="credential">
-                    <label>Foco</label>
-                    <div class="credential-value">Barrios privados + CABA</div>
+        <!-- Contenido -->
+        <div class="about-content">
+            <div class="about-eyebrow">Quién es Diego</div>
+            <h2>El broker que<br><em>cierra resultados.</em></h2>
+            <div class="about-divider"></div>
+            <p>6 años en Coldwell Banker Livello Buenos Aires. 1,5 años en el mercado de Madrid — uno de los más exigentes de habla hispana. Esa experiencia internacional me da herramientas que muy pocos brokers locales tienen.</p>
+            <p>Barrios privados de zona sur y Capital Federal. Atención directa, sin intermediarios. Desde la tasación hasta la escritura, hablás solo conmigo.</p>
+            <div class="about-stats">
+                <div class="about-stat">
+                    <span class="about-stat-num">+100</span>
+                    <span class="about-stat-label">Operaciones</span>
                 </div>
-                <div class="credential">
-                    <label>Trayectoria</label>
-                    <div class="credential-value">6 años · BA + Madrid</div>
+                <div class="about-stat">
+                    <span class="about-stat-num">6 años</span>
+                    <span class="about-stat-label">Trayectoria</span>
                 </div>
-                <div class="credential">
-                    <label>Red</label>
-                    <div class="credential-value">Coldwell Banker Livello</div>
-                </div>
-                <div class="credential">
-                    <label>Instagram</label>
-                    <div class="credential-value"><a href="https://instagram.com/gianninirealestate" target="_blank" style="color: var(--electric-blue); text-decoration: none;">@gianninirealestate</a></div>
+                <div class="about-stat">
+                    <span class="about-stat-num">47 días</span>
+                    <span class="about-stat-label">Promedio venta</span>
                 </div>
             </div>
+            <a href="https://instagram.com/gianninirealestate" class="about-cta about-cta-ig" target="_blank" rel="noopener noreferrer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                Seguir en Instagram
+            </a>
         </div>
     </section>
 
     <!-- ════════════ BOOKING CTA — GHL Calendar ════════════ -->
-    <section class="booking-cta-section fade-in" id="agendar">
-        <div class="booking-cta-inner">
-            <div style="display:inline-block;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6AA0FF;margin-bottom:14px;">⚡ Sin formularios largos</div>
-            <h2>Agendá <em>15 minutos</em> con Diego<br>en el horario que te quede mejor</h2>
-            <p>Una conversación honesta, sin compromisos. Te cuento exactamente qué se está moviendo en tu zona y cómo te puedo ayudar — vendas, compres o estés explorando.</p>
-            <div class="booking-cta-buttons">
-                <a href="#" class="btn-primary" data-action="open-booking">📅 Reservar llamada gratis</a>
-                <a href="#hero-form" class="btn-secondary">O dejá tus datos en el form ↓</a>
-            </div>
-            <p style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,0.4);margin-top:22px;">🔒 100% confidencial · Sin spam · Respuesta en 24 hs</p>
-        </div>
-    </section>
-
     <!-- Properties scroll — populated dynamically from propiedades.json by _properties.js -->
     <section class="properties-section fade-in" id="propiedades">
         <div class="properties-header">
             <h2>Propiedades <em>destacadas</em></h2>
             <p>Una selección de oportunidades en los barrios más premium · Datos reales · Off-market exclusivas</p>
-            <a href="propiedades.html" class="btn-cta btn-cta-primary" style="margin-top:24px;display:inline-flex;align-items:center;gap:8px;">Ver toda la cartera →</a>
+            <a href="propiedades.html" class="btn-cta btn-cta-primary properties-cta">Ver toda la cartera →</a>
         </div>
         <div class="properties-scroll" id="properties-home-scroll">
             <!-- Auto-rendered from propiedades.json. Editá ese archivo para agregar/quitar propiedades. -->
-        </div>
-    </section>
-
-    <!-- ════════════ LEAD MAGNET — PDF gratis ════════════ -->
-    <section class="lead-magnet-section fade-in" id="guia-pdf">
-        <div class="lead-magnet-bg"></div>
-        <div class="lead-magnet-inner">
-            <div class="lead-magnet-pdf">
-                <div class="lead-magnet-mockup">
-                    <div class="lead-magnet-mockup-eyebrow">📄 Guía exclusiva</div>
-                    <h3 class="lead-magnet-mockup-title">¿Por qué tu propiedad <em>no se vende</em>?</h3>
-                    <p class="lead-magnet-mockup-sub">Las 8 causas reales · 14 páginas · Lectura 10 min</p>
-                    <ul class="lead-magnet-mockup-bullets">
-                        <li>Precio mal calibrado: cómo detectar si está sobre-tasada</li>
-                        <li>Fotos y video: el primer filtro que aleja compradores</li>
-                        <li>Multiagencia: por qué hace que tu propiedad pierda valor</li>
-                        <li>Anuncio mal redactado: las palabras que sí venden</li>
-                        <li>Visibilidad: por qué Zonaprop NO alcanza</li>
-                        <li>Errores en las visitas: cómo presentar la propiedad</li>
-                        <li>Timing del mercado: cuándo bajar el precio (y cuándo NO)</li>
-                        <li>Negociación: el error que cuesta USD 20K+</li>
-                    </ul>
-                    <div class="lead-magnet-mockup-foot">Diego Giannini · Coldwell Banker · 2026</div>
-                </div>
-            </div>
-            <div class="lead-magnet-content">
-                <span class="eyebrow">📥 Descarga gratis</span>
-                <h2>¿Tu propiedad lleva meses<br>publicada y <em>no se vende</em>?</h2>
-                <p>No es el mercado. Es la estrategia. Esta guía te explica las 8 razones reales por las que una propiedad se queda parada — con ejemplos concretos del mercado de Buenos Aires y qué hacer en cada caso.</p>
-                <form class="lead-magnet-form" data-endpoint="PEGAR_AQUI_TU_WEBHOOK_GHL_LEAD_MAGNET">
-                    <input type="email" placeholder="tu@email.com" required>
-                    <button type="submit">Recibir PDF →</button>
-                </form>
-                <p class="lead-magnet-privacy">🔒 Tu email es 100% confidencial · Respetamos la Ley 25.326</p>
-            </div>
         </div>
     </section>
 
@@ -2109,7 +2736,7 @@
     </section>
 
     <!-- ========== FAQ SECTION (con Schema.org FAQPage) ========== -->
-    <section class="faq-section fade-in" id="faq" style="padding:120px 5%;background:#0A0E1F;">
+    <section class="faq-section fade-in" id="faq" style="padding:56px 5%;background:#0A0E1F;">
         <div style="max-width:860px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:80px;">
                 <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#4D8AFF;margin-bottom:24px;">Respuestas directas</div>
@@ -2159,71 +2786,6 @@
     </script>
 
     <!-- ════════════ 3D GLOBE — CB worldwide network ════════════ -->
-    <section class="globe-section fade-in" id="red-global" data-3d-reveal>
-        <div class="globe-bg-grid"></div>
-        <div class="globe-inner">
-            <div class="globe-content">
-                <span class="eyebrow">🌍 Red global Coldwell Banker</span>
-                <h2>Tu propiedad accede a una red de<br><em>3.000+ oficinas</em> en 40 países</h2>
-                <p>Cuando trabajás conmigo, tu propiedad no se queda en Buenos Aires. Llega automáticamente a la red internacional de Coldwell Banker — donde hay agentes activos que tienen <strong>compradores reales pagando dólares billete</strong> desde New York, Madrid, Miami, Sao Paulo, y muchas más ciudades.</p>
-                <p>Es la diferencia entre publicar en Zonaprop y tener acceso real a la mayor red inmobiliaria del mundo.</p>
-                <div class="globe-stats">
-                    <div class="globe-stat">
-                        <span class="globe-stat-num">3.000+</span>
-                        <span class="globe-stat-label">Oficinas</span>
-                    </div>
-                    <div class="globe-stat">
-                        <span class="globe-stat-num">40</span>
-                        <span class="globe-stat-label">Países</span>
-                    </div>
-                    <div class="globe-stat">
-                        <span class="globe-stat-num">100K+</span>
-                        <span class="globe-stat-label">Agentes</span>
-                    </div>
-                </div>
-            </div>
-            <div class="globe-mount" data-globe-mount aria-hidden="true">
-                <!-- 3D globe rendered by _three.js -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Final CTA section -->
-    <section class="final-cta-section fade-in" id="contact">
-        <div class="cta-content">
-            <div class="final-cta-eyebrow">⭐ +50 propiedades vendidas · Coldwell Banker Livello</div>
-            <h2>¿Listo para tu <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#6AA0FF;">próxima operación</em>?</h2>
-            <p>Vender, comprar o invertir. Diego te lleva al resultado — con la red inmobiliaria más grande del mundo respaldando cada movimiento.</p>
-
-            <div class="final-cta-trust">
-                <div class="final-cta-trust-item">
-                    <span class="num" data-counter="50" data-prefix="+">+50</span>
-                    <span class="label">Operaciones</span>
-                </div>
-                <div class="final-cta-trust-item">
-                    <span class="num" data-counter="45" data-suffix="d">45d</span>
-                    <span class="label">Promedio venta</span>
-                </div>
-                <div class="final-cta-trust-item">
-                    <span class="num">3.000+</span>
-                    <span class="label">Oficinas globales</span>
-                </div>
-                <div class="final-cta-trust-item">
-                    <span class="num" data-counter="24" data-suffix="h">24h</span>
-                    <span class="label">Respuesta</span>
-                </div>
-            </div>
-
-            <div class="cta-panel">
-                <div class="cta-buttons">
-                    <a href="propietarios" class="btn-cta btn-cta-primary">📈 Quiero vender</a>
-                    <a href="compradores" class="btn-cta btn-cta-secondary">🏠 Quiero comprar</a>
-                    <a href="#" class="btn-cta btn-cta-secondary" data-action="open-booking">📅 Agendar 15 min</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- WhatsApp floating button — logo oficial -->
     <button class="whatsapp-button" onclick="openWhatsApp()" title="Contactar por WhatsApp" aria-label="Contactar por WhatsApp">
         <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
@@ -2233,38 +2795,41 @@
 
     <!-- Footer -->
     <footer>
-        <div class="footer-brand">COLDWELL BANKER</div>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Contacto</h3>
-                <p>Av. Córdoba 5637 - 4B<br>Palermo, CABA</p>
+        <div class="footer-main">
+            <div class="footer-brand-col">
+                <div class="footer-brand-name">Diego Giannini</div>
+                <div class="footer-brand-sub">Coldwell Banker Livello</div>
                 <a href="mailto:diego.giannini@coldwellbanker.com.ar">diego.giannini@coldwellbanker.com.ar</a>
                 <a href="tel:+5491157274477">+54 9 11 5727-4477</a>
+                <p>Av. Córdoba 5637 - 4B, Palermo, CABA</p>
             </div>
-            <div class="footer-column">
-                <h3>Navegación</h3>
-                <a href="#home">Home</a>
+            <div class="footer-col">
+                <div class="footer-col-title">Páginas</div>
                 <a href="propietarios">Propietarios</a>
                 <a href="compradores">Compradores</a>
                 <a href="referidos.html">Referidos · USD 500</a>
                 <a href="#about">Nosotros</a>
-                <a href="#contact">Contacto</a>
             </div>
-            <div class="footer-column">
-                <h3>Redes</h3>
-                <a href="https://instagram.com/gianninirealestate" target="_blank">Instagram</a>
-                <a href="https://wa.me/5491157274477" target="_blank">WhatsApp</a>
+            <div class="footer-col">
+                <div class="footer-col-title">Zonas</div>
+                <a href="compradores">Canning</a>
+                <a href="compradores">Berazategui</a>
+                <a href="compradores">Pueblos del Plata</a>
+                <a href="compradores">Palermo · Recoleta</a>
+            </div>
+            <div class="footer-col">
+                <div class="footer-col-title">Redes</div>
+                <a href="https://instagram.com/gianninirealestate" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://wa.me/5491157274477" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="privacidad.html">Privacidad</a>
             </div>
         </div>
-        <div style="text-align:center;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);margin-top:24px;font-size:12px;">
-            <a href="privacidad.html" style="color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;">Política de Privacidad</a>
-            <span style="color:rgba(255,255,255,0.2);">·</span>
-            <a href="mailto:diego.giannini@coldwellbanker.com.ar" style="color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;">Contacto</a>
-        </div>
-        <div class="footer-legal" style="padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 32px;">
-            <p style="font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.45); max-width: 1100px; margin: 0 auto; font-weight: 300; letter-spacing: 0.2px; text-align: left;">
-                ©️ 2026 Coldwell Banker. Todos los derechos reservados. Coldwell Banker y los logotipos de Coldwell Banker son marcas de servicio de propiedad de Coldwell Banker Real Estate LLC. El sistema Coldwell Banker está compuesto por oficinas propias de propiedad de una subsidiaria de Anywhere Advisors LLC y por oficinas adheridas al Sistema Coldwell Banker que son de propiedad y operación independientes. En cumplimiento con la normativa vigente, los asistentes NO ejercen el corretaje inmobiliario. La intermediación y conclusión de las operaciones inmobiliarias es desarrollada por Martilleros y Corredores Públicos. Esta Oficina Inmobiliaria se encuentra a cargo de <strong style="color: rgba(255,255,255,0.7); font-weight: 500;">AGUSTINA PELAEZ</strong> — Matrícula n°4025, folio 4025, tomo 9 y Matrícula n°9084, folio 39, tomo 2 — adherida al Sistema Coldwell Banker Livello. C.U.I.T.: 30-71783116-7. Av. Córdoba 5637, oficina 4B, C.A.B.A.
-            </p>
+        <div class="footer-bottom">
+            <p class="footer-bottom-legal">© 2026 Coldwell Banker. Oficina a cargo de <strong>Agustina Pelaez</strong> — Matrícula n°4025 / n°9084 — adherida al Sistema Coldwell Banker Livello. C.U.I.T.: 30-71783116-7. Los asistentes NO ejercen corretaje inmobiliario. Operaciones realizadas por Martilleros y Corredores Públicos.</p>
+            <div class="footer-bottom-links">
+                <a href="privacidad.html">Política de Privacidad</a>
+                <a href="mailto:diego.giannini@coldwellbanker.com.ar">Contacto</a>
+            </div>
         </div>
     </footer>
 
@@ -2343,6 +2908,12 @@
             const message = 'Hola Diego, me gustaría conocer sobre tus servicios de real estate.';
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
+        }
+
+        function selectIntencion(el, valor) {
+            document.querySelectorAll('.hero-miniform-choice').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('intencion-hidden').value = valor;
         }
 
         // Hero mini-form handler — manda al WhatsApp de Diego con los datos del lead
