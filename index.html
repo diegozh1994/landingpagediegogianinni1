@@ -348,15 +348,189 @@
         .hero > * { position: relative; z-index: 3; }
 
         /* Hero — contenedor centrado único */
-        .hero-center {
-            display: flex;
-            flex-direction: column;
+        /* Hero 2-column layout */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 56px;
             align-items: center;
-            text-align: center;
             width: 100%;
-            max-width: 580px;
+            max-width: 1100px;
             position: relative;
             z-index: 3;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        /* Trust badges */
+        .hero-trust {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 28px;
+        }
+
+        .hero-trust-item {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-trust-item::before {
+            content: '✓';
+            color: #32E5A7;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        /* ── Tabbed form panel ── */
+        .hero-form-panel {
+            background: rgba(10,14,31,0.72);
+            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(31,105,255,0.28);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 28px 72px rgba(0,0,0,0.45), 0 0 0 1px rgba(31,105,255,0.1);
+            opacity: 0;
+            animation: heroLineIn 0.8s cubic-bezier(0.22,1,0.36,1) 0.85s forwards;
+        }
+
+        .form-tabs-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid rgba(31,105,255,0.2);
+        }
+
+        .form-tab-btn {
+            padding: 16px 12px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: rgba(255,255,255,0.45);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+
+        .form-tab-btn.active {
+            color: #fff;
+            border-bottom-color: var(--electric-blue);
+            background: rgba(31,105,255,0.08);
+        }
+
+        .form-tab-btn:not(.active):hover {
+            color: rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .form-tab-body {
+            padding: 22px 22px 18px;
+        }
+
+        .form-tab-pane { display: none; }
+        .form-tab-pane.active { display: block; }
+
+        .form-tab-pane .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+
+        .form-tab-pane .form-field {
+            margin-bottom: 10px;
+        }
+
+        .form-tab-pane input,
+        .form-tab-pane select {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.2s, background 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .form-tab-pane input::placeholder { color: rgba(255,255,255,0.35); }
+
+        .form-tab-pane input:focus,
+        .form-tab-pane select:focus {
+            outline: none;
+            border-color: var(--electric-blue);
+            background: rgba(31,105,255,0.06);
+        }
+
+        .form-tab-pane select {
+            background-color: rgba(255,255,255,0.04);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff60' d='M6 8.5L1.5 4h9z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        .form-tab-pane select option { background: #0d1229; color: #fff; }
+
+        .form-tab-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 4px;
+        }
+
+        .form-tab-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(31,105,255,0.45);
+        }
+
+        .form-privacy {
+            font-size: 11px;
+            color: rgba(255,255,255,0.3);
+            text-align: center;
+            margin-top: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Mobile hero */
+        @media (max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                max-width: 520px;
+            }
+            .hero-left {
+                align-items: center;
+                text-align: center;
+            }
+            .hero-trust { align-items: flex-start; }
         }
 
         /* TITLE — much more impact */
@@ -1062,16 +1236,24 @@
 
         .servicios-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-bottom: 60px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            margin-bottom: 48px;
+        }
+
+        @media (max-width: 900px) {
+            .servicios-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 580px) {
+            .servicios-grid { grid-template-columns: 1fr; }
         }
 
         .service-card {
-            background: rgba(31, 105, 255, 0.08);
-            border: 1px solid rgba(31, 105, 255, 0.2);
-            border-radius: 8px;
-            padding: 50px 40px;
+            background: rgba(31, 105, 255, 0.07);
+            border: 1px solid rgba(31, 105, 255, 0.18);
+            border-radius: 10px;
+            padding: 28px 24px;
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
@@ -1092,40 +1274,67 @@
 
         .service-number {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 64px;
+            font-size: 36px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--electric-blue), var(--soft-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .service-card h3 {
-            font-size: clamp(24px, 4vw, 32px);
+            font-size: clamp(16px, 2vw, 20px);
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .service-card p {
             color: var(--muted);
-            font-size: 16px;
-            line-height: 1.7;
-            margin-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 0;
         }
 
-        .service-link {
-            display: inline-flex;
-            align-items: center;
-            color: var(--electric-blue);
-            font-weight: 600;
-            text-decoration: none;
-            transition: gap 0.3s ease;
-            gap: 8px;
-        }
+        .service-link { display: none; }
 
-        .service-link:hover {
-            gap: 14px;
+        /* Override _premium.js flip cards — diseño plano y profesional */
+        .service-card {
+            background: rgba(31,105,255,0.07) !important;
+            border: 1px solid rgba(31,105,255,0.18) !important;
+            border-radius: 12px !important;
+            padding: 0 !important;
+            perspective: none !important;
+        }
+        .service-card-flip {
+            transform: none !important;
+            transition: none !important;
+            transform-style: flat !important;
+            min-height: auto !important;
+            position: static !important;
+        }
+        .service-card:hover .service-card-flip {
+            transform: none !important;
+        }
+        .service-card-front {
+            position: static !important;
+            backface-visibility: visible !important;
+            -webkit-backface-visibility: visible !important;
+            transform: none !important;
+            border: none !important;
+            border-radius: 12px !important;
+            background: transparent !important;
+            padding: 28px 24px !important;
+            min-height: auto !important;
+        }
+        .service-card-back,
+        .service-back-cta,
+        .service-card-flip-hint { display: none !important; }
+
+        .service-card:hover {
+            background: rgba(31,105,255,0.13) !important;
+            border-color: rgba(31,105,255,0.35) !important;
+            transform: translateY(-3px);
         }
 
         /* About section */
@@ -1276,9 +1485,11 @@
         }
 
         .properties-header h2 {
-            font-size: clamp(48px, 6vw, 64px);
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(48px, 6vw, 72px);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
         }
 
         .properties-header p {
@@ -2255,127 +2466,98 @@
             opacity: 1;
         }
 
-        /* Mobile responsive */
+        /* ══════════════════════════════
+           MOBILE FIRST — max 768px
+        ══════════════════════════════ */
         @media (max-width: 768px) {
-            .hero-miniform-wrap {
-                padding: 22px 18px 18px;
-                margin-top: 28px;
-            }
-            .hero-miniform-row {
+
+            /* ── Nav ── */
+            nav { padding: 0 16px; height: 56px; }
+            .nav-logo img { height: 36px; }
+            .nav-links { display: none; }
+            .nav-cta { padding: 9px 16px; font-size: 11px; letter-spacing: 0.5px; }
+
+            /* ── Hero ── */
+            .hero { padding: 72px 16px 32px; min-height: unset; }
+            .hero-grid {
                 grid-template-columns: 1fr;
-            }
-            nav {
-                padding: 0 20px;
-                height: 60px;
-            }
-
-            .nav-logo img {
-                height: 40px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .nav-cta {
-                padding: 10px 20px;
-                font-size: 12px;
-            }
-
-            .hero {
-                padding: 80px 20px 40px;
-            }
-
-            .hero-center {
+                gap: 28px;
                 max-width: 100%;
+                text-align: center;
             }
-
+            .hero-left { align-items: center; }
             .hero-headline {
-                font-size: clamp(36px, 8vw, 64px);
+                font-size: clamp(32px, 9vw, 52px);
                 align-items: center;
+                gap: 2px;
+                letter-spacing: -1px;
             }
+            .hero-subtitle { font-size: 14px; margin: 0 auto 16px; }
+            .hero-urgency { margin-bottom: 16px; }
+            .hero-trust { align-items: flex-start; gap: 6px; }
+            .hero-trust-item { font-size: 11px; }
+            .hero-form-panel { width: 100%; }
+            .form-tab-btn { font-size: 11px; padding: 13px 8px; }
+            .form-tab-body { padding: 16px 14px 14px; }
+            .form-tab-pane input,
+            .form-tab-pane select { padding: 11px 12px; font-size: 14px; }
+            .form-tab-submit { padding: 14px; font-size: 13px; }
 
-            .hero-subtitle {
-                font-size: 15px;
-            }
+            /* ── Marquee ── */
+            .marquee-item { font-size: 14px; }
 
-            .hero-cta-group {
-                justify-content: center;
-                gap: 12px;
-            }
+            /* ── Stats ── */
+            .stats-section { padding: 36px 16px; }
+            .stats-section-title { font-size: clamp(28px, 7vw, 40px); }
+            .stats-marquee-num { font-size: clamp(20px, 5vw, 28px); }
+            .stats-marquee-item { padding: 0 24px; }
 
-            .btn-primary, .btn-secondary {
-                width: 100%;
-            }
+            /* ── Servicios / Negocios Inmobiliarios ── */
+            .servicios-section { padding: 40px 16px; }
+            .section-title { font-size: clamp(32px, 8vw, 48px); }
+            .servicios-grid { grid-template-columns: 1fr; gap: 12px; }
+            .service-card-front { padding: 20px 18px !important; }
+            .service-card-front .service-number { font-size: 28px !important; margin-bottom: 8px !important; }
 
-            .stats-section,
-            .servicios-section,
-            .about-section {
-                padding: 40px 20px;
-            }
+            /* ── Globe section ── */
+            .globe-inner { grid-template-columns: 1fr; gap: 24px; }
+            .globe-mount { max-width: 280px; }
 
-            .about-section {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
+            /* ── About Diego ── */
+            .about-section { flex-direction: column; padding: 40px 16px; gap: 24px; }
+            .about-photo-card { width: 200px; }
+            .about-photo-card img { height: 250px; }
+            .about-content { max-width: 100%; }
+            .about-content h2 { font-size: clamp(32px, 8vw, 44px); }
+            .about-stats { flex-direction: row; }
+            .about-stat-num { font-size: clamp(16px, 4vw, 22px); }
 
-            .about-photo-frame {
-                max-width: 280px;
-            }
-            .about-name-tag {
-                font-size: 26px;
-            }
+            /* ── Properties ── */
+            .properties-section { padding: 40px 16px; }
+            .properties-header h2 { font-size: clamp(32px, 8vw, 48px); }
+            .properties-scroll { flex-direction: column; align-items: center; }
 
-            .servicios-grid {
-                grid-template-columns: 1fr;
-            }
+            /* ── Footer ── */
+            footer { padding: 40px 16px 24px; }
+            .footer-main { grid-template-columns: 1fr 1fr; gap: 20px; padding: 32px 16px 24px; }
+            .footer-bottom { flex-direction: column; gap: 10px; padding: 14px 16px; }
+            .footer-bottom-links { flex-direction: column; gap: 8px; }
 
-            .properties-section,
-            .testimonials-section,
-            .final-cta-section {
-                padding: 40px 20px;
-            }
+            /* ── WhatsApp ── */
+            .whatsapp-button { width: 48px; height: 48px; bottom: 16px; right: 16px; }
+            .whatsapp-button svg { width: 22px; height: 22px; }
 
-            .properties-scroll {
-                gap: 20px;
-            }
+            /* ── General ── */
+            .btn-primary, .btn-secondary, .btn-hero { font-size: 14px; padding: 15px 20px; }
+            .comparativa-grid { grid-template-columns: 1fr 1fr; }
+        }
 
-            .property-card {
-                flex: 0 0 280px;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .btn-cta {
-                width: 100%;
-            }
-
-            footer {
-                padding: 60px 20px 30px;
-            }
-
-            .footer-brand {
-                margin-bottom: 50px;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .whatsapp-button {
-                width: 50px;
-                height: 50px;
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .whatsapp-button svg {
-                width: 24px;
-                height: 24px;
-            }
+        /* ── Tablet 480–900 ── */
+        @media (min-width: 481px) and (max-width: 900px) {
+            .hero-grid { grid-template-columns: 1fr; max-width: 560px; }
+            .hero-left { align-items: center; text-align: center; }
+            .servicios-grid { grid-template-columns: 1fr 1fr; }
+            .about-section { flex-direction: column; align-items: center; }
         }
     </style>
     <link rel="stylesheet" href="_premium.css">
@@ -2390,10 +2572,11 @@
             <li><a href="#home">HOME</a></li>
             <li><a href="propietarios">PROPIETARIOS</a></li>
             <li><a href="compradores">COMPRADORES</a></li>
+            <li><a href="propiedades.html">PROPIEDADES</a></li>
             <li><a href="#about">NOSOTROS</a></li>
             <li><a href="#contact">CONTACTO</a></li>
         </ul>
-        <a class="nav-cta" href="tel:+5491157274477">+54 9 11 5727-4477</a>
+        <a class="nav-cta" href="propietarios">Tasar mi propiedad →</a>
     </nav>
 
     <!-- Hero Section -->
@@ -2401,42 +2584,115 @@
         <div class="hero-light-streak"></div>
         <div class="hero-light-streak s2"></div>
 
-        <div class="hero-center">
-            <div class="hero-urgency">
-                <span class="dot"></span>
-                <span>Tasación gratuita en 72 horas</span>
-            </div>
-            <div class="hero-headline">
-                <span>Tu propiedad</span>
-                <span>vendida en</span>
-                <span class="italic">47 días.</span>
-            </div>
-            <p class="hero-subtitle">Asesor inmobiliario en Capital Federal y barrios privados zona sur — Canning, Berazategui, Pueblos del Plata. Diego Giannini · Coldwell Banker Livello.</p>
-            <div class="hero-cta-group">
-                <a href="propietarios" class="btn-hero btn-hero-vender">🏠 Quiero vender</a>
-                <a href="compradores" class="btn-hero btn-hero-comprar">🔍 ¿Querés comprar?</a>
-            </div>
-            <form class="hero-miniform-wrap" id="hero-form" onsubmit="handleHomeMiniForm(event)">
-                <div class="hero-miniform-title">¿Querés que Diego te contacte?</div>
-                <div class="hero-miniform-sub">Te escribe en menos de 2 horas · Sin compromiso</div>
-                <div class="hero-miniform-row">
-                    <input type="text" name="nombre" required placeholder="Tu nombre">
-                    <input type="tel" name="whatsapp" required placeholder="+54 9 11 XXXX-XXXX">
+        <div class="hero-grid">
+
+            <!-- IZQUIERDA: título + subtítulo + credenciales -->
+            <div class="hero-left">
+                <div class="hero-urgency">
+                    <span class="dot"></span>
+                    <span>Coldwell Banker Livello · Buenos Aires</span>
                 </div>
-                <input type="hidden" name="intencion" id="intencion-hidden" required>
-                <div class="hero-miniform-selector">
-                    <div class="hero-miniform-choice" onclick="selectIntencion(this,'vender')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        <span>QUIERO<br>VENDER</span>
-                    </div>
-                    <div class="hero-miniform-choice" onclick="selectIntencion(this,'comprar')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        <span>QUIERO<br>COMPRAR</span>
-                    </div>
+                <div class="hero-headline">
+                    <span>Vendé, comprá</span>
+                    <span>o invertí en</span>
+                    <span class="italic">Buenos Aires.</span>
                 </div>
-                <button type="submit" class="hero-miniform-submit">Que Diego me contacte →</button>
-                <p class="hero-miniform-privacy">🔒 Sin spam. Sin terceros. Solo Diego.</p>
-            </form>
+                <p class="hero-subtitle">Asesor inmobiliario con más de 6 años en el mercado. Capital Federal, Canning, Berazategui y Pueblos del Plata. Cada operación con atención directa, de principio a fin.</p>
+                <div class="hero-trust">
+                    <span class="hero-trust-item">+100 operaciones cerradas en Buenos Aires</span>
+                    <span class="hero-trust-item">Promedio de venta muy por debajo del mercado</span>
+                    <span class="hero-trust-item">Trato directo con Diego, sin intermediarios</span>
+                </div>
+            </div>
+
+            <!-- DERECHA: formulario mixto con tabs -->
+            <div class="hero-form-panel">
+                <div class="form-tabs-header">
+                    <button type="button" class="form-tab-btn active" onclick="switchTab('vender', this)">Propietarios</button>
+                    <button type="button" class="form-tab-btn" onclick="switchTab('comprar', this)">Compradores</button>
+                </div>
+                <div class="form-tab-body">
+
+                    <!-- Pane: Propietarios -->
+                    <div class="form-tab-pane active" id="pane-vender">
+                        <form onsubmit="submitHeroForm(event,'vender')">
+                            <div class="form-row">
+                                <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre"></div>
+                                <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono"></div>
+                                <div class="form-field"><input type="email" name="email" required placeholder="Email"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <select name="tipo" title="Tipo de propiedad" required>
+                                        <option value="">Tipo de propiedad</option>
+                                        <option value="Departamento">Departamento</option>
+                                        <option value="Casa">Casa</option>
+                                        <option value="Lote / Terreno">Lote / Terreno</option>
+                                        <option value="PH">PH</option>
+                                        <option value="Local / Oficina">Local / Oficina</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <select name="zona" title="Zona de la propiedad" required>
+                                        <option value="">Zona</option>
+                                        <option value="Canning / Zona sur">Canning / Zona sur</option>
+                                        <option value="Berazategui / Pueblos del Plata">Berazategui</option>
+                                        <option value="Palermo">Palermo</option>
+                                        <option value="Recoleta / Belgrano">Recoleta / Belgrano</option>
+                                        <option value="Otra zona CABA">Otra CABA</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="form-tab-submit">Solicitar tasación gratuita →</button>
+                            <p class="form-privacy">🔒 Sin spam · Te responde Diego directamente</p>
+                        </form>
+                    </div>
+
+                    <!-- Pane: Compradores -->
+                    <div class="form-tab-pane" id="pane-comprar">
+                        <form onsubmit="submitHeroForm(event,'comprar')">
+                            <div class="form-row">
+                                <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre"></div>
+                                <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono"></div>
+                                <div class="form-field"><input type="email" name="email" required placeholder="Email"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <select name="perfil" title="Qué buscás" required>
+                                        <option value="">¿Qué buscás?</option>
+                                        <option value="Primera propiedad">Primera propiedad</option>
+                                        <option value="Cambio de propiedad">Cambio</option>
+                                        <option value="Inversión / Renta">Inversión / Renta</option>
+                                        <option value="Lote en barrio privado">Lote barrio privado</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <select name="zona" title="Zona de interés" required>
+                                        <option value="">Zona</option>
+                                        <option value="Canning / Zona sur">Canning / Zona sur</option>
+                                        <option value="Berazategui / Pueblos del Plata">Berazategui</option>
+                                        <option value="Palermo">Palermo</option>
+                                        <option value="Recoleta / Belgrano">Recoleta / Belgrano</option>
+                                        <option value="Otra zona CABA">Otra CABA</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="form-tab-submit">Quiero ver propiedades →</button>
+                            <p class="form-privacy">🔒 Sin spam · Te responde Diego directamente</p>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -2463,8 +2719,7 @@
     <!-- Stats section -->
     <section class="stats-section fade-in">
         <div class="stats-section-header">
-            <div class="stats-section-eyebrow">Trayectoria</div>
-            <h2 class="stats-section-title">Lo que dicen <em>los números.</em></h2>
+            <h2 class="stats-section-title">Trayectoria</h2>
         </div>
         <div class="stats-marquee-wrap">
             <div class="stats-marquee-track">
@@ -2477,8 +2732,6 @@
                 <span class="stats-marquee-sep">·</span>
                 <div class="stats-marquee-item"><span class="stats-marquee-num">1 a 1</span><span class="stats-marquee-label">Atención personal directa</span></div>
                 <span class="stats-marquee-sep">·</span>
-                <div class="stats-marquee-item"><span class="stats-marquee-num">47 días</span><span class="stats-marquee-label">Promedio de venta</span></div>
-                <span class="stats-marquee-sep">·</span>
                 <div class="stats-marquee-item"><span class="stats-marquee-num">3.000+</span><span class="stats-marquee-label">Oficinas Coldwell Banker</span></div>
                 <span class="stats-marquee-sep">·</span>
                 <!-- Set 2 (duplicado para loop infinito) -->
@@ -2490,8 +2743,6 @@
                 <span class="stats-marquee-sep">·</span>
                 <div class="stats-marquee-item"><span class="stats-marquee-num">1 a 1</span><span class="stats-marquee-label">Atención personal directa</span></div>
                 <span class="stats-marquee-sep">·</span>
-                <div class="stats-marquee-item"><span class="stats-marquee-num">47 días</span><span class="stats-marquee-label">Promedio de venta</span></div>
-                <span class="stats-marquee-sep">·</span>
                 <div class="stats-marquee-item"><span class="stats-marquee-num">3.000+</span><span class="stats-marquee-label">Oficinas Coldwell Banker</span></div>
                 <span class="stats-marquee-sep">·</span>
             </div>
@@ -2501,8 +2752,8 @@
     <!-- Servicios section -->
     <section class="servicios-section fade-in">
         <div class="section-header">
-            <div class="section-eyebrow">¿En qué te ayudo?</div>
-            <h2 class="section-title">Servicios <em>inmobiliarios.</em></h2>
+            <div class="section-eyebrow">Lo que hacemos</div>
+            <h2 class="section-title">Negocios <em>inmobiliarios.</em></h2>
         </div>
         <div class="servicios-grid">
             <div class="service-card">
@@ -2523,6 +2774,24 @@
                 <p>Gestión integral de alquileres en barrios privados de zona sur. Desde búsqueda de inquilinos calificados hasta administración mensual. Tu propiedad rendida con tranquilidad.</p>
                 <a href="propietarios" class="service-link">Consultar →</a>
             </div>
+            <div class="service-card">
+                <div class="service-number">04</div>
+                <h3>Red Global Coldwell Banker</h3>
+                <p>Tu propiedad accede a 3.000+ oficinas en 40 países. Compradores internacionales que pagan en dólares — desde New York hasta Madrid — sin que tengas que buscarlos vos. La red inmobiliaria más grande del mundo trabaja para vos.</p>
+                <a href="propietarios" class="service-link">Más información →</a>
+            </div>
+            <div class="service-card">
+                <div class="service-number">05</div>
+                <h3>Tasación profesional</h3>
+                <p>No trabajamos con estimaciones: analizamos operaciones reales cerradas en tu zona para entregarte el precio exacto de mercado. Una tasación gratuita, basada en datos, que te da poder real de negociación.</p>
+                <a href="propietarios" class="service-link">Tasar mi propiedad →</a>
+            </div>
+            <div class="service-card">
+                <div class="service-number">06</div>
+                <h3>Reporte semanal</h3>
+                <p>Cada semana recibís métricas reales: visitas recibidas, consultas, ofertas y feedback directo de cada comprador. Cero incertidumbre, transparencia total durante todo el proceso de venta.</p>
+                <a href="propietarios" class="service-link">Saber más →</a>
+            </div>
         </div>
     </section>
 
@@ -2541,27 +2810,6 @@
                 </div>
             </div>
             <div class="globe-mount" data-globe-mount aria-hidden="true"></div>
-        </div>
-    </section>
-
-    <!-- ════════════ Comparativa ════════════ -->
-    <section class="comparativa-section fade-in" id="comparativa">
-        <div class="comparativa-header">
-            <span class="eyebrow">Por qué Coldwell Banker</span>
-            <h2>La diferencia que <em>importa</em></h2>
-        </div>
-        <div class="comparativa-grid">
-            <div class="comp-card"><div class="comp-icon">🌐</div><div class="comp-title">Red global</div><div class="comp-desc">3.000+ oficinas en 40 países vs. solo locales</div></div>
-            <div class="comp-card"><div class="comp-icon">📣</div><div class="comp-title">Marketing digital</div><div class="comp-desc">Google/Meta Ads propios vs. solo Zonaprop</div></div>
-            <div class="comp-card"><div class="comp-icon">📊</div><div class="comp-title">Tasación real</div><div class="comp-desc">ACM con operaciones cerradas vs. estimaciones infladas</div></div>
-            <div class="comp-card"><div class="comp-icon">⚡</div><div class="comp-title">47 días promedio</div><div class="comp-desc">Tiempo de venta vs. +90 días del mercado</div></div>
-            <div class="comp-card"><div class="comp-icon">📋</div><div class="comp-title">Reporte semanal</div><div class="comp-desc">Métricas transparentes vs. "llamame si hay algo"</div></div>
-            <div class="comp-card"><div class="comp-icon">🔑</div><div class="comp-title">Off-market exclusivo</div><div class="comp-desc">Propiedades antes que el mercado vs. ninguna</div></div>
-            <div class="comp-card"><div class="comp-icon">🎓</div><div class="comp-title">Certificación CB</div><div class="comp-desc">Formación internacional vs. variable</div></div>
-            <div class="comp-card"><div class="comp-icon">👤</div><div class="comp-title">Diego directo</div><div class="comp-desc">Un solo interlocutor vs. cambia por turno</div></div>
-        </div>
-        <div class="comparativa-cta">
-            <a href="propietarios" class="btn-primary">Tasar mi propiedad gratis →</a>
         </div>
     </section>
 
@@ -2594,8 +2842,8 @@
                     <span class="about-stat-label">Trayectoria</span>
                 </div>
                 <div class="about-stat">
-                    <span class="about-stat-num">47 días</span>
-                    <span class="about-stat-label">Promedio venta</span>
+                    <span class="about-stat-num">1 a 1</span>
+                    <span class="about-stat-label">Atención directa</span>
                 </div>
             </div>
             <a href="https://instagram.com/gianninirealestate" class="about-cta about-cta-ig" target="_blank" rel="noopener noreferrer">
@@ -2606,17 +2854,6 @@
     </section>
 
     <!-- ════════════ BOOKING CTA — GHL Calendar ════════════ -->
-    <!-- Properties scroll — populated dynamically from propiedades.json by _properties.js -->
-    <section class="properties-section fade-in" id="propiedades">
-        <div class="properties-header">
-            <h2>Propiedades <em>destacadas</em></h2>
-            <p>Una selección de oportunidades en los barrios más premium · Datos reales · Off-market exclusivas</p>
-            <a href="propiedades.html" class="btn-cta btn-cta-primary properties-cta">Ver toda la cartera →</a>
-        </div>
-        <div class="properties-scroll" id="properties-home-scroll">
-            <!-- Auto-rendered from propiedades.json. Editá ese archivo para agregar/quitar propiedades. -->
-        </div>
-    </section>
 
     <!-- Testimonials section — OCULTA hasta tener testimonios reales con autorización del cliente. Sacar style="display:none" cuando se reemplacen los placeholders. -->
     <section class="testimonials-section fade-in" style="display:none;">
@@ -2735,8 +2972,8 @@
         <style>@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}</style>
     </section>
 
-    <!-- ========== FAQ SECTION (con Schema.org FAQPage) ========== -->
-    <section class="faq-section fade-in" id="faq" style="padding:56px 5%;background:#0A0E1F;">
+    <!-- FAQ SECTION ELIMINADA -->
+    <section class="faq-section fade-in" id="faq" style="display:none;">
         <div style="max-width:860px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:80px;">
                 <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#4D8AFF;margin-bottom:24px;">Respuestas directas</div>
@@ -2794,7 +3031,7 @@
     </button>
 
     <!-- Footer -->
-    <footer>
+    <footer id="contact">
         <div class="footer-main">
             <div class="footer-brand-col">
                 <div class="footer-brand-name">Diego Giannini</div>
@@ -2908,6 +3145,37 @@
             const message = 'Hola Diego, me gustaría conocer sobre tus servicios de real estate.';
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
+        }
+
+        // Hero form tabs
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.form-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.form-tab-pane').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('pane-' + tab).classList.add('active');
+        }
+
+        function submitHeroForm(e, tipo) {
+            e.preventDefault();
+            const f = e.target;
+            const nombre = (f.nombre ? f.nombre.value : '').trim();
+            const apellido = (f.apellido ? f.apellido.value : '').trim();
+            const telefono = (f.telefono ? f.telefono.value : '').trim();
+            const email = (f.email ? f.email.value : '').trim();
+            if (!nombre || !telefono) return;
+
+            let msg = '';
+            if (tipo === 'vender') {
+                const propTipo = (f.tipo ? f.tipo.value : '') || '';
+                const zona = (f.zona ? f.zona.value : '') || '';
+                msg = `Hola Diego, quiero tasar mi propiedad.\n👤 ${nombre} ${apellido}\n📱 ${telefono}\n✉️ ${email}${propTipo ? '\n🏠 Tipo: ' + propTipo : ''}${zona ? '\n📍 Zona: ' + zona : ''}`;
+            } else {
+                const perfil = (f.perfil ? f.perfil.value : '') || '';
+                const zona = (f.zona ? f.zona.value : '') || '';
+                msg = `Hola Diego, estoy buscando propiedades.\n👤 ${nombre} ${apellido}\n📱 ${telefono}\n✉️ ${email}${perfil ? '\n🔍 Busco: ' + perfil : ''}${zona ? '\n📍 Zona: ' + zona : ''}`;
+            }
+
+            window.open('https://wa.me/5491157274477?text=' + encodeURIComponent(msg), '_blank');
         }
 
         function selectIntencion(el, valor) {
