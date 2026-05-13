@@ -381,10 +381,12 @@
 
         .form-label {
             display: block;
-            font-size: 13px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
             font-weight: 600;
             color: var(--white);
             margin-bottom: 8px;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
@@ -404,7 +406,13 @@
             transition: all 0.3s ease;
         }
 
-        input::placeholder, select {
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        select {
             color: rgba(255, 255, 255, 0.5);
         }
 
@@ -1210,7 +1218,12 @@
                 <form id="leadForm" onsubmit="handleFormSubmit(event)">
                     <div class="form-group">
                         <label class="form-label">Tu nombre <span class="required">*</span></label>
-                        <input type="text" name="nombre" required placeholder="Nombre completo">
+                        <input type="text" name="nombre" required placeholder="Nombre">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tu apellido <span class="required">*</span></label>
+                        <input type="text" name="apellido" required placeholder="Apellido">
                     </div>
 
                     <div class="form-group">
@@ -1239,9 +1252,11 @@
                             <label class="form-label">Zona de interés</label>
                             <select name="zona_prop" title="Zona">
                                 <option value="">Selecciona una zona</option>
-                                <option value="Canning">Canning</option>
-                                <option value="Berazategui">Berazategui</option>
                                 <option value="CABA">CABA</option>
+                                <option value="GBA Sur">GBA Sur</option>
+                                <option value="GBA Oeste">GBA Oeste</option>
+                                <option value="GBA Norte">GBA Norte</option>
+                                <option value="GBA Este">GBA Este</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -1365,13 +1380,11 @@
 
     <!-- REEMPLAZADO: Two Paths, Why, Stats, Final CTA y footer viejo eliminados -->
     <!-- ══ VIDEO SECTION ══ -->
-    <section style="padding:64px 5%;background:#0A0E1F;">
-        <div style="max-width:900px;margin:0 auto;text-align:center;">
-            <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#1F69FF;margin-bottom:14px;">Cómo trabajamos</div>
-            <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,52px);font-weight:600;color:#fff;letter-spacing:-0.02em;line-height:1.1;margin-bottom:36px;">Encontrá tu propiedad <em style="font-style:italic;color:#4D8AFF;">con el proceso correcto.</em></h2>
-            <div style="width:100%;aspect-ratio:16/9;background:rgba(31,105,255,0.06);border:2px dashed rgba(31,105,255,0.3);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
-                <div style="width:72px;height:72px;border-radius:50%;background:rgba(31,105,255,0.18);border:2px solid rgba(31,105,255,0.4);display:flex;align-items:center;justify-content:center;">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#4D8AFF"><path d="M8 5v14l11-7z"/></svg>
+    <section style="padding:32px 5%;background:#0A0E1F;">
+        <div style="max-width:860px;margin:0 auto;">
+            <div style="width:100%;height:300px;background:rgba(31,105,255,0.06);border:2px dashed rgba(31,105,255,0.3);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;">
+                <div style="width:64px;height:64px;border-radius:50%;background:rgba(31,105,255,0.18);border:2px solid rgba(31,105,255,0.4);display:flex;align-items:center;justify-content:center;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#4D8AFF"><path d="M8 5v14l11-7z"/></svg>
                 </div>
                 <p style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;margin:0;">Video próximamente</p>
             </div>
@@ -1738,8 +1751,10 @@
 
             const form = e.target;
             const formData = new FormData(form);
+            const apellido = formData.get('apellido') || '';
+            const nombreCompleto = apellido ? `${formData.get('nombre')} ${apellido}` : formData.get('nombre');
             const data = {
-                nombre: formData.get('nombre'),
+                nombre: nombreCompleto,
                 whatsapp: formData.get('whatsapp'),
                 email: formData.get('email'),
                 perfil: formData.get('perfil'),

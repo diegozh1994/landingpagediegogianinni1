@@ -1414,7 +1414,7 @@ html { scroll-behavior: smooth; }
   align-items: center;
   justify-content: center;
   gap: 56px;
-  padding: 64px 60px;
+  padding: 40px 60px;
   background: #0A0E1F;
   position: relative;
   overflow: hidden;

@@ -1004,6 +1004,13 @@
 
         .form-group input::placeholder {
             color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group select option {
+            background: #0A0E1F;
+            color: #fff;
         }
 
         .form-group input:focus,
@@ -1315,7 +1322,11 @@
                     </div>
                     <div class="form-group">
                         <label for="name">Tu nombre *</label>
-                        <input type="text" id="name" name="nombre" required placeholder="Nombre completo">
+                        <input type="text" id="name" name="nombre" required placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Tu apellido *</label>
+                        <input type="text" id="apellido" name="apellido" required placeholder="Apellido">
                     </div>
                     <div class="form-group">
                         <label for="whatsapp">WhatsApp *</label>
@@ -1398,13 +1409,11 @@
     </section>
 
     <!-- ══ VIDEO SECTION ══ -->
-    <section style="padding:64px 5%;background:#0A0E1F;">
-        <div style="max-width:900px;margin:0 auto;text-align:center;">
-            <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#1F69FF;margin-bottom:14px;">Cómo trabajamos</div>
-            <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,52px);font-weight:600;color:#fff;letter-spacing:-0.02em;line-height:1.1;margin-bottom:36px;">El proceso de venta <em style="font-style:italic;color:#4D8AFF;">de principio a fin.</em></h2>
-            <div style="width:100%;aspect-ratio:16/9;background:rgba(31,105,255,0.06);border:2px dashed rgba(31,105,255,0.3);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;">
-                <div style="width:72px;height:72px;border-radius:50%;background:rgba(31,105,255,0.18);border:2px solid rgba(31,105,255,0.4);display:flex;align-items:center;justify-content:center;">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#4D8AFF"><path d="M8 5v14l11-7z"/></svg>
+    <section style="padding:32px 5%;background:#0A0E1F;">
+        <div style="max-width:860px;margin:0 auto;">
+            <div style="width:100%;height:300px;background:rgba(31,105,255,0.06);border:2px dashed rgba(31,105,255,0.3);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;">
+                <div style="width:64px;height:64px;border-radius:50%;background:rgba(31,105,255,0.18);border:2px solid rgba(31,105,255,0.4);display:flex;align-items:center;justify-content:center;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#4D8AFF"><path d="M8 5v14l11-7z"/></svg>
                 </div>
                 <p style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;margin:0;">Video próximamente</p>
             </div>
@@ -1993,14 +2002,16 @@
             event.preventDefault();
             const form = event.target;
             const nombre = form.querySelector('input[name="nombre"]').value;
+            const apellido = form.querySelector('input[name="apellido"]')?.value || '';
             const whatsapp = form.querySelector('input[name="whatsapp"]')?.value || '';
             const email = form.querySelector('input[name="email"]')?.value || '';
             const zona = form.querySelector('select[name="zona"]')?.value || 'No especificada';
             const barrio = form.querySelector('input[name="barrio"]')?.value || '';
             const tipo = form.querySelector('select[name="tipo"]')?.value || '';
             const plazo = form.querySelector('select[name="plazo"]')?.value || '';
+            const nombreCompleto = apellido ? `${nombre} ${apellido}` : nombre;
 
-            const payload = {nombre, whatsapp, email, zona, barrio, tipo, plazo, origen:'landing-propietarios', fecha:new Date().toISOString()};
+            const payload = {nombre: nombreCompleto, whatsapp, email, zona, barrio, tipo, plazo, origen:'landing-propietarios', fecha:new Date().toISOString()};
 
             // 1) Enviar al email vía Formspree (backend)
             if(FORM_ENDPOINT && !FORM_ENDPOINT.includes('REPLACE')){
@@ -2012,7 +2023,7 @@
 
             // 3) Abrir WhatsApp con mensaje limpio hacia Diego
             const zonaLabel = zona !== 'No especificada' ? zona : '';
-            const message = `Hola Diego, quiero una tasación gratuita.%0A%0ANombre: ${nombre}${zonaLabel ? '%0AZona: '+zonaLabel : ''}${whatsapp ? '%0AWhatsApp: '+whatsapp : ''}`;
+            const message = `Hola Diego, quiero una tasación gratuita.%0A%0ANombre: ${nombreCompleto}${zonaLabel ? '%0AZona: '+zonaLabel : ''}${whatsapp ? '%0AWhatsApp: '+whatsapp : ''}`;
             window.location.href = `https://wa.me/${DIEGO_WHATSAPP}?text=${message}`;
         }
 
