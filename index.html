@@ -84,7 +84,7 @@
       fbq('init', '1646890566557004');
       fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1646890566557004&ev=PageView&noscript=1"/></noscript>
+    <noscript><img height="1" width="1" class="campos-ocultos" src="https://www.facebook.com/tr?id=1646890566557004&ev=PageView&noscript=1"/></noscript>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -181,7 +181,7 @@
         }
 
         .nav-logo {
-            height: 48px;
+            height: 72px;
             display: flex;
             align-items: center;
         }
@@ -189,6 +189,7 @@
         .nav-logo img {
             height: 100%;
             width: auto;
+            max-width: 280px;
         }
 
         .nav-links {
@@ -518,6 +519,8 @@
             margin-top: 10px;
             font-family: 'Inter', sans-serif;
         }
+
+        .campos-ocultos { display: none; }
 
         /* Mobile hero */
         @media (max-width: 900px) {
@@ -2654,37 +2657,81 @@
 
                     <!-- Pane: Compradores -->
                     <div class="form-tab-pane" id="pane-comprar">
-                        <form onsubmit="submitHeroForm(event,'comprar')">
-                            <div class="form-row">
-                                <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre"></div>
-                                <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido"></div>
+                        <form onsubmit="submitHeroForm(event,'comprar')" id="form-comprar">
+                            <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre"></div>
+                            <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido"></div>
+                            <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono"></div>
+                            <div class="form-field"><input type="email" name="email" required placeholder="Email"></div>
+                            <div class="form-field">
+                                <select name="perfil" title="Qué buscás" required onchange="handleCompradorPerfil(this)">
+                                    <option value="">¿Qué buscás?</option>
+                                    <option value="Propiedad">Propiedad</option>
+                                    <option value="Inversión / Renta">Inversión / Renta</option>
+                                    <option value="Lote / Barrio privado">Lote / Barrio privado</option>
+                                </select>
                             </div>
-                            <div class="form-row">
-                                <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono"></div>
-                                <div class="form-field"><input type="email" name="email" required placeholder="Email"></div>
-                            </div>
-                            <div class="form-row">
+
+                            <!-- Condicional: Propiedad -->
+                            <div id="campos-propiedad" class="campos-ocultos">
                                 <div class="form-field">
-                                    <select name="perfil" title="Qué buscás" required>
-                                        <option value="">¿Qué buscás?</option>
-                                        <option value="Primera propiedad">Primera propiedad</option>
-                                        <option value="Cambio de propiedad">Cambio</option>
-                                        <option value="Inversión / Renta">Inversión / Renta</option>
-                                        <option value="Lote en barrio privado">Lote barrio privado</option>
+                                    <select name="zona_prop" title="Zona">
+                                        <option value="">Zona de interés</option>
+                                        <option value="Canning">Canning</option>
+                                        <option value="Berazategui">Berazategui</option>
+                                        <option value="CABA">CABA</option>
                                     </select>
                                 </div>
                                 <div class="form-field">
-                                    <select name="zona" title="Zona de interés" required>
-                                        <option value="">Zona</option>
-                                        <option value="Canning / Zona sur">Canning / Zona sur</option>
-                                        <option value="Berazategui / Pueblos del Plata">Berazategui</option>
-                                        <option value="Palermo">Palermo</option>
-                                        <option value="Recoleta / Belgrano">Recoleta / Belgrano</option>
-                                        <option value="Otra zona CABA">Otra CABA</option>
-                                        <option value="Otra">Otra</option>
+                                    <select name="ambientes" title="Ambientes">
+                                        <option value="">Cantidad de ambientes</option>
+                                        <option value="Monoambiente">Monoambiente</option>
+                                        <option value="2 ambientes">2 ambientes</option>
+                                        <option value="3 ambientes">3 ambientes</option>
+                                        <option value="4 ambientes">4 ambientes</option>
+                                        <option value="5 o más ambientes">5 o más ambientes</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <select name="presupuesto_prop" title="Presupuesto">
+                                        <option value="">Presupuesto</option>
+                                        <option value="Hasta USD 100.000">Hasta USD 100.000</option>
+                                        <option value="USD 100.000 – 300.000">USD 100.000 – 300.000</option>
+                                        <option value="Más de USD 300.000">Más de USD 300.000</option>
                                     </select>
                                 </div>
                             </div>
+
+                            <!-- Condicional: Inversión / Renta -->
+                            <div id="campos-inversion" class="campos-ocultos">
+                                <div class="form-field">
+                                    <select name="zona_inv" title="Zona">
+                                        <option value="">Zona de interés</option>
+                                        <option value="Canning">Canning</option>
+                                        <option value="Berazategui">Berazategui</option>
+                                        <option value="CABA">CABA</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <select name="presupuesto_inv" title="Presupuesto">
+                                        <option value="">Presupuesto de inversión</option>
+                                        <option value="Hasta USD 100.000">Hasta USD 100.000</option>
+                                        <option value="USD 100.000 – 300.000">USD 100.000 – 300.000</option>
+                                        <option value="Más de USD 300.000">Más de USD 300.000</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Condicional: Lote / Barrio privado -->
+                            <div id="campos-lote" class="campos-ocultos">
+                                <div class="form-field">
+                                    <select name="ubicacion_lote" title="Ubicación">
+                                        <option value="">Ubicación del lote</option>
+                                        <option value="Canning">Canning</option>
+                                        <option value="Berazategui">Berazategui</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <button type="submit" class="form-tab-submit">Quiero ver propiedades →</button>
                             <p class="form-privacy">🔒 Sin spam · Te responde Diego directamente</p>
                         </form>
@@ -2855,7 +2902,7 @@
 
     <!-- ════════════ BOOKING CTA — GHL Calendar ════════════ -->
 
-    <!-- Testimonials section — OCULTA hasta tener testimonios reales con autorización del cliente. Sacar style="display:none" cuando se reemplacen los placeholders. -->
+    <!-- Testimonials section — OCULTA hasta tener testimonios reales con autorización del cliente. Sacar class="campos-ocultos" cuando se reemplacen los placeholders. -->
     <section class="testimonials-section fade-in" style="display:none;">
         <div class="testimonials-header">
             <h2>Testimonios</h2>
@@ -2932,7 +2979,7 @@
         </div>
     </section>
 
-    <!-- ========== MARKET DASHBOARD WIDGET — OCULTO. Sacar style="display:none" para reactivar cuando se quieran mostrar precios de m² por barrio. ========== -->
+    <!-- ========== MARKET DASHBOARD WIDGET — OCULTO. Sacar class="campos-ocultos" para reactivar cuando se quieran mostrar precios de m² por barrio. ========== -->
     <section class="market-dashboard fade-in" style="display:none;padding:100px 5%;background:linear-gradient(180deg,#0A0E1F,#0F1730);">
         <div style="max-width:1280px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:60px;">
@@ -3051,8 +3098,7 @@
                 <div class="footer-col-title">Zonas</div>
                 <a href="compradores">Canning</a>
                 <a href="compradores">Berazategui</a>
-                <a href="compradores">Pueblos del Plata</a>
-                <a href="compradores">Palermo · Recoleta</a>
+                <a href="compradores">CABA</a>
             </div>
             <div class="footer-col">
                 <div class="footer-col-title">Redes</div>
@@ -3148,6 +3194,21 @@
         }
 
         // Hero form tabs
+        function handleCompradorPerfil(sel) {
+            const grupos = ['campos-propiedad', 'campos-inversion', 'campos-lote'];
+            grupos.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('campos-ocultos');
+            });
+            if (sel.value === 'Propiedad') {
+                document.getElementById('campos-propiedad').classList.remove('campos-ocultos');
+            } else if (sel.value === 'Inversión / Renta') {
+                document.getElementById('campos-inversion').classList.remove('campos-ocultos');
+            } else if (sel.value === 'Lote / Barrio privado') {
+                document.getElementById('campos-lote').classList.remove('campos-ocultos');
+            }
+        }
+
         function switchTab(tab, btn) {
             document.querySelectorAll('.form-tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.form-tab-pane').forEach(p => p.classList.remove('active'));
@@ -3171,8 +3232,21 @@
                 msg = `Hola Diego, quiero tasar mi propiedad.\n👤 ${nombre} ${apellido}\n📱 ${telefono}\n✉️ ${email}${propTipo ? '\n🏠 Tipo: ' + propTipo : ''}${zona ? '\n📍 Zona: ' + zona : ''}`;
             } else {
                 const perfil = (f.perfil ? f.perfil.value : '') || '';
-                const zona = (f.zona ? f.zona.value : '') || '';
-                msg = `Hola Diego, estoy buscando propiedades.\n👤 ${nombre} ${apellido}\n📱 ${telefono}\n✉️ ${email}${perfil ? '\n🔍 Busco: ' + perfil : ''}${zona ? '\n📍 Zona: ' + zona : ''}`;
+                let extra = '';
+                if (perfil === 'Propiedad') {
+                    const zona = (f.zona_prop ? f.zona_prop.value : '') || '';
+                    const amb = (f.ambientes ? f.ambientes.value : '') || '';
+                    const pres = (f.presupuesto_prop ? f.presupuesto_prop.value : '') || '';
+                    extra = `${zona ? '\n📍 Zona: ' + zona : ''}${amb ? '\n🏠 Ambientes: ' + amb : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
+                } else if (perfil === 'Inversión / Renta') {
+                    const zona = (f.zona_inv ? f.zona_inv.value : '') || '';
+                    const pres = (f.presupuesto_inv ? f.presupuesto_inv.value : '') || '';
+                    extra = `${zona ? '\n📍 Zona: ' + zona : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
+                } else if (perfil === 'Lote / Barrio privado') {
+                    const ubi = (f.ubicacion_lote ? f.ubicacion_lote.value : '') || '';
+                    extra = `${ubi ? '\n📍 Ubicación: ' + ubi : ''}`;
+                }
+                msg = `Hola Diego, estoy buscando propiedades.\n👤 ${nombre} ${apellido}\n📱 ${telefono}\n✉️ ${email}${perfil ? '\n🔍 Busco: ' + perfil : ''}${extra}`;
             }
 
             window.open('https://wa.me/5491157274477?text=' + encodeURIComponent(msg), '_blank');
