@@ -113,10 +113,17 @@
             .hero::before { animation: none !important; }
             .marquee-content { animation: none !important; }
         }
-        /* Mobile: orbs más livianos para no romper GPU en celulares */
+        /* Mobile: orbs más livianos y hero sin capas GPU que bloquean el render */
         @media (max-width: 768px) {
             .glow-orb { filter: blur(40px) !important; opacity: 0.2 !important; }
-            .hero::before { animation: none !important; transform: scale(1.06) !important; }
+            .hero::before {
+                background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=75') !important;
+                background-position: center 60% !important;
+                animation: none !important;
+                will-change: auto !important;
+                transform: none !important;
+                transition: none !important;
+            }
         }
 
         :root {
