@@ -174,7 +174,25 @@
 
         .nav-links a:hover { color: #1F69FF; }
 
-        @media (max-width: 768px) { .nav-links { display: none; } }
+        @media (max-width: 768px) {
+            .nav-hamburger { display: flex; }
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 31, 0.98);
+                flex-direction: column;
+                gap: 0;
+                padding: 8px 0 20px;
+                z-index: 99;
+                border-top: 1px solid rgba(31, 105, 255, 0.2);
+            }
+            nav.nav-open .nav-links { display: flex; }
+            .nav-links li { border-bottom: 1px solid rgba(255,255,255,0.06); }
+            .nav-links a { display: block; padding: 16px 24px; font-size: 14px; letter-spacing: 0.5px; }
+        }
 
         .logo {
             font-family: 'Cormorant Garamond', serif;
@@ -236,6 +254,29 @@
         .nav-cta:hover {
             color: var(--primary-dark);
         }
+
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 101;
+        }
+        .nav-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--white);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform-origin: center;
+        }
+        nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+        nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
         /* Hero Section */
         .hero {
@@ -1187,6 +1228,9 @@
             <li><a href="#contact">CONTACTO</a></li>
         </ul>
         <a class="nav-cta" href="compradores">Ver propiedades →</a>
+        <button type="button" class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
     </nav>
 
     <!-- Hero Section -->
@@ -1721,6 +1765,23 @@
 
     <script>
         // Toggle conditional form fields
+        // Mobile hamburger menu
+        (function() {
+            const navEl = document.querySelector('nav');
+            const hamburger = document.querySelector('.nav-hamburger');
+            if (!hamburger) return;
+            hamburger.addEventListener('click', () => {
+                navEl.classList.toggle('nav-open');
+                hamburger.setAttribute('aria-expanded', navEl.classList.contains('nav-open'));
+            });
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.addEventListener('click', () => navEl.classList.remove('nav-open'));
+            });
+            document.addEventListener('click', e => {
+                if (!navEl.contains(e.target)) navEl.classList.remove('nav-open');
+            });
+        })();
+
         function toggleConditionalFields() {
             const perfil = document.getElementById('perfilSelect').value;
             const compradorFields = document.getElementById('compradorFields');

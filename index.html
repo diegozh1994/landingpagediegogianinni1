@@ -270,6 +270,29 @@
             transform: translateY(-2px);
         }
 
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 101;
+        }
+        .nav-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--white);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform-origin: center;
+        }
+        nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+        nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -2480,10 +2503,26 @@
         @media (max-width: 768px) {
 
             /* ── Nav ── */
-            nav { padding: 0 16px; height: 56px; }
+            nav { padding: 0 16px; height: 56px; background: rgba(10, 14, 31, 0.98); }
             .nav-logo img { height: 36px; }
-            .nav-links { display: none; }
-            .nav-cta { padding: 9px 16px; font-size: 11px; letter-spacing: 0.5px; }
+            .nav-hamburger { display: flex; }
+            .nav-cta { padding: 9px 14px; font-size: 11px; letter-spacing: 0.5px; }
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 56px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 31, 0.98);
+                flex-direction: column;
+                gap: 0;
+                padding: 8px 0 20px;
+                z-index: 99;
+                border-top: 1px solid rgba(31, 105, 255, 0.2);
+            }
+            nav.nav-open .nav-links { display: flex; }
+            .nav-links li { border-bottom: 1px solid rgba(255,255,255,0.06); }
+            .nav-links a { display: block; padding: 16px 24px; font-size: 14px; letter-spacing: 0.5px; }
 
             /* ── Hero ── */
             .hero { padding: 72px 16px 32px; min-height: unset; }
@@ -2585,6 +2624,9 @@
             <li><a href="#contact">CONTACTO</a></li>
         </ul>
         <a class="nav-cta" href="propietarios">Tasar mi propiedad →</a>
+        <button type="button" class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
     </nav>
 
     <!-- Hero Section -->
@@ -3130,6 +3172,21 @@
                 nav.classList.remove('scrolled');
             }
         });
+
+        // Mobile hamburger menu
+        const hamburger = document.querySelector('.nav-hamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                nav.classList.toggle('nav-open');
+                hamburger.setAttribute('aria-expanded', nav.classList.contains('nav-open'));
+            });
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.addEventListener('click', () => nav.classList.remove('nav-open'));
+            });
+            document.addEventListener('click', e => {
+                if (!nav.contains(e.target)) nav.classList.remove('nav-open');
+            });
+        }
 
         // Magnetic button effect
         const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta');
