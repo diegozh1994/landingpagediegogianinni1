@@ -1,0 +1,9 @@
+# Vercel (link local del proyecto — no va al repo)
+.vercel/
+
+# Dependencias
+node_modules/
+
+# Secrets y variables de entorno
+.env
+.env.*
