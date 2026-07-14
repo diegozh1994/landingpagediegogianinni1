@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validar sintaxis HTML
+        run: npx --yes html-validate@8 "*.html"
+
+      # TODO Frente 1: volver bloqueante este check (sacar el "|| true" y el
+      # ::warning::) cuando el endpoint de leads real reemplace al placeholder
+      # de Formspree en propietarios.html y compradores.html.
+      - name: Chequear placeholders REPLACE en endpoints (no bloqueante)
+        run: |
+          matches=$(grep -rn "REPLACE" --include="*.html" --include="*.js" . || true)
+          if [ -n "$matches" ]; then
+            echo "$matches"
+            echo "::warning::Hay placeholders REPLACE en endpoints — los leads NO se están persistiendo. Se vuelve bloqueante en el Frente 1."
+          fi
