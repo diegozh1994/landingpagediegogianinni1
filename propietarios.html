@@ -163,26 +163,6 @@
 
         .nav-links a:hover { color: var(--electric-blue); }
 
-        @media (max-width: 768px) {
-            .nav-hamburger { display: flex; }
-            .nav-links {
-                display: none;
-                position: fixed;
-                top: 60px;
-                left: 0;
-                right: 0;
-                background: rgba(10, 14, 31, 0.98);
-                flex-direction: column;
-                gap: 0;
-                padding: 8px 0 20px;
-                z-index: 200;
-                border-top: 1px solid rgba(31, 105, 255, 0.2);
-            }
-            nav.nav-open .nav-links { display: flex; }
-            .nav-links li { border-bottom: 1px solid rgba(255,255,255,0.06); }
-            .nav-links a { display: block; padding: 16px 24px; font-size: 14px; letter-spacing: 0.5px; color: rgba(255,255,255,0.9); text-decoration: none; }
-        }
-
         .logo {
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(18px, 4vw, 28px);
@@ -252,6 +232,26 @@
         nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
         nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        @media (max-width: 768px) {
+            .nav-hamburger { display: flex; }
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 31, 0.98);
+                flex-direction: column;
+                gap: 0;
+                padding: 8px 0 20px;
+                z-index: 200;
+                border-top: 1px solid rgba(31, 105, 255, 0.2);
+            }
+            nav.nav-open .nav-links { display: flex; }
+            .nav-links li { border-bottom: 1px solid rgba(255,255,255,0.06); }
+            .nav-links a { display: block; padding: 16px 24px; font-size: 14px; letter-spacing: 0.5px; color: rgba(255,255,255,0.9); text-decoration: none; }
+        }
 
         /* Hero Section */
         .hero {
