@@ -35,6 +35,8 @@ El tráfico se va a originar principalmente desde **Meta Ads** (paid). El home t
 | `_premium.js` | JS compartido (animaciones, ScrollReveal, etc.) |
 | `_properties.js` | Renderiza el catálogo desde `propiedades.json` |
 | `_three.js` | Three.js / WebGL del home (NO se carga en las landings) |
+| `_tracking.js` | Atribución Meta (fbclid/UTM/fbp/fbc), validación de teléfono AR y `GTrack.enviarLead` (orden congelado: POST keepalive → pixel Lead con eventID → redirect a wa.me) |
+| `api/lead.js` | Vercel Function `/api/lead` — persiste leads en Airtable; destino swappeable por env var `LEAD_DESTINATION` |
 | `vercel.json` | Configuración de Vercel (headers, cleanUrls) |
 | `sitemap.xml` y `robots.txt` | SEO |
 | `og-image.jpg`, `og-propietarios.jpg`, `og-compradores.jpg` | Open Graph images (1200×630) |
@@ -61,24 +63,32 @@ El tráfico se va a originar principalmente desde **Meta Ads** (paid). El home t
 ## Tracking y conversión
 
 ### Meta Pixel
-- **ID:** `1646890566557004`
-- Cargado en `index.html`, `propietarios.html`, `compradores.html`.
+- **ID:** `1609863687137753` (cuenta limpia Coldwell Banker — el viejo `1646890566557004` quedó descartado, no reintroducirlo)
+- Cargado en el `<head>` de **todas** las páginas con `PageView` automático.
 - Eventos:
-  - `PageView` (page load)
+  - `PageView` (page load, todas las páginas)
   - `ViewLanding` custom (en `propietarios` y `compradores` con label de landing)
-  - `Lead` (en submit del form, con `content_category` o `content_name`)
-- **Privacy/consent:** el pixel arranca con `consent: revoke`. Se concede cuando el usuario acepta el banner de cookies. Si ya aceptó en visita anterior, se restaura desde `localStorage` al cargar.
+  - `Lead` (en submit vía `GTrack.enviarLead`, con `content_name` = landing y **`eventID` = event_id del payload** — clave de deduplicación con CAPI server-side; el mismo valor queda en la columna `Event ID` de Airtable)
+- **Privacy/consent:** pixel activo por defecto (público solo Argentina, Ley 25.326 — régimen informativo). Banner de cookies informativo con botón "Entendido" + link a `/privacidad`. Leyenda de consentimiento bajo el submit de cada form. NO reintroducir `consent revoke` sin decisión de Diego.
 
 ### GA4
 - **Pendiente:** los placeholders `G-XXXXXXXXXX` siguen comentados. Reemplazar por el Measurement ID real cuando esté disponible.
 
-### Pipeline de leads (decisión arquitectónica)
-Flujo previsto:
+### Pipeline de leads (implementado)
 ```
-Form en landing → Vercel Function (/api/lead) → Airtable + Meta Pixel + GA4 → redirect a WhatsApp
+Form (landings + home) → GTrack.enviarLead (_tracking.js)
+  1) POST /api/lead con keepalive (fire-and-forget — la captura NUNCA bloquea al usuario)
+  2) fbq Lead con eventID (dedup futura con CAPI)
+  3) redirect a wa.me a los ~300ms
+/api/lead (Vercel Function) → Airtable, tabla "Leads Landing" (base appJV4Yzdd6P6g9JU)
 ```
-- **Endpoint actual:** Formspree placeholder (`https://formspree.io/f/REPLACE_WITH_YOUR_ID`) en `propietarios.html` y `compradores.html`. **A reemplazar por la Vercel Function cuando esté lista.**
-- **Destino:** Airtable (centralizar leads). Las credenciales van como **env vars en Vercel**, nunca en el cliente.
+- **Destino swappeable:** env var `LEAD_DESTINATION` (default `airtable`). El CRM propio post-R1 entra como adapter nuevo en `api/lead.js` + cambio de env var, sin tocar las landings.
+- Credenciales como **env vars en Vercel** (`AIRTABLE_TOKEN`, `AIRTABLE_BASE_ID`), nunca en el cliente.
+- **Mensajes de WhatsApp CONGELADOS** (el CRM de Diego los clasifica por IA — no cambiar sin avisarle):
+  - propietarios: `Hola Diego, soy {nombre}, quiero vender en {zona}. Vi tu anuncio.`
+  - compradores: `Hola Diego, soy {nombre}, estoy buscando en {zona}. Vi tu anuncio.`
+  - Siempre **label** de zona, nunca slug. El email nunca viaja en el mensaje (solo en el payload).
+- **Zonas canónicas** (select en ambas landings): Villalobos / Magallanes / Sebastián Gaboto / Canning / Berazategui / CABA / Otra.
 
 ## Cómo verificar el sitio localmente
 
@@ -105,8 +115,9 @@ Workflow: HTML template → Chrome headless → PNG → JPG. Detallado:
 
 ### Pendientes para activar Meta Ads
 - [ ] GA4 Measurement ID (Diego lo está creando).
-- [ ] Crear base de Airtable para leads (campos: nombre, whatsapp, email, zona, tipo de operación, fuente del anuncio, fecha, estado del pipeline).
-- [ ] Implementar Vercel Function `/api/lead` que reemplaza a Formspree.
+- [x] Base de Airtable "Leads Landing" creada (base `appJV4Yzdd6P6g9JU`) con columnas de atribución CAPI (FBC, FBP, Event ID, Landing URL, Referrer).
+- [x] Vercel Function `/api/lead` implementada (Formspree eliminado).
+- [ ] CAPI server-side (Conversions API) usando `Event ID` de Airtable para dedup — próximo paso del tracking.
 - [ ] Grabar VSL (guion en `VSL-Guiones-Diego-Giannini.docx`). Mientras tanto las secciones VSL están ocultas con `display:none` en ambas landings.
 - [ ] Testimonios reales (sección oculta hasta que haya material verificado).
 - [ ] Casos de venta reales para las landings (sección "properties-section" oculta hasta que haya datos).
@@ -123,7 +134,5 @@ Workflow: HTML template → Chrome headless → PNG → JPG. Detallado:
 1. Si vas a tocar las landings, **respetá las reglas de performance** del bloque "Convenciones de código". Mucho de lo que parece "decorativo" se eliminó a propósito porque mataba mobile.
 2. Antes de agregar JS pesado, considerá si se puede hacer con CSS o HTML semántico.
 3. Si agregás una página nueva, sumarla a `sitemap.xml`.
-4. Si el form cambia, asegurate que dispare:
-   - `gtag('event', 'generate_lead', ...)` para GA4
-   - `fbq('track', 'Lead', ...)` para Meta Pixel
+4. Si el form cambia, el submit SIEMPRE va vía `GTrack.enviarLead` (_tracking.js) — no reimplementar el flujo a mano. Eso garantiza: persistencia keepalive, `Lead` con `eventID`, `generate_lead` de GA4, y el redirect con el mensaje congelado.
 5. **No commitear secrets nunca** — `.env`, claves de Airtable, etc., quedan en Vercel env vars.

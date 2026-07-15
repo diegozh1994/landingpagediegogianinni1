@@ -44,6 +44,11 @@ async function enviarAAirtable(lead) {
     'UTM Term': lead.utm_term,
     'UTM Content': lead.utm_content,
     'FBCLID': lead.fbclid,
+    'FBC': lead.fbc,
+    'FBP': lead.fbp,
+    'Event ID': lead.event_id,
+    'Landing URL': lead.landing_url,
+    'Referrer': lead.referrer,
     'Landing': lead.landing,
     'Fecha': lead.fecha,
     'Estado': 'Nuevo',
@@ -106,6 +111,14 @@ module.exports = async (req, res) => {
     utm_term: limpiar(body.utm_term),
     utm_content: limpiar(body.utm_content),
     fbclid: limpiar(body.fbclid),
+    fbc: limpiar(body.fbc),
+    fbp: limpiar(body.fbp),
+    // event_id: clave de deduplicación pixel ↔ CAPI — debe llegar intacto a Airtable.
+    // El submitted_at del cliente NO se persiste a propósito: "Fecha" (server-side,
+    // más abajo) es el timestamp canónico y no depende del reloj del dispositivo.
+    event_id: limpiar(body.event_id),
+    landing_url: limpiar(body.landing_url),
+    referrer: limpiar(body.referrer),
     landing: limpiar(body.landing),
     fecha: new Date().toISOString(),
   };

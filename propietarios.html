@@ -48,12 +48,11 @@
     <!-- Meta Pixel -->
     <script>
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      fbq('consent', 'revoke');
-      fbq('init', '1646890566557004');
+      fbq('init', '1609863687137753');
       fbq('track', 'PageView');
       fbq('trackCustom', 'ViewLanding', {landing: 'propietarios'});
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1646890566557004&ev=PageView&noscript=1"/></noscript>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1609863687137753&ev=PageView&noscript=1"/></noscript>
 
     <!-- GA4 placeholder — reemplazar G-XXXXXXXXXX y descomentar cuando esté el ID -->
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
@@ -1311,6 +1310,7 @@
         }
     </style>
     <link rel="stylesheet" href="_premium.css">
+    <script src="_tracking.js" defer></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -1374,28 +1374,24 @@
                         <input type="tel" id="whatsapp" name="whatsapp" required placeholder="+54 9 11 XXXX-XXXX">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" required placeholder="tu@email.com">
+                        <label for="email">Email (opcional)</label>
+                        <input type="email" id="email" name="email" placeholder="tu@email.com">
                     </div>
                     <div class="form-group">
                         <label for="zona">¿Dónde está tu propiedad? *</label>
                         <select id="zona" name="zona" required>
                             <option value="">Seleccionar zona</option>
-                            <option value="palermo">Palermo</option>
-                            <option value="recoleta">Recoleta</option>
-                            <option value="belgrano">Belgrano</option>
-                            <option value="puerto-madero">Puerto Madero</option>
-                            <option value="caba-otro">Otra zona CABA</option>
-                            <option value="canning">Canning</option>
-                            <option value="berazategui">Berazategui / Pueblos del Plata</option>
-                            <option value="nordelta">Nordelta</option>
-                            <option value="gba-norte">GBA Norte</option>
-                            <option value="gba-sur">GBA Sur</option>
-                            <option value="otra">Otra zona</option>
+                            <option value="Villalobos">Villalobos</option>
+                            <option value="Magallanes">Magallanes</option>
+                            <option value="Sebastián Gaboto">Sebastián Gaboto</option>
+                            <option value="Canning">Canning</option>
+                            <option value="Berazategui">Berazategui</option>
+                            <option value="CABA">CABA</option>
+                            <option value="Otra">Otra</option>
                         </select>
                     </div>
                     <button type="submit" class="form-submit">QUIERO MI TASACIÓN GRATUITA →</button>
-                    <p class="form-privacy">🔒 Sin spam. Diego te escribe en menos de 2 horas.</p>
+                    <p class="form-privacy">🔒 Sin spam. Diego te escribe en menos de 2 horas.<br>Al enviar aceptás la <a href="/privacidad" style="color:#4D8AFF;text-decoration:underline;">política de privacidad</a> y que te contactemos por WhatsApp.</p>
                     <div style="display:flex;gap:16px;justify-content:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
                         <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#4D8AFF;">+100</div><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">operaciones</div></div>
                         <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#4D8AFF;">6 años</div><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">trayectoria</div></div>
@@ -2047,39 +2043,32 @@
             showTestimonial(currentTestimonial);
         }, 8000);
 
-        // Form submission handler
-        // Número de WhatsApp de Diego (destino de los leads)
-        const DIEGO_WHATSAPP = '5491157274477';
-        // Formspree / Web3Forms endpoint — reemplazá con el tuyo tras registrarte en formspree.io
-        const FORM_ENDPOINT = 'https://formspree.io/f/REPLACE_WITH_YOUR_ID';
-
+        // Form submission handler — persistencia + pixel + redirect vía GTrack (_tracking.js).
+        // Mensaje de WhatsApp CONGELADO: el CRM de Diego lo clasifica por IA. No tocar.
         function handleFormSubmit(event) {
             event.preventDefault();
             const form = event.target;
-            const nombre = form.querySelector('input[name="nombre"]').value;
-            const apellido = form.querySelector('input[name="apellido"]')?.value || '';
-            const whatsapp = form.querySelector('input[name="whatsapp"]')?.value || '';
+            const nombre = form.querySelector('input[name="nombre"]').value.trim();
+            const apellido = (form.querySelector('input[name="apellido"]')?.value || '').trim();
+            const telInput = form.querySelector('input[name="whatsapp"]');
             const email = form.querySelector('input[name="email"]')?.value || '';
-            const zona = form.querySelector('select[name="zona"]')?.value || 'No especificada';
-            const barrio = form.querySelector('input[name="barrio"]')?.value || '';
-            const tipo = form.querySelector('select[name="tipo"]')?.value || '';
-            const plazo = form.querySelector('select[name="plazo"]')?.value || '';
-            const nombreCompleto = apellido ? `${nombre} ${apellido}` : nombre;
+            const zona = form.querySelector('select[name="zona"]')?.value || '';
+            const mensajeWA = `Hola Diego, soy ${nombre}, quiero vender en ${zona}. Vi tu anuncio.`;
 
-            const payload = {nombre: nombreCompleto, whatsapp, email, zona, barrio, tipo, plazo, origen:'landing-propietarios', fecha:new Date().toISOString()};
-
-            // 1) Enviar al email vía Formspree (backend)
-            if(FORM_ENDPOINT && !FORM_ENDPOINT.includes('REPLACE')){
-              fetch(FORM_ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body:JSON.stringify(payload)}).catch(()=>{});
+            // Respaldo: si _tracking.js no cargó (falla de red), el lead va a WhatsApp igual
+            if (!window.GTrack) {
+                window.location.href = 'https://wa.me/5491157274477?text=' + encodeURIComponent(mensajeWA);
+                return;
             }
-            // 2) Trackear evento de conversión
-            if(window.gtag){gtag('event','generate_lead',{form:'propietarios', zona:zona});}
-            if(window.fbq){fbq('track','Lead',{content_category:'propietarios'});}
 
-            // 3) Abrir WhatsApp con mensaje limpio hacia Diego
-            const zonaLabel = zona !== 'No especificada' ? zona : '';
-            const message = `Hola Diego, quiero una tasación gratuita.%0A%0ANombre: ${nombreCompleto}${zonaLabel ? '%0AZona: '+zonaLabel : ''}${whatsapp ? '%0AWhatsApp: '+whatsapp : ''}`;
-            window.location.href = `https://wa.me/${DIEGO_WHATSAPP}?text=${message}`;
+            const telefono = GTrack.normalizarTelefonoAR(telInput.value);
+            if (!telefono) { GTrack.marcarErrorTelefono(telInput); return; }
+
+            GTrack.enviarLead({
+                payload: { nombre, apellido, telefono, email, zona, tipo: 'propietario', landing: 'propietarios' },
+                contentName: 'propietarios',
+                mensajeWA
+            });
         }
 
         // WhatsApp flotante
@@ -2112,13 +2101,12 @@
           <div style="font-size:13px;opacity:0.8;line-height:1.5;">Usamos cookies para analizar el tráfico y mejorar tu experiencia. <a href="privacidad.html" style="color:#4D8AFF;text-decoration:underline;">Política de privacidad</a>.</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="cookieConsent('denied')" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;">Rechazar</button>
-          <button onclick="cookieConsent('granted')" style="background:linear-gradient(135deg,#1F69FF,#004DE6);border:none;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Aceptar</button>
+          <button onclick="cookieConsent()" style="background:linear-gradient(135deg,#1F69FF,#004DE6);border:none;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Entendido</button>
         </div>
       </div>
     </div>
     <script>
-      (function(){var key='cb_cookie_consent';var stored=localStorage.getItem(key);if(!stored){document.getElementById('cookie-banner').style.display='block';}else if(stored==='granted'){if(window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}if(window.fbq){fbq('consent','grant');}}window.cookieConsent=function(v){localStorage.setItem(key,v);document.getElementById('cookie-banner').style.display='none';if(v==='granted'&&window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}if(v==='granted'&&window.fbq){fbq('consent','grant');}};})();
+      (function(){var key='cb_banner_visto';if(!localStorage.getItem(key)){document.getElementById('cookie-banner').style.display='block';}window.cookieConsent=function(){localStorage.setItem(key,'1');document.getElementById('cookie-banner').style.display='none';};})();
     </script>
     <script src="_premium.js" defer></script>
 </body>

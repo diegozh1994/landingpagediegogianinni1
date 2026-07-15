@@ -48,12 +48,11 @@
     <!-- Meta Pixel -->
     <script>
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      fbq('consent', 'revoke');
-      fbq('init', '1646890566557004');
+      fbq('init', '1609863687137753');
       fbq('track', 'PageView');
       fbq('trackCustom', 'ViewLanding', {landing: 'compradores'});
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1646890566557004&ev=PageView&noscript=1"/></noscript>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1609863687137753&ev=PageView&noscript=1"/></noscript>
 
     <!-- GA4 placeholder — reemplazar G-XXXXXXXXXX y descomentar cuando esté el ID -->
 
@@ -1212,6 +1211,7 @@
         }
     </style>
     <link rel="stylesheet" href="_premium.css">
+    <script src="_tracking.js" defer></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -1275,8 +1275,22 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Email <span class="required">*</span></label>
-                        <input type="email" name="email" required placeholder="tu@email.com">
+                        <label class="form-label">Email (opcional)</label>
+                        <input type="email" name="email" placeholder="tu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Zona de interés <span class="required">*</span></label>
+                        <select name="zona" required>
+                            <option value="">Seleccionar zona</option>
+                            <option value="Villalobos">Villalobos</option>
+                            <option value="Magallanes">Magallanes</option>
+                            <option value="Sebastián Gaboto">Sebastián Gaboto</option>
+                            <option value="Canning">Canning</option>
+                            <option value="Berazategui">Berazategui</option>
+                            <option value="CABA">CABA</option>
+                            <option value="Otra">Otra</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -1291,17 +1305,6 @@
 
                     <!-- Conditional: Propiedad -->
                     <div id="compradorFields" class="conditional-fields">
-                        <div class="form-group">
-                            <label class="form-label">Zona de interés</label>
-                            <select name="zona_prop" title="Zona">
-                                <option value="">Selecciona una zona</option>
-                                <option value="CABA">CABA</option>
-                                <option value="GBA Sur">GBA Sur</option>
-                                <option value="GBA Oeste">GBA Oeste</option>
-                                <option value="GBA Norte">GBA Norte</option>
-                                <option value="GBA Este">GBA Este</option>
-                            </select>
-                        </div>
                         <div class="form-group">
                             <label class="form-label">Cantidad de ambientes</label>
                             <select name="ambientes" title="Ambientes">
@@ -1327,15 +1330,6 @@
                     <!-- Conditional: Inversión / Renta -->
                     <div id="investorFields" class="conditional-fields">
                         <div class="form-group">
-                            <label class="form-label">Zona de interés</label>
-                            <select name="zona_inv" title="Zona">
-                                <option value="">Selecciona una zona</option>
-                                <option value="Canning">Canning</option>
-                                <option value="Berazategui">Berazategui</option>
-                                <option value="CABA">CABA</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label class="form-label">Presupuesto de inversión</label>
                             <select name="presupuesto_inv" title="Presupuesto">
                                 <option value="">Selecciona un rango</option>
@@ -1346,21 +1340,9 @@
                         </div>
                     </div>
 
-                    <!-- Conditional: Lote / Barrio privado -->
-                    <div id="loteFields" class="conditional-fields">
-                        <div class="form-group">
-                            <label class="form-label">Ubicación del lote</label>
-                            <select name="ubicacion_lote" title="Ubicación">
-                                <option value="">Selecciona una ubicación</option>
-                                <option value="Canning">Canning</option>
-                                <option value="Berazategui">Berazategui</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <button type="submit" class="btn-submit">Quiero recibir oportunidades →</button>
                     <div class="form-privacy">
-                        🔒 Solo te contactamos nosotros.<br>Sin spam, sin terceros.
+                        🔒 Solo te contactamos nosotros. Sin spam, sin terceros.<br>Al enviar aceptás la <a href="/privacidad" style="color:#4D8AFF;text-decoration:underline;">política de privacidad</a> y que te contactemos por WhatsApp.
                     </div>
                 </form>
             </div>
@@ -1803,59 +1785,51 @@
             window.open('https://wa.me/5491157274477?text=Hola%20Diego%2C%20quiero%20informaci%C3%B3n%20sobre%20propiedades.', '_blank');
         }
 
+        // Persistencia + pixel + redirect vía GTrack (_tracking.js).
+        // Mensaje de WhatsApp CONGELADO: el CRM de Diego lo clasifica por IA. No tocar.
         function handleFormSubmit(e) {
             e.preventDefault();
 
             const form = e.target;
             const formData = new FormData(form);
-            const apellido = formData.get('apellido') || '';
-            const nombreCompleto = apellido ? `${formData.get('nombre')} ${apellido}` : formData.get('nombre');
-            const data = {
-                nombre: nombreCompleto,
-                whatsapp: formData.get('whatsapp'),
-                email: formData.get('email'),
-                perfil: formData.get('perfil'),
-                zona: formData.get('zona'),
-                presupuesto: formData.get('presupuesto'),
-                ticket: formData.get('ticket'),
-                objetivo: formData.get('objetivo'),
-                timestamp: new Date().toISOString()
-            };
+            const nombre = (formData.get('nombre') || '').trim();
+            const apellido = (formData.get('apellido') || '').trim();
+            const telInput = form.querySelector('input[name="whatsapp"]');
+            const zona = formData.get('zona') || '';
+            const mensajeWA = `Hola Diego, soy ${nombre}, estoy buscando en ${zona}. Vi tu anuncio.`;
 
-            // Formspree endpoint (reemplazá con tu ID de formspree.io)
-            const FORM_ENDPOINT = 'https://formspree.io/f/REPLACE_WITH_YOUR_ID';
-            if(FORM_ENDPOINT && !FORM_ENDPOINT.includes('REPLACE')){
-              fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({...data,origen:'landing-compradores'})}).catch(()=>{});
+            // Respaldo: si _tracking.js no cargó (falla de red), el lead va a WhatsApp igual
+            if (!window.GTrack) {
+                window.location.href = 'https://wa.me/5491157274477?text=' + encodeURIComponent(mensajeWA);
+                return;
             }
-            // Trackear conversión
-            if(window.gtag){gtag('event','generate_lead',{form:'compradores',perfil:data.perfil});}
-            if(window.fbq){fbq('track','Lead',{content_category:'compradores'});}
 
-            // Build WhatsApp message with conditional fields
-            const perfil = data.perfil;
-            let extra = '';
-            if (perfil === 'propiedad') {
-                const zona = formData.get('zona_prop') || '';
-                const amb = formData.get('ambientes') || '';
-                const pres = formData.get('presupuesto_prop') || '';
-                extra = `${zona ? '\n📍 Zona: ' + zona : ''}${amb ? '\n🏠 Ambientes: ' + amb : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
-            } else if (perfil === 'inversion') {
-                const zona = formData.get('zona_inv') || '';
-                const pres = formData.get('presupuesto_inv') || '';
-                extra = `${zona ? '\n📍 Zona: ' + zona : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
-            } else if (perfil === 'lote') {
-                const ubi = formData.get('ubicacion_lote') || '';
-                extra = `${ubi ? '\n📍 Ubicación: ' + ubi : ''}`;
-            }
-            const perfilLabel = perfil === 'propiedad' ? 'Propiedad' : perfil === 'inversion' ? 'Inversión / Renta' : 'Lote / Barrio privado';
-            const message = `Hola Diego, soy ${data.nombre}. Busco: ${perfilLabel}.${extra}\n✉️ ${data.email}`;
-            window.open(`https://wa.me/5491157274477?text=${encodeURIComponent(message)}`, '_blank');
+            const telefono = GTrack.normalizarTelefonoAR(telInput.value);
+            if (!telefono) { GTrack.marcarErrorTelefono(telInput); return; }
 
-            // Show success message
-            alert('¡Gracias! Nos contactaremos dentro de 48 horas con oportunidades exclusivas para ti.');
-            form.reset();
-            document.getElementById('perfilSelect').value = '';
-            toggleConditionalFields();
+            // Los condicionales ocultos retienen valores viejos: se lee solo lo del perfil activo
+            const perfilSlug = formData.get('perfil') || '';
+            const perfilLabel = ({ propiedad: 'Propiedad', inversion: 'Inversión / Renta', lote: 'Lote / Barrio privado' })[perfilSlug] || perfilSlug;
+            const ambientes = perfilSlug === 'propiedad' ? (formData.get('ambientes') || '') : '';
+            const presupuesto = perfilSlug === 'propiedad' ? (formData.get('presupuesto_prop') || '')
+                : perfilSlug === 'inversion' ? (formData.get('presupuesto_inv') || '') : '';
+
+            GTrack.enviarLead({
+                payload: {
+                    nombre,
+                    apellido,
+                    telefono,
+                    email: formData.get('email') || '',
+                    zona,
+                    perfil: perfilLabel,
+                    ambientes,
+                    presupuesto,
+                    tipo: 'comprador',
+                    landing: 'compradores'
+                },
+                contentName: 'compradores',
+                mensajeWA
+            });
         }
 
         // Intersection Observer for animations on scroll
@@ -1931,13 +1905,12 @@
           <div style="font-size:13px;opacity:0.8;line-height:1.5;">Usamos cookies para analizar el tráfico y mejorar tu experiencia. <a href="privacidad.html" style="color:#4D8AFF;text-decoration:underline;">Política de privacidad</a>.</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="cookieConsent('denied')" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;">Rechazar</button>
-          <button onclick="cookieConsent('granted')" style="background:linear-gradient(135deg,#1F69FF,#004DE6);border:none;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Aceptar</button>
+          <button onclick="cookieConsent()" style="background:linear-gradient(135deg,#1F69FF,#004DE6);border:none;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Entendido</button>
         </div>
       </div>
     </div>
     <script>
-      (function(){var key='cb_cookie_consent';var stored=localStorage.getItem(key);if(!stored){document.getElementById('cookie-banner').style.display='block';}else if(stored==='granted'){if(window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}if(window.fbq){fbq('consent','grant');}}window.cookieConsent=function(v){localStorage.setItem(key,v);document.getElementById('cookie-banner').style.display='none';if(v==='granted'&&window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}if(v==='granted'&&window.fbq){fbq('consent','grant');}};})();
+      (function(){var key='cb_banner_visto';if(!localStorage.getItem(key)){document.getElementById('cookie-banner').style.display='block';}window.cookieConsent=function(){localStorage.setItem(key,'1');document.getElementById('cookie-banner').style.display='none';};})();
     </script>
     <script src="_premium.js" defer></script>
 </body>
