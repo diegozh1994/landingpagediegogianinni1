@@ -119,7 +119,7 @@ Workflow: HTML template → Chrome headless → PNG → JPG. Detallado:
 - [ ] GA4 Measurement ID (Diego lo está creando).
 - [x] Base de Airtable "Leads Landing" creada (base `appJV4Yzdd6P6g9JU`) con columnas de atribución CAPI (FBC, FBP, Event ID, Landing URL, Referrer).
 - [x] Vercel Function `/api/lead` implementada (Formspree eliminado).
-- [ ] CAPI server-side (Conversions API) usando `Event ID` de Airtable para dedup — próximo paso del tracking.
+- [x] CAPI server-side implementada en `api/lead.js`: evento `Lead` con el mismo `event_id` del pixel (dedup automática), user_data hasheado (em/ph/fn/ln) + fbc/fbp + IP/UA reales, canal INDEPENDIENTE de la persistencia. Env vars: `META_CAPI_TOKEN` (+ `META_TEST_EVENT_CODE` solo testing) — detalle en README.
 - [ ] Grabar VSL (guion en `VSL-Guiones-Diego-Giannini.docx`). Mientras tanto las secciones VSL están ocultas con `display:none` en ambas landings.
 - [ ] Testimonios reales. Las secciones ocultas legacy se purgaron del DOM (jul 2026, frente performance); cuando haya material verificado se reconstruyen — el copy placeholder quedó rescatado en `_legacy-copy.md` y el HTML completo en git history.
 - [ ] Casos de venta reales para las landings (ídem: la "properties-section" oculta se purgó; reconstruir cuando haya datos).
