@@ -62,10 +62,9 @@
     </script>
 
     <!-- ============================================
-         ANALYTICS Y TRACKING (gated por cookie consent)
-         Reemplazá los IDs y descomentá cuando los tengas:
-         - GA4: G-XXXXXXXXXX
-         - Meta Pixel: 000000000000000
+         GA4 — reemplazar G-XXXXXXXXXX y descomentar cuando esté el
+         Measurement ID. Sin consent gating: tracking activo por defecto
+         (banner informativo, público solo Argentina — Ley 25.326).
     ============================================ -->
     <!-- Google tag (gtag.js) - GA4
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -73,18 +72,16 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('consent', 'default', {'ad_storage':'denied','analytics_storage':'denied'});
       gtag('config', 'G-XXXXXXXXXX');
     </script>
     -->
     <!-- Meta Pixel -->
     <script>
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      fbq('consent', 'revoke');
-      fbq('init', '1646890566557004');
+      fbq('init', '1609863687137753');
       fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" class="campos-ocultos" src="https://www.facebook.com/tr?id=1646890566557004&ev=PageView&noscript=1"/></noscript>
+    <noscript><img height="1" width="1" class="campos-ocultos" src="https://www.facebook.com/tr?id=1609863687137753&ev=PageView&noscript=1"/></noscript>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2609,6 +2606,7 @@
         }
     </style>
     <link rel="stylesheet" href="_premium.css">
+    <script src="_tracking.js" defer></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -2673,7 +2671,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono"></div>
-                                <div class="form-field"><input type="email" name="email" required placeholder="Email"></div>
+                                <div class="form-field"><input type="email" name="email" placeholder="Email (opcional)"></div>
                             </div>
                             <div class="form-row">
                                 <div class="form-field">
@@ -2689,17 +2687,18 @@
                                 <div class="form-field">
                                     <select name="zona" title="Zona de la propiedad" required>
                                         <option value="">Zona</option>
-                                        <option value="Canning / Zona sur">Canning / Zona sur</option>
-                                        <option value="Berazategui / Pueblos del Plata">Berazategui</option>
-                                        <option value="Palermo">Palermo</option>
-                                        <option value="Recoleta / Belgrano">Recoleta / Belgrano</option>
-                                        <option value="Otra zona CABA">Otra CABA</option>
+                                        <option value="Villalobos">Villalobos</option>
+                                        <option value="Magallanes">Magallanes</option>
+                                        <option value="Sebastián Gaboto">Sebastián Gaboto</option>
+                                        <option value="Canning">Canning</option>
+                                        <option value="Berazategui">Berazategui</option>
+                                        <option value="CABA">CABA</option>
                                         <option value="Otra">Otra</option>
                                     </select>
                                 </div>
                             </div>
                             <button type="submit" class="form-tab-submit">Solicitar tasación gratuita →</button>
-                            <p class="form-privacy">🔒 Sin spam · Te responde Diego directamente</p>
+                            <p class="form-privacy">🔒 Sin spam · Te responde Diego directamente<br>Al enviar aceptás la <a href="/privacidad" style="color:#4D8AFF;text-decoration:underline;">política de privacidad</a> y que te contactemos por WhatsApp.</p>
                         </form>
                     </div>
 
@@ -2709,7 +2708,7 @@
                             <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre"></div>
                             <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido"></div>
                             <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono"></div>
-                            <div class="form-field"><input type="email" name="email" required placeholder="Email"></div>
+                            <div class="form-field"><input type="email" name="email" placeholder="Email (opcional)"></div>
                             <div class="form-field">
                                 <select name="perfil" title="Qué buscás" required onchange="handleCompradorPerfil(this)">
                                     <option value="">¿Qué buscás?</option>
@@ -2781,7 +2780,7 @@
                             </div>
 
                             <button type="submit" class="form-tab-submit">Quiero ver propiedades →</button>
-                            <p class="form-privacy">🔒 Sin spam · Te responde Diego directamente</p>
+                            <p class="form-privacy">🔒 Sin spam · Te responde Diego directamente<br>Al enviar aceptás la <a href="/privacidad" style="color:#4D8AFF;text-decoration:underline;">política de privacidad</a> y que te contactemos por WhatsApp.</p>
                         </form>
                     </div>
 
@@ -3283,15 +3282,24 @@
             const f = e.target;
             const nombre = (f.nombre ? f.nombre.value : '').trim();
             const apellido = (f.apellido ? f.apellido.value : '').trim();
-            const telefono = (f.telefono ? f.telefono.value : '').trim();
-            const email = (f.email ? f.email.value : '').trim();
-            if (!nombre || !telefono) return;
+            const telInput = f.telefono;
+            if (!nombre || !telInput) return;
+
+            // Respaldo: si _tracking.js no cargó (falla de red), el lead va a WhatsApp igual
+            if (!window.GTrack) {
+                const msgFallback = `Hola Diego, ${tipo === 'vender' ? 'quiero tasar mi propiedad' : 'estoy buscando propiedades'}.\n👤 ${nombre} ${apellido}\n📱 ${telInput.value}`;
+                window.location.href = 'https://wa.me/5491157274477?text=' + encodeURIComponent(msgFallback);
+                return;
+            }
+
+            const telefono = GTrack.normalizarTelefonoAR(telInput.value);
+            if (!telefono) { GTrack.marcarErrorTelefono(telInput); return; }
 
             let msg = '';
             if (tipo === 'vender') {
                 const propTipo = (f.tipo ? f.tipo.value : '') || '';
                 const zona = (f.zona ? f.zona.value : '') || '';
-                msg = `Hola Diego, quiero tasar mi propiedad.\n👤 ${nombre} ${apellido}\n📱 ${telefono}\n✉️ ${email}${propTipo ? '\n🏠 Tipo: ' + propTipo : ''}${zona ? '\n📍 Zona: ' + zona : ''}`;
+                msg = `Hola Diego, quiero tasar mi propiedad.\n👤 ${nombre} ${apellido}\n📱 ${telefono}${propTipo ? '\n🏠 Tipo: ' + propTipo : ''}${zona ? '\n📍 Zona: ' + zona : ''}`;
             } else {
                 const perfil = (f.perfil ? f.perfil.value : '') || '';
                 let extra = '';
@@ -3308,38 +3316,31 @@
                     const ubi = (f.ubicacion_lote ? f.ubicacion_lote.value : '') || '';
                     extra = `${ubi ? '\n📍 Ubicación: ' + ubi : ''}`;
                 }
-                msg = `Hola Diego, estoy buscando propiedades.\n👤 ${nombre} ${apellido}\n📱 ${telefono}\n✉️ ${email}${perfil ? '\n🔍 Busco: ' + perfil : ''}${extra}`;
+                msg = `Hola Diego, estoy buscando propiedades.\n👤 ${nombre} ${apellido}\n📱 ${telefono}${perfil ? '\n🔍 Busco: ' + perfil : ''}${extra}`;
             }
 
-            window.open('https://wa.me/5491157274477?text=' + encodeURIComponent(msg), '_blank');
-        }
+            // Zona best-effort según la variante del form (para el payload, no el mensaje)
+            const zonaPayload = (f.zona ? f.zona.value : '') || (f.zona_prop ? f.zona_prop.value : '') ||
+                (f.zona_inv ? f.zona_inv.value : '') || (f.ubicacion_lote ? f.ubicacion_lote.value : '') || '';
 
-        function selectIntencion(el, valor) {
-            document.querySelectorAll('.hero-miniform-choice').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            document.getElementById('intencion-hidden').value = valor;
-        }
+            // En el pane "vender" no hay perfil de comprador: viaja el tipo de propiedad
+            // (Departamento/Casa/…) en Perfil para no perder el dato.
+            const perfilPayload = tipo === 'vender'
+                ? ((f.tipo ? f.tipo.value : '') || '')
+                : ((f.perfil ? f.perfil.value : '') || '');
 
-        // Hero mini-form handler — manda al WhatsApp de Diego con los datos del lead
-        function handleHomeMiniForm(e) {
-            e.preventDefault();
-            const f = e.target;
-            const nombre = (f.nombre.value || '').trim();
-            const whatsapp = (f.whatsapp.value || '').trim();
-            const intencion = f.intencion.value;
-            const intentLabel = {
-                vender: 'vender mi propiedad',
-                comprar: 'comprar para vivir',
-                invertir: 'invertir / generar renta'
-            }[intencion] || 'una consulta';
-            const phone = '5491157274477';
-            const msg = `Hola Diego, soy ${nombre}. Mi WhatsApp es ${whatsapp}. Me interesa ${intentLabel}. Me gustaría que me contactes.`;
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-            // GA4 / Meta event hook (cuando los IDs estén pegados)
-            if (typeof gtag === 'function') gtag('event', 'lead_home_miniform', { intent: intencion });
-            if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'home_hero_miniform', intent: intencion });
-            window.open(url, '_blank');
-            f.reset();
+            GTrack.enviarLead({
+                payload: {
+                    nombre, apellido, telefono,
+                    email: (f.email ? f.email.value : '').trim(),
+                    zona: zonaPayload,
+                    perfil: perfilPayload,
+                    tipo: tipo === 'vender' ? 'propietario' : 'comprador',
+                    landing: 'home'
+                },
+                contentName: 'home',
+                mensajeWA: msg
+            });
         }
 
         // Smooth scroll for anchor links
@@ -3364,28 +3365,12 @@
           <div style="font-size:13px;opacity:0.8;line-height:1.5;">Usamos cookies propias y de terceros (Google Analytics, Meta Pixel) para analizar el tráfico y mejorar tu experiencia. <a href="privacidad.html" style="color:#4D8AFF;text-decoration:underline;">Ver política de privacidad</a>.</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="cookieConsent('denied')" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;">Rechazar</button>
-          <button onclick="cookieConsent('granted')" style="background:linear-gradient(135deg,#1F69FF,#004DE6);border:none;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Aceptar</button>
+          <button onclick="cookieConsent()" style="background:linear-gradient(135deg,#1F69FF,#004DE6);border:none;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Entendido</button>
         </div>
       </div>
     </div>
     <script>
-      (function(){
-        var key='cb_cookie_consent';
-        var saved=localStorage.getItem(key);
-        if(!saved){
-          document.getElementById('cookie-banner').style.display='block';
-        } else if(saved==='granted'){
-          if(window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}
-          if(window.fbq){fbq('consent','grant');}
-        }
-        window.cookieConsent=function(v){
-          localStorage.setItem(key,v);
-          document.getElementById('cookie-banner').style.display='none';
-          if(v==='granted' && window.gtag){gtag('consent','update',{'ad_storage':'granted','analytics_storage':'granted'});}
-          if(v==='granted' && window.fbq){fbq('consent','grant');}
-        };
-      })();
+      (function(){var key='cb_banner_visto';if(!localStorage.getItem(key)){document.getElementById('cookie-banner').style.display='block';}window.cookieConsent=function(){localStorage.setItem(key,'1');document.getElementById('cookie-banner').style.display='none';};})();
     </script>
     <script src="_properties.js" defer></script>
     <script src="_premium.js" defer></script>
