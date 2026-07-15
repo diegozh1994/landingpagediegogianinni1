@@ -1,14 +1,28 @@
-// /api/lead — recibe leads de las landings y los persiste en el destino configurado.
+// /api/lead — recibe leads de las landings, los persiste en el destino configurado
+// y dispara el evento Lead server-side a la Meta Conversions API (CAPI).
 //
-// El destino se elige con la env var LEAD_DESTINATION (default: "airtable").
+// Persistencia y CAPI son CANALES INDEPENDIENTES: si uno falla, el otro sale
+// igual (misma regla de resiliencia de todo el funnel). La dedup con el pixel
+// browser-side usa el MISMO event_id que generó _tracking.js en el cliente.
+//
+// El destino de persistencia se elige con LEAD_DESTINATION (default: "airtable").
 // Para enchufar el CRM propio (post-R1): agregar una función destino acá abajo,
 // registrarla en DESTINOS y cambiar la env var. Las landings no se tocan.
 //
-// Env vars (se cargan en Vercel, nunca en el repo):
-//   LEAD_DESTINATION  destino activo (default "airtable")
-//   AIRTABLE_TOKEN    PAT con data.records:write sobre la base de leads
-//   AIRTABLE_BASE_ID  id de la base (app...)
-//   AIRTABLE_TABLE    nombre de la tabla (default "Leads Landing")
+// Env vars (se cargan en Vercel, nunca en el repo — detalle en README.md):
+//   LEAD_DESTINATION      destino activo (default "airtable")
+//   AIRTABLE_TOKEN        PAT con data.records:write sobre la base de leads
+//   AIRTABLE_BASE_ID      id de la base (app...)
+//   AIRTABLE_TABLE        nombre de la tabla (default "Leads Landing")
+//   META_CAPI_TOKEN       access token de la Conversions API (Events Manager)
+//   META_TEST_EVENT_CODE  opcional, solo testing: los eventos caen en Test Events
+
+const crypto = require('node:crypto');
+
+// Versión estable de la Graph API — verificada 2026-07: v25.0 (feb 2026).
+// Meta expira versiones cada ~2 años; subirla es cambiar esta constante.
+const GRAPH_API_VERSION = 'v25.0';
+const META_PIXEL_ID = '1609863687137753';
 
 const LARGO_MAX = 500;
 
@@ -78,6 +92,63 @@ const DESTINOS = {
   airtable: enviarAAirtable,
 };
 
+// SHA-256 en hex de un valor normalizado (lowercase + trim), como exige Meta.
+function hashear(valor) {
+  return crypto.createHash('sha256').update(String(valor).trim().toLowerCase()).digest('hex');
+}
+
+async function enviarACAPI(lead, req) {
+  const token = process.env.META_CAPI_TOKEN;
+  if (!token) {
+    console.warn('META_CAPI_TOKEN no configurado — evento CAPI salteado');
+    return false;
+  }
+
+  const userData = {};
+  if (lead.email) userData.em = [hashear(lead.email)];
+  // Teléfono en E.164 sin '+' (solo dígitos), ej: 5491157274477
+  if (lead.telefono) userData.ph = [hashear(lead.telefono.replace(/\D/g, ''))];
+  if (lead.nombre) userData.fn = [hashear(lead.nombre)];
+  if (lead.apellido) userData.ln = [hashear(lead.apellido)];
+  if (lead.fbc) userData.fbc = lead.fbc;
+  if (lead.fbp) userData.fbp = lead.fbp;
+
+  // IP y user-agent REALES del usuario: el POST a /api/lead viene de su browser.
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  if (ip) userData.client_ip_address = ip;
+  const userAgent = req.headers['user-agent'] || '';
+  if (userAgent) userData.client_user_agent = userAgent;
+
+  const evento = {
+    event_name: 'Lead',
+    event_time: Math.floor(Date.now() / 1000),
+    // Mismo event_id que el fbq('track','Lead') del browser: Meta deduplica el par.
+    event_id: lead.event_id,
+    action_source: 'website',
+    custom_data: { content_name: lead.landing },
+    user_data: userData,
+  };
+  if (lead.landing_url) evento.event_source_url = lead.landing_url;
+
+  const payload = { data: [evento] };
+  if (process.env.META_TEST_EVENT_CODE) {
+    payload.test_event_code = process.env.META_TEST_EVENT_CODE;
+  }
+
+  const respuesta = await fetch(
+    `https://graph.facebook.com/${GRAPH_API_VERSION}/${META_PIXEL_ID}/events?access_token=${encodeURIComponent(token)}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }
+  );
+  if (!respuesta.ok) {
+    throw new Error(`CAPI respondió ${respuesta.status}: ${await respuesta.text()}`);
+  }
+  return true;
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ ok: false, error: 'Solo POST' });
@@ -140,13 +211,28 @@ module.exports = async (req, res) => {
     return res.status(500).json({ ok: false, error: 'Destino mal configurado' });
   }
 
-  try {
-    await enviar(lead);
-    return res.status(200).json({ ok: true });
-  } catch (error) {
+  // Persistencia y CAPI en paralelo, INDEPENDIENTES: la falla de uno jamás
+  // afecta al otro. Se esperan ambos (allSettled) porque en serverless un
+  // fire-and-forget real puede morir cuando la función responde.
+  const [persistencia, capi] = await Promise.allSettled([
+    enviar(lead),
+    enviarACAPI(lead, req),
+  ]);
+
+  let capiOk = false;
+  if (capi.status === 'rejected') {
+    // Nunca afecta la respuesta al cliente ni el guardado — solo log.
+    console.error('Error enviando evento CAPI:', capi.reason.message);
+  } else {
+    capiOk = capi.value === true;
+  }
+
+  if (persistencia.status === 'rejected') {
     // El cliente hace fire-and-forget: este error no bloquea al usuario,
     // pero queda en los logs de Vercel para detectar fallas sistemáticas.
-    console.error('Error persistiendo lead:', error.message);
-    return res.status(502).json({ ok: false, error: 'No se pudo persistir el lead' });
+    console.error('Error persistiendo lead:', persistencia.reason.message);
+    return res.status(502).json({ ok: false, error: 'No se pudo persistir el lead', capi: capiOk });
   }
+
+  return res.status(200).json({ ok: true, capi: capiOk });
 };

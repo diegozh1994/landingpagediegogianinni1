@@ -29,14 +29,25 @@
 - `Email-Sequences-Diego-Giannini.docx` — 12 emails de nurture (6 por funnel)
 - `WhatsApp-Retargeting-Guide-Diego-Giannini.docx` — Setup de WhatsApp Business API + campañas de retargeting Meta/Google
 
+### Variables de entorno (`/api/lead`, se cargan en Vercel — nunca en el repo)
+
+| Variable | Requerida | Función |
+|---|---|---|
+| `AIRTABLE_TOKEN` | Sí | PAT con `data.records:write` sobre la base de leads |
+| `AIRTABLE_BASE_ID` | Sí | ID de la base (`app...`) |
+| `AIRTABLE_TABLE` | No | Nombre de la tabla (default `Leads Landing`) |
+| `LEAD_DESTINATION` | No | Destino de persistencia (default `airtable`; el CRM propio entra como adapter nuevo) |
+| `META_CAPI_TOKEN` | Sí (para CAPI) | Access token de la Conversions API (Events Manager → pixel → Configuración → Conversions API). Sin ella, el evento server-side se saltea con warning y la persistencia sigue normal |
+| `META_TEST_EVENT_CODE` | No (solo testing) | Si está seteada, los eventos CAPI caen en **Test Events** del Events Manager en vez de contar como conversiones reales. Cargarla solo en Preview |
+
 ---
 
 ## Resumen de mejoras implementadas
 
 1. **SEO completo:** meta description, canonical, Open Graph, Twitter Cards, Schema.org (RealEstateAgent, Service, FAQPage, Article) en todas las páginas.
-2. **Cookie banner** con gestión de consentimiento (Ley 25.326 / GDPR) en toda la navegación.
-3. **Formspree** integrado en ambos formularios como fallback al WhatsApp.
-4. **GA4 + Meta Pixel** con gating por consentimiento, eventos de conversión en forms y calculadora.
+2. **Cookie banner informativo** (Ley 25.326 — pixel activo por defecto, público solo Argentina).
+3. **Pipeline de leads propio:** forms → `GTrack.enviarLead` (_tracking.js) → `/api/lead` → Airtable + Meta CAPI, con redirect a WhatsApp. (Formspree eliminado.)
+4. **Meta Pixel** (`1609863687137753`) en todas las páginas + evento `Lead` browser y server-side deduplicados por `event_id`. GA4 pendiente de Measurement ID.
 5. **VSL embed** en propietarios y compradores (placeholder listo para cargar video).
 6. **FAQ con schema FAQPage** en home — apunta a rich snippets en Google.
 7. **Testimonios video** — scaffold 9:16 para 4 videos verticales.

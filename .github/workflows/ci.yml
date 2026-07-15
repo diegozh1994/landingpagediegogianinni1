@@ -22,6 +22,9 @@ jobs:
       - name: Tests de tracking (guard de reentrada / bfcache)
         run: node test/tracking.test.js
 
+      - name: Tests de /api/lead (Airtable + CAPI)
+        run: node test/api-lead.test.js
+
       - name: Chequear placeholders REPLACE en endpoints (bloqueante)
         run: |
           if grep -rn "REPLACE" --include="*.html" --include="*.js" --exclude-dir=node_modules .; then
