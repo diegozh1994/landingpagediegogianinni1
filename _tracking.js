@@ -129,11 +129,17 @@
 
   // Guard de reentrada: un doble tap en la ventana previa al redirect generaría
   // dos filas en Airtable y dos Lead con eventID distinto (la dedup no los colapsa).
+  // OJO: el candado se libera en cada pageshow (abajo) y a los 5s — sin eso, volver
+  // desde WhatsApp con el botón atrás (bfcache) dejaba el form muerto para siempre.
   var enviando = false;
+
+  window.addEventListener('pageshow', function () { enviando = false; });
 
   function enviarLead(opciones) {
     if (enviando) return;
     enviando = true;
+    // Auto-recuperación: si el redirect no llega a navegar, el form vuelve a operar
+    setTimeout(function () { enviando = false; }, 5000);
     var lead = {};
     var k;
     for (k in opciones.payload) lead[k] = opciones.payload[k];
