@@ -40,6 +40,8 @@ El tráfico se va a originar principalmente desde **Meta Ads** (paid). El home t
 | `vercel.json` | Configuración de Vercel (headers, cleanUrls) |
 | `sitemap.xml` y `robots.txt` | SEO |
 | `og-image.jpg`, `og-propietarios.jpg`, `og-compradores.jpg` | Open Graph images (1200×630) |
+| `fotoperfil.webp` + `fotoperfil.jpg` | Foto de perfil optimizada (800×1067, WebP 16KB + JPG fallback 25KB) servida vía `<picture>` en home y landings |
+| `_legacy-copy.md` | Copy rescatado de las secciones legacy purgadas de las landings (insumo para anuncios — no es una página) |
 
 ## Convenciones de código
 
@@ -119,8 +121,8 @@ Workflow: HTML template → Chrome headless → PNG → JPG. Detallado:
 - [x] Vercel Function `/api/lead` implementada (Formspree eliminado).
 - [x] CAPI server-side implementada en `api/lead.js`: evento `Lead` con el mismo `event_id` del pixel (dedup automática), user_data hasheado (em/ph/fn/ln) + fbc/fbp + IP/UA reales, canal INDEPENDIENTE de la persistencia. Env vars: `META_CAPI_TOKEN` (+ `META_TEST_EVENT_CODE` solo testing) — detalle en README.
 - [ ] Grabar VSL (guion en `VSL-Guiones-Diego-Giannini.docx`). Mientras tanto las secciones VSL están ocultas con `display:none` en ambas landings.
-- [ ] Testimonios reales (sección oculta hasta que haya material verificado).
-- [ ] Casos de venta reales para las landings (sección "properties-section" oculta hasta que haya datos).
+- [ ] Testimonios reales. Las secciones ocultas legacy se purgaron del DOM (jul 2026, frente performance); cuando haya material verificado se reconstruyen — el copy placeholder quedó rescatado en `_legacy-copy.md` y el HTML completo en git history.
+- [ ] Casos de venta reales para las landings (ídem: la "properties-section" oculta se purgó; reconstruir cuando haya datos).
 
 ### Decisiones tomadas
 - **URLs limpias:** los archivos se llaman `propietarios.html` y `compradores.html` pero los links internos y canonical usan `/propietarios` y `/compradores` (gracias a `cleanUrls:true` de Vercel).
