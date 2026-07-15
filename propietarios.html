@@ -161,9 +161,7 @@
             transition: color 0.2s;
         }
 
-        .nav-links a:hover { color: var(--electric-blue); }
-
-        @media (max-width: 768px) {
+        .nav-links a:hover { color: var(--electric-blue); }@media (max-width: 768px) {
             .nav-hamburger { display: flex; }
             .nav-links {
                 display: none;
@@ -435,10 +433,6 @@
             opacity: 0;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
-        }
 
         .scroll-indicator svg {
             width: 24px;
@@ -457,205 +451,12 @@
             border-bottom: 1px solid rgba(31, 105, 255, 0.2);
         }
 
-        .marquee-content {
-            display: flex;
-            white-space: nowrap;
-            animation: scroll 30s linear infinite;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.6; transform: scale(1.3); }
         }
 
-        .marquee-content:hover {
-            animation-play-state: paused;
-        }
-
-        .marquee-item {
-            display: inline-flex;
-            align-items: center;
-            padding: 0 40px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--muted);
-            flex-shrink: 0;
-        }
-
-        .marquee-item::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--electric-blue);
-            border-radius: 50%;
-            margin-right: 40px;
-        }
-
-        /* Pain section */
-        .pain-section {
-            padding: 120px 60px;
-            background: var(--primary-dark);
-            position: relative;
-        }
-
-        .pain-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .pain-text h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(48px, 8vw, 96px);
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 30px;
-            color: var(--white);
-        }
-
-        .pain-list {
-            list-style: none;
-            margin-top: 30px;
-        }
-
-        .pain-list li {
-            font-size: 16px;
-            color: var(--muted);
-            margin-bottom: 18px;
-            padding-left: 30px;
-            position: relative;
-        }
-
-        .pain-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #E63946;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .pain-visual {
-            position: relative;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pain-visual::before {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(31, 105, 255, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
-        }
-
-        /* Solution section */
-        .solution-section {
-            padding: 120px 60px;
-            background: var(--primary-dark);
-        }
-
-        .solution-header {
-            text-align: center;
-            margin-bottom: 100px;
-        }
-
-        .solution-header h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(48px, 8vw, 80px);
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--white);
-        }
-
-        .solution-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .solution-card {
-            background: rgba(31, 105, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(31, 105, 255, 0.2);
-            border-radius: 12px;
-            padding: 50px 40px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .solution-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--electric-blue);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .solution-card:hover {
-            background: rgba(31, 105, 255, 0.1);
-            border-color: rgba(31, 105, 255, 0.4);
-            transform: translateY(-10px);
-        }
-
-        .solution-card:hover::before {
-            opacity: 1;
-        }
-
-        .solution-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 120px;
-            font-weight: 700;
-            color: rgba(31, 105, 255, 0.15);
-            line-height: 1;
-            margin-bottom: 20px;
-        }
-
-        .solution-card h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--white);
-        }
-
-        .solution-card p {
-            font-size: 16px;
-            color: var(--muted);
-            line-height: 1.8;
-        }
-
-        /* Horizontal scroll section */
-        .properties-section {
-            padding: 120px 60px;
-            background: var(--navy);
-            overflow: hidden;
-        }
 
         .properties-header {
             margin-bottom: 60px;
@@ -737,70 +538,11 @@
             z-index: 2;
         }
 
-        .property-info {
-            padding: 30px;
-            flex: 1;
-        }
-
-        .property-location {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 12px;
-            color: var(--electric-blue);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .property-address {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--white);
-            margin-bottom: 15px;
-            line-height: 1.3;
-        }
-
-        .property-details {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(31, 105, 255, 0.2);
-        }
-
-        .property-detail {
-            text-align: center;
-            flex: 1;
-        }
-
-        .property-detail-value {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--electric-blue);
-        }
-
-        .property-detail-label {
-            font-size: 12px;
-            color: var(--muted);
-            text-transform: uppercase;
-            margin-top: 5px;
-        }
-
         /* Stats section */
         .stats-section {
             padding: 80px 60px;
             background: linear-gradient(135deg, var(--navy), var(--primary-dark));
             border-top: 1px solid rgba(31, 105, 255, 0.2);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
         }
 
         .stat-item h3 {
@@ -821,12 +563,6 @@
             letter-spacing: 1px;
         }
 
-        /* Testimonials section */
-        .testimonials-section {
-            padding: 120px 60px;
-            background: var(--primary-dark);
-        }
-
         .testimonials-header {
             text-align: center;
             margin-bottom: 80px;
@@ -838,11 +574,6 @@
             font-weight: 700;
             color: var(--white);
             margin-bottom: 10px;
-        }
-
-        .testimonials-container {
-            max-width: 900px;
-            margin: 0 auto;
         }
 
         .testimonial-item {
@@ -859,147 +590,6 @@
             transition: opacity 0.6s ease;
         }
 
-        .testimonial-item.active {
-            opacity: 1;
-            position: relative;
-            animation: fadeIn 0.6s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .testimonial-quote {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(26px, 4vw, 40px);
-            font-style: italic;
-            color: var(--white);
-            margin-bottom: 30px;
-            line-height: 1.6;
-            position: relative;
-            padding: 0 40px;
-        }
-
-        .testimonial-quote::before,
-        .testimonial-quote::after {
-            content: '"';
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 80px;
-            color: var(--electric-blue);
-            opacity: 0.3;
-            position: absolute;
-        }
-
-        .testimonial-quote::before {
-            top: -20px;
-            left: 0;
-        }
-
-        .testimonial-quote::after {
-            bottom: -40px;
-            right: 0;
-        }
-
-        .testimonial-result {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
-            color: var(--electric-blue);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-
-        .testimonial-author {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--white);
-            margin-bottom: 5px;
-        }
-
-        .testimonial-location {
-            font-size: 14px;
-            color: var(--muted);
-        }
-
-        .testimonial-nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 60px;
-        }
-
-        .testimonial-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(31, 105, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .testimonial-dot.active {
-            background: var(--electric-blue);
-            width: 30px;
-            border-radius: 5px;
-        }
-
-        /* CTA Section */
-        .final-cta-section {
-            min-height: 100vh;
-            padding: 120px 60px;
-            background: var(--primary-dark);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .final-cta-section::before {
-            content: '';
-            position: absolute;
-            top: -200px;
-            left: 20%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(31, 105, 255, 0.15), transparent 70%);
-            border-radius: 50%;
-        }
-
-        .final-cta-section::after {
-            content: '';
-            position: absolute;
-            bottom: -100px;
-            right: 10%;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(0, 77, 230, 0.12), transparent 70%);
-            border-radius: 50%;
-        }
-
-        .final-cta-content {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-            width: 100%;
-        }
-
-        .final-cta-section h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(48px, 8vw, 72px);
-            font-weight: 700;
-            color: var(--white);
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .final-cta-section p {
-            font-size: 18px;
-            color: var(--muted);
-            margin-bottom: 40px;
-        }
 
         /* Contact form */
         .contact-form {
@@ -1097,36 +687,6 @@
             box-shadow: 0 15px 40px rgba(31, 105, 255, 0.35);
         }
 
-        /* WhatsApp floating button */
-        .whatsapp-floating {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #25D366, #1BA853);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 99;
-            box-shadow: 0 10px 35px rgba(37, 211, 102, 0.45);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .whatsapp-floating:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 50px rgba(37, 211, 102, 0.65);
-        }
-
-        .whatsapp-floating svg {
-            width: 28px;
-            height: 28px;
-            fill: var(--white);
-        }
-
         /* Footer */
         footer {
             padding: 80px 60px;
@@ -1140,43 +700,6 @@
             gap: 60px;
             max-width: 1200px;
             margin: 0 auto;
-        }
-
-        .footer-brand h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(48px, 8vw, 96px);
-            font-weight: 700;
-            color: var(--white);
-            line-height: 0.9;
-            margin-bottom: 20px;
-        }
-
-        .footer-contact {
-            font-size: 16px;
-            color: var(--muted);
-            line-height: 1.8;
-        }
-
-        .footer-contact a {
-            color: var(--electric-blue);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-contact a:hover {
-            color: var(--soft-blue);
-        }
-
-        .footer-contact p {
-            margin-bottom: 15px;
-        }
-
-        .footer-legal {
-            margin-top: 40px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(31, 105, 255, 0.2);
-            font-size: 12px;
-            color: var(--muted);
         }
 
         /* Custom cursor - hidden on mobile */
@@ -1220,9 +743,7 @@
             .footer-content {
                 grid-template-columns: 1fr;
             }
-        }
-
-        @media (max-width: 768px) {
+        }@media (max-width: 768px) {
             nav {
                 padding: 0 20px;
                 height: 60px;
@@ -1254,58 +775,13 @@
                 padding: 30px 20px;
             }
 
-            .pain-section {
-                padding: 80px 20px;
-            }
-
-            .pain-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .solution-section {
-                padding: 80px 20px;
-            }
-
-            .solution-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .properties-section {
-                padding: 80px 20px;
-            }
-
             .property-card {
                 min-width: 280px;
-            }
-
-            .testimonials-section {
-                padding: 80px 20px;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
-            .final-cta-section {
-                padding: 80px 20px;
             }
 
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 30px;
-            }
-
-            .footer-brand h1 {
-                font-size: 48px;
-            }
-
-            .whatsapp-floating {
-                width: 50px;
-                height: 50px;
-                bottom: 20px;
-                right: 20px;
             }
         }
     </style>
@@ -1460,7 +936,10 @@
     <!-- About section -->
     <section class="about-section fade-in" id="about">
         <div class="about-photo-card">
-            <img src="fotoperfil.jpg" alt="Diego Giannini, broker en Coldwell Banker Buenos Aires" loading="lazy" decoding="async">
+            <picture>
+                <source srcset="fotoperfil.webp" type="image/webp">
+                <img src="fotoperfil.jpg" alt="Diego Giannini, broker en Coldwell Banker Buenos Aires" width="800" height="1067" loading="lazy" decoding="async">
+            </picture>
             <div class="about-photo-footer">
                 <span class="pfname">Diego Giannini</span>
                 <span class="pftitle">Broker · Coldwell Banker Livello</span>
@@ -1525,443 +1004,6 @@
         </div>
     </footer>
 
-    <!-- ↓ CONTENIDO LEGACY OCULTO — NO MODIFICAR ↓ -->
-    <div style="display:none!important;" aria-hidden="true">
-    <section class="marquee-section">
-        <div class="marquee-content">
-            <div class="marquee-item">PROPIEDADES VENDIDAS</div>
-            <div class="marquee-item">PALERMO</div>
-            <div class="marquee-item">RECOLETA</div>
-            <div class="marquee-item">PUERTO MADERO</div>
-            <div class="marquee-item">CANNING</div>
-            <div class="marquee-item">NORDELTA</div>
-            <div class="marquee-item">BERAZATEGUI</div>
-            <div class="marquee-item">BELGRANO</div>
-            <div class="marquee-item">PROPIEDADES VENDIDAS</div>
-            <div class="marquee-item">PALERMO</div>
-            <div class="marquee-item">RECOLETA</div>
-            <div class="marquee-item">PUERTO MADERO</div>
-            <div class="marquee-item">CANNING</div>
-            <div class="marquee-item">NORDELTA</div>
-            <div class="marquee-item">BERAZATEGUI</div>
-            <div class="marquee-item">BELGRANO</div>
-        </div>
-    </section>
-
-    <!-- Pain Section — 3 personas -->
-    <section class="pain-section fade-in" style="padding:100px 5% 80px;background:linear-gradient(180deg,#0A0E1F,#0d1228);position:relative;">
-        <div style="max-width:1100px;margin:0 auto;">
-            <div style="text-align:center;margin-bottom:48px;">
-                <div style="display:inline-block;padding:8px 18px;border:1px solid rgba(31,105,255,0.3);border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#4D8AFF;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;">Identificate</div>
-                <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-weight:500;color:#fff;line-height:1.1;letter-spacing:-0.02em;">¿En cuál de estas situaciones <em style="font-style:italic;color:#4D8AFF;">estás hoy?</em></h2>
-            </div>
-
-            <!-- Tabs -->
-            <div style="display:flex;gap:8px;justify-content:center;margin-bottom:40px;flex-wrap:wrap;" id="pain-tabs">
-                <button onclick="showPain(0)" class="pain-tab active" style="padding:12px 24px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s;border:1px solid rgba(31,105,255,0.3);background:rgba(31,105,255,0.15);color:#4D8AFF;">Quiero vender pero no sé por dónde empezar</button>
-                <button onclick="showPain(1)" class="pain-tab" style="padding:12px 24px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.5);">Ya trabajé con otra inmobiliaria y no funcionó</button>
-                <button onclick="showPain(2)" class="pain-tab" style="padding:12px 24px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.5);">Soy inversor y necesito velocidad</button>
-            </div>
-
-            <!-- Pain panels -->
-            <div id="pain-panels">
-                <!-- Panel 0: Dueño directo -->
-                <div class="pain-panel" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;animation:fadeIn 0.4s;">
-                    <div>
-                        <h3 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;color:#fff;margin-bottom:20px;line-height:1.2;">Publicaste en Zonaprop y los únicos que llaman son curiosos.</h3>
-                        <div style="display:flex;flex-direction:column;gap:16px;">
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FF6B7A;font-size:18px;flex-shrink:0;margin-top:2px;">✗</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Sacás las fotos con el celular, escribís la descripción como podés, y la publicación se pierde entre 800 departamentos iguales.</p>
-                            </div>
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FF6B7A;font-size:18px;flex-shrink:0;margin-top:2px;">✗</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Recibís 20 mensajes y 19 son "¿último precio?" o compradores que desaparecen después de la visita.</p>
-                            </div>
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FF6B7A;font-size:18px;flex-shrink:0;margin-top:2px;">✗</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Pasan los meses y empezás a bajar el precio por desesperación. Terminás vendiendo USD 30k–50k menos de lo que podías.</p>
-                            </div>
-                        </div>
-                        <div style="margin-top:28px;padding:20px;background:rgba(50,229,167,0.06);border:1px solid rgba(50,229,167,0.2);border-radius:16px;">
-                            <p style="color:#32E5A7;font-size:14px;font-weight:600;margin-bottom:6px;font-family:'Space Grotesk',sans-serif;">Lo que cambia con Diego:</p>
-                            <p style="color:rgba(255,255,255,0.7);font-size:14px;line-height:1.6;">Fotos profesionales, publicación en los principales portales + red Coldwell Banker, filtro de interesados calificados antes de cada visita. Tiempo de venta significativamente menor al promedio del mercado.</p>
-                        </div>
-                    </div>
-                    <div style="background:linear-gradient(135deg,rgba(31,105,255,0.08),rgba(0,77,230,0.04));border:1px solid rgba(31,105,255,0.15);border-radius:24px;padding:48px 36px;text-align:center;">
-                        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:72px;color:#4D8AFF;line-height:1;">8</div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-top:8px;">meses promedio vendiendo solo</div>
-                        <div style="width:60px;height:1px;background:rgba(255,255,255,0.1);margin:24px auto;"></div>
-                        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:72px;color:#32E5A7;line-height:1;">47<span style="font-size:32px;"> d</span></div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-top:8px;">promedio con Diego + CB</div>
-                    </div>
-                </div>
-
-                <!-- Panel 1: Mala experiencia previa -->
-                <div class="pain-panel" style="display:none;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
-                    <div>
-                        <h3 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;color:#fff;margin-bottom:20px;line-height:1.2;">Tu inmobiliaria anterior tasó alto para firmar y después pidió bajar 3 veces.</h3>
-                        <div style="display:flex;flex-direction:column;gap:16px;">
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FF6B7A;font-size:18px;flex-shrink:0;margin-top:2px;">✗</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Te tasaron USD 250k "para tentarte", firmaste exclusiva, y a los 2 meses te dijeron "hay que bajar a 210k". Clásico.</p>
-                            </div>
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FF6B7A;font-size:18px;flex-shrink:0;margin-top:2px;">✗</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Las fotos eran mediocres, la publicación genérica, y cuando preguntabas cómo iba te mandaban "estamos trabajando".</p>
-                            </div>
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FF6B7A;font-size:18px;flex-shrink:0;margin-top:2px;">✗</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Ahora no confiás en ningún broker y pensás que es mejor vender por tu cuenta. Es lógico. Pero no es la solución.</p>
-                            </div>
-                        </div>
-                        <div style="margin-top:28px;padding:20px;background:rgba(50,229,167,0.06);border:1px solid rgba(50,229,167,0.2);border-radius:16px;">
-                            <p style="color:#32E5A7;font-size:14px;font-weight:600;margin-bottom:6px;font-family:'Space Grotesk',sans-serif;">Lo que hago distinto:</p>
-                            <p style="color:rgba(255,255,255,0.7);font-size:14px;line-height:1.6;">Tasación con comparables reales (te muestro de dónde sale cada número). Reporte semanal con métricas: visitas, consultas, feedback de cada comprador. Si la estrategia no está funcionando, lo revisamos juntos — sin excusas.</p>
-                        </div>
-                    </div>
-                    <div style="background:linear-gradient(135deg,rgba(255,107,122,0.08),rgba(255,107,122,0.03));border:1px solid rgba(255,107,122,0.15);border-radius:24px;padding:48px 36px;text-align:center;">
-                        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:48px;color:#FF6B7A;line-height:1.1;">"Hay que<br>bajar"</div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-top:12px;">La frase que no vas a escuchar</div>
-                        <div style="width:60px;height:1px;background:rgba(255,255,255,0.1);margin:24px auto;"></div>
-                        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#32E5A7;line-height:1.4;">Mi tasación es el precio<br>real desde el día 1.</div>
-                    </div>
-                </div>
-
-                <!-- Panel 2: Inversor -->
-                <div class="pain-panel" style="display:none;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
-                    <div>
-                        <h3 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;color:#fff;margin-bottom:20px;line-height:1.2;">Necesitás rotar rápido y al máximo precio. No tenés tiempo para brokers lentos.</h3>
-                        <div style="display:flex;flex-direction:column;gap:16px;">
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FFC34D;font-size:18px;flex-shrink:0;margin-top:2px;">⚡</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Tu capital está en ladrillo y cada día sin vender es un día de costo de oportunidad real. Necesitás velocidad sin sacrificar precio.</p>
-                            </div>
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FFC34D;font-size:18px;flex-shrink:0;margin-top:2px;">⚡</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Querés un broker que hable tu idioma: cap rate, yield, valor de reposición, no "tiene muy buena energía el departamento".</p>
-                            </div>
-                            <div style="display:flex;gap:14px;align-items:flex-start;">
-                                <span style="color:#FFC34D;font-size:18px;flex-shrink:0;margin-top:2px;">⚡</span>
-                                <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;">Necesitás reporting claro: cuántas visitas, cuántas ofertas, a qué precio, y un timeline de cierre estimado con fundamentos.</p>
-                            </div>
-                        </div>
-                        <div style="margin-top:28px;padding:20px;background:rgba(255,195,77,0.06);border:1px solid rgba(255,195,77,0.2);border-radius:16px;">
-                            <p style="color:#FFC34D;font-size:14px;font-weight:600;margin-bottom:6px;font-family:'Space Grotesk',sans-serif;">Mi propuesta para inversores:</p>
-                            <p style="color:rgba(255,255,255,0.7);font-size:14px;line-height:1.6;">Análisis con comparables reales + cap rate de la zona. Reporting semanal con métricas. Foco en cerrar al mejor precio en el menor tiempo posible.</p>
-                        </div>
-                    </div>
-                    <div style="background:linear-gradient(135deg,rgba(255,195,77,0.08),rgba(255,195,77,0.03));border:1px solid rgba(255,195,77,0.15);border-radius:24px;padding:48px 36px;text-align:center;">
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;">Tiempo promedio de venta</div>
-                        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:72px;color:#FFC34D;line-height:1;margin:12px 0;">45<span style="font-size:32px;"> d</span></div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;">para inversores con CB</div>
-                        <div style="width:60px;height:1px;background:rgba(255,255,255,0.1);margin:0 auto 24px;"></div>
-                        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;">Reporting semanal<br>Comparables con cap rate<br>Red Coldwell Banker</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <style>
-            @media(max-width:768px){.pain-panel{grid-template-columns:1fr !important;}}
-            @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-        </style>
-        <script>
-        function showPain(i){
-            document.querySelectorAll('.pain-panel').forEach((p,idx)=>{
-                p.style.display=idx===i?'grid':'none';
-                if(idx===i)p.style.animation='fadeIn 0.4s';
-            });
-            document.querySelectorAll('.pain-tab').forEach((t,idx)=>{
-                if(idx===i){t.style.background='rgba(31,105,255,0.15)';t.style.borderColor='rgba(31,105,255,0.3)';t.style.color='#4D8AFF';t.classList.add('active');}
-                else{t.style.background='transparent';t.style.borderColor='rgba(255,255,255,0.1)';t.style.color='rgba(255,255,255,0.5)';t.classList.remove('active');}
-            });
-        }
-        </script>
-    </section>
-
-    <!-- Solution Section -->
-    <section class="solution-section fade-in">
-        <div class="solution-header">
-            <h2>Mi método</h2>
-        </div>
-        <div class="solution-grid">
-            <div class="solution-card fade-in">
-                <div class="solution-number">01</div>
-                <h3>Análisis de mercado basado en datos</h3>
-                <p>Tasación precisa con comparables recientes. Sabés exactamente cuánto vale tu propiedad y cómo negociar.</p>
-            </div>
-            <div class="solution-card fade-in">
-                <div class="solution-number">02</div>
-                <h3>Marketing internacional Coldwell Banker</h3>
-                <p>Trato directo con un único interlocutor: hablás conmigo desde la primera llamada hasta la firma. Sin pasarte entre asistentes ni perder seguimiento.</p>
-            </div>
-            <div class="solution-card fade-in">
-                <div class="solution-number">03</div>
-                <h3>Acompañamiento hasta la escritura</h3>
-                <p>Negoción, documentación, cierre. No te preocupas por nada. Nosotros nos ocupamos de todo.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Objeciones + Garantía -->
-    <section class="fade-in" style="padding:100px 5% 80px;background:linear-gradient(180deg,#0d1228 0%,#0A0E1F 100%);position:relative;">
-        <div style="max-width:1100px;margin:0 auto;">
-            <div style="text-align:center;margin-bottom:56px;">
-                <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-weight:500;color:#fff;line-height:1.1;letter-spacing:-0.02em;">Las 3 razones por las que <em style="font-style:italic;color:#FF6B7A;">no</em> contratarías un broker.<br><span style="color:#32E5A7;">Y por qué conmigo son distintas.</span></h2>
-            </div>
-
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:64px;">
-                <!-- Objeción 1 -->
-                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px 28px;position:relative;overflow:hidden;">
-                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B7A,transparent);"></div>
-                    <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #1</div>
-                    <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:#fff;margin-bottom:16px;line-height:1.2;">"La comisión es cara, puedo vender solo."</h3>
-                    <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;margin-bottom:20px;">Podés. Pero el propietario promedio que vende solo tarda 8 meses y termina aceptando USD 30k–50k menos. Mi comisión se paga sola con el sobreprecio que logro y el tiempo que ahorrás.</p>
-                    <div style="padding:14px 18px;background:rgba(50,229,167,0.06);border-radius:10px;border-left:3px solid #32E5A7;">
-                        <p style="color:#32E5A7;font-size:13px;font-weight:500;font-family:'Space Grotesk',sans-serif;">Dato real: mis clientes venden en promedio 3% por encima de la tasación de otras inmobiliarias.</p>
-                    </div>
-                </div>
-
-                <!-- Objeción 2 -->
-                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px 28px;position:relative;overflow:hidden;">
-                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B7A,transparent);"></div>
-                    <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #2</div>
-                    <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:#fff;margin-bottom:16px;line-height:1.2;">"Ya probé con una inmobiliaria y fue un desastre."</h3>
-                    <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;margin-bottom:20px;">Lo entiendo. El 60% de mis clientes viene de una mala experiencia previa. La diferencia: yo te mando reporte semanal con métricas reales, no promesas vacías. Si no funciona, lo ves en los datos antes de que yo tenga que decirte.</p>
-                    <div style="padding:14px 18px;background:rgba(50,229,167,0.06);border-radius:10px;border-left:3px solid #32E5A7;">
-                        <p style="color:#32E5A7;font-size:13px;font-weight:500;font-family:'Space Grotesk',sans-serif;">Transparencia total: cada lunes recibís visitas, consultas, ofertas y feedback de cada comprador.</p>
-                    </div>
-                </div>
-
-                <!-- Objeción 3 -->
-                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px 28px;position:relative;overflow:hidden;">
-                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B7A,transparent);"></div>
-                    <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B7A;margin-bottom:16px;">Objeción #3</div>
-                    <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:#fff;margin-bottom:16px;line-height:1.2;">"Me van a atar con una exclusiva y después no hacen nada."</h3>
-                    <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;margin-bottom:20px;">Trabajo con exclusiva porque me permite invertir en marketing de verdad: fotos profesionales, video y publicación premium en los principales portales. Pero si en algún momento no estás conforme, te libero. Por escrito.</p>
-                    <div style="padding:14px 18px;background:rgba(50,229,167,0.06);border-radius:10px;border-left:3px solid #32E5A7;">
-                        <p style="color:#32E5A7;font-size:13px;font-weight:500;font-family:'Space Grotesk',sans-serif;">Cláusula de salida por escrito. Sin letra chica.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Garantía -->
-            <div style="max-width:780px;margin:0 auto;text-align:center;padding:48px 40px;background:linear-gradient(135deg,rgba(50,229,167,0.06),rgba(50,229,167,0.02));border:1px solid rgba(50,229,167,0.2);border-radius:24px;">
-                <div style="width:64px;height:64px;margin:0 auto 20px;background:rgba(50,229,167,0.12);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;">🛡️</div>
-                <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,40px);font-style:italic;color:#fff;margin-bottom:16px;line-height:1.15;">No vendemos, <span style="color:#32E5A7;">no cobrás.</span></h3>
-                <p style="color:rgba(255,255,255,0.65);font-size:16px;line-height:1.7;max-width:560px;margin:0 auto;">Mi comisión se cobra al cierre de la escritura. Si no vendemos tu propiedad, no pagás un peso. Sin costos ocultos, sin gastos de marketing a tu cargo, sin sorpresas. Así de simple.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Properties Section — OCULTA hasta tener casos reales con datos verificables. Sacar style="display:none" cuando se reemplacen los placeholders. -->
-    <section class="properties-section fade-in" style="display:none;">
-        <div class="properties-header">
-            <h2>Casos reales</h2>
-        </div>
-        <div class="properties-scroll">
-            <div class="property-card">
-                <div class="property-image" data-price="VENDIDA 6 SEMANAS">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-                    </svg>
-                </div>
-                <div class="property-info">
-                    <div class="property-location">Palermo</div>
-                    <div class="property-address">Departamento 3 ambientes</div>
-                    <div class="property-details">
-                        <div class="property-detail">
-                            <div class="property-detail-value">USD 50k</div>
-                            <div class="property-detail-label">Por encima</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="property-card">
-                <div class="property-image" data-price="VENDIDA 45 DÍAS">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-                    </svg>
-                </div>
-                <div class="property-info">
-                    <div class="property-location">Canning</div>
-                    <div class="property-address">Casa 4 ambientes con patio</div>
-                    <div class="property-details">
-                        <div class="property-detail">
-                            <div class="property-detail-value">USD 18k</div>
-                            <div class="property-detail-label">Por encima</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="property-card">
-                <div class="property-image" data-price="VENDIDA 52 DÍAS">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-                    </svg>
-                </div>
-                <div class="property-info">
-                    <div class="property-location">Recoleta</div>
-                    <div class="property-address">Departamento 2 ambientes</div>
-                    <div class="property-details">
-                        <div class="property-detail">
-                            <div class="property-detail-value">USD 35k</div>
-                            <div class="property-detail-label">Por encima</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="property-card">
-                <div class="property-image" data-price="VENDIDA 38 DÍAS">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-                    </svg>
-                </div>
-                <div class="property-info">
-                    <div class="property-location">Berazategui</div>
-                    <div class="property-address">Casa 3 ambientes con terraza</div>
-                    <div class="property-details">
-                        <div class="property-detail">
-                            <div class="property-detail-value">USD 28k</div>
-                            <div class="property-detail-label">Por encima</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section — datos verificables -->
-    <section class="stats-section fade-in">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <h3 data-target="100">0</h3>
-                <p>Operaciones cerradas</p>
-            </div>
-            <div class="stat-item">
-                <h3 data-target="6">0</h3>
-                <p>Años de trayectoria</p>
-            </div>
-            <div class="stat-item">
-                <h3 style="font-size:clamp(36px,5vw,56px);">BA + Madrid</h3>
-                <p>Experiencia local + internacional</p>
-            </div>
-            <div class="stat-item">
-                <h3 style="font-size:clamp(36px,5vw,56px);">1 a 1</h3>
-                <p>Atención personal directa</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section — OCULTA hasta tener testimonios reales con autorización. Sacar style="display:none" cuando se reemplacen los placeholders. -->
-    <section class="testimonials-section fade-in" style="display:none;">
-        <div class="testimonials-header">
-            <h2>Testimonios</h2>
-        </div>
-        <div class="testimonials-container">
-            <div class="testimonial-item active">
-                <div class="testimonial-quote">Tenía mi departamento publicado hace 8 meses sin resultado. Con Coldwell Banker lo vendimos en 6 semanas al precio que yo quería, sin bajar ni un peso.</div>
-                <div class="testimonial-result">✓ Vendido en 6 semanas</div>
-                <div class="testimonial-author">Marcela R.</div>
-                <div class="testimonial-location">Palermo</div>
-            </div>
-            <div class="testimonial-item">
-                <div class="testimonial-quote">Lo que más me sorprendió fue el análisis de mercado. Me mostraron con datos concretos por qué mi precio estaba bien y cómo negociar para no ceder.</div>
-                <div class="testimonial-result">✓ USD 18.000 por encima del valor inicial</div>
-                <div class="testimonial-author">Jorge G.</div>
-                <div class="testimonial-location">Canning</div>
-            </div>
-            <div class="testimonial-item">
-                <div class="testimonial-quote">El acompañamiento fue total, desde la primera reunión hasta la escritura. No tuve que preocuparme por nada. Es otra categoría de servicio.</div>
-                <div class="testimonial-result">✓ Operación cerrada en 45 días</div>
-                <div class="testimonial-author">Sofía L.</div>
-                <div class="testimonial-location">Berazategui</div>
-            </div>
-        </div>
-        <div class="testimonial-nav">
-            <div class="testimonial-dot active" onclick="showTestimonial(0)"></div>
-            <div class="testimonial-dot" onclick="showTestimonial(1)"></div>
-            <div class="testimonial-dot" onclick="showTestimonial(2)"></div>
-        </div>
-    </section>
-
-    <!-- Final CTA Section — WhatsApp directo con urgencia -->
-    <section class="final-cta-section fade-in" id="contact-form" style="padding:100px 5%;text-align:center;position:relative;">
-        <div style="max-width:780px;margin:0 auto;position:relative;z-index:1;">
-            <!-- Urgencia -->
-            <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:100px;background:rgba(255,195,77,0.1);border:1px solid rgba(255,195,77,0.3);margin-bottom:28px;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#FFC34D;box-shadow:0 0 10px rgba(255,195,77,0.6);"></span>
-                <span style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#FFC34D;">Solo tomo 5 propiedades nuevas por mes</span>
-            </div>
-
-            <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,64px);font-weight:500;color:#fff;line-height:1.08;letter-spacing:-0.02em;margin-bottom:20px;">
-                Escribime. <em style="font-style:italic;color:#4D8AFF;">Sin compromiso,</em><br>sin presión, sin verso.
-            </h2>
-            <p style="color:rgba(255,255,255,0.6);font-size:17px;line-height:1.7;max-width:560px;margin:0 auto 40px;">
-                Si tu propiedad está en las zonas que manejo, te respondo personalmente en menos de 2 horas. Si no es una zona donde pueda ayudarte, te lo digo con la misma honestidad.
-            </p>
-
-            <!-- Doble CTA -->
-            <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;">
-                <a href="https://wa.me/5491157274477?text=Hola%20Diego%2C%20quiero%20una%20tasaci%C3%B3n%20gratuita%20para%20mi%20propiedad." style="display:inline-flex;align-items:center;gap:10px;padding:18px 36px;background:#25D366;color:#fff;text-decoration:none;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;box-shadow:0 10px 30px rgba(37,211,102,0.35);transition:all 0.3s;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Escribirle a Diego ahora
-                </a>
-                <a href="#hero" onclick="document.getElementById('hero-form').scrollIntoView({behavior:'smooth'});return false;" style="display:inline-flex;align-items:center;gap:10px;padding:18px 36px;background:transparent;color:#fff;text-decoration:none;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:15px;border:1px solid rgba(255,255,255,0.15);transition:all 0.3s;">
-                    O completá el formulario ↑
-                </a>
-            </div>
-
-            <!-- Micro social proof -->
-            <div style="display:flex;gap:32px;justify-content:center;flex-wrap:wrap;padding-top:32px;border-top:1px solid rgba(255,255,255,0.06);">
-                <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#4D8AFF;">+100</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">operaciones cerradas</div>
-                </div>
-                <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#32E5A7;">6 años</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">de trayectoria</div>
-                </div>
-                <div style="text-align:center;">
-                    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;color:#FFC34D;">BA + Madrid</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">experiencia</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h1>DIEGO<br>GIANNINI</h1>
-            </div>
-            <div class="footer-contact">
-                <p><strong>Coldwell Banker Buenos Aires</strong></p>
-                <p>Av. Córdoba 5637 - 4B, Palermo</p>
-                <p>Email: <a href="mailto:diego.giannini@coldwellbanker.com.ar">diego.giannini@coldwellbanker.com.ar</a></p>
-                <p>WhatsApp: <a href="https://wa.me/5491157274477">+54 9 11 5727-4477</a></p>
-                <p>Instagram: <a href="https://instagram.com/gianninirealestate">@gianninirealestate</a></p>
-                <p style="margin-top:12px;font-size:12px;"><a href="privacidad.html" style="color:rgba(255,255,255,0.55);">Política de Privacidad</a></p>
-                <div class="footer-legal" style="padding-top: 28px; margin-top: 28px; border-top: 1px solid rgba(255,255,255,0.08);">
-                    <p style="font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.45); max-width: 1100px; font-weight: 300; letter-spacing: 0.2px;">
-                        ©️ 2026 Coldwell Banker. Todos los derechos reservados. Coldwell Banker y los logotipos de Coldwell Banker son marcas de servicio de propiedad de Coldwell Banker Real Estate LLC. El sistema Coldwell Banker está compuesto por oficinas propias de propiedad de una subsidiaria de Anywhere Advisors LLC y por oficinas adheridas al Sistema Coldwell Banker que son de propiedad y operación independientes. En cumplimiento con la normativa vigente, los asistentes NO ejercen el corretaje inmobiliario. La intermediación y conclusión de las operaciones inmobiliarias es desarrollada por Martilleros y Corredores Públicos. Esta Oficina Inmobiliaria se encuentra a cargo de <strong style="color: rgba(255,255,255,0.7); font-weight: 500;">AGUSTINA PELAEZ</strong> — Matrícula n°4025, folio 4025, tomo 9 y Matrícula n°9084, folio 39, tomo 2 — adherida al Sistema Coldwell Banker Livello. C.U.I.T.: 30-71783116-7. Av. Córdoba 5637, oficina 4B, C.A.B.A.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- WhatsApp Floating Button -->
-    <div class="whatsapp-floating" onclick="window.location.href='https://wa.me/5491157274477?text=Hola%2C%20quiero%20consultar%20sobre%20la%20venta%20de%20mi%20propiedad'">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-1.052 0-2.082.404-2.847 1.133-.735.722-1.143 1.671-1.143 2.698 0 1.025.408 1.977 1.143 2.699.765.729 1.795 1.132 2.847 1.132.969 0 1.88-.376 2.554-1.06.674-.686 1.043-1.601 1.043-2.571 0-1.027-.408-1.975-1.143-2.699-.764-.729-1.795-1.133-2.847-1.133m0 8.999c-2.357 0-4.57-.916-6.239-2.579C2.915 12.902 2 10.689 2 8.332c0-2.357.915-4.57 2.578-6.239C6.247 0.914 8.46 0 10.817 0c2.357 0 4.57.914 6.239 2.579 1.663 1.668 2.578 3.882 2.578 6.239 0 2.357-.915 4.57-2.578 6.239-1.668 1.663-3.882 2.579-6.239 2.579m10.064-14.42l.022-.035A8.323 8.323 0 0 0 10.817 0C4.844 0 0 4.844 0 10.817c0 1.905.476 3.768 1.372 5.407L0 21.929l5.91-.878c1.534.855 3.268 1.348 5.097 1.348 5.973 0 10.817-4.844 10.817-10.817 0-2.343-.794-4.53-2.143-6.264"/>
-        </svg>
-    </div>
-
     <script>
         // Mobile hamburger menu
         (function() {
@@ -1979,69 +1021,6 @@
                 if (!navEl.contains(e.target)) navEl.classList.remove('nav-open');
             });
         })();
-
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Counter animation for stats
-        const animateCounters = () => {
-            const statItems = document.querySelectorAll('.stat-item h3');
-            const observerStats = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-                        entry.target.classList.add('animated');
-                        const target = parseInt(entry.target.getAttribute('data-target'));
-                        let current = 0;
-                        const increment = target / 50;
-                        const timer = setInterval(() => {
-                            if (current < target) {
-                                current += increment;
-                                entry.target.textContent = Math.floor(current);
-                            } else {
-                                entry.target.textContent = target;
-                                clearInterval(timer);
-                            }
-                        }, 20);
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            statItems.forEach(item => observerStats.observe(item));
-        };
-
-        animateCounters();
-
-        // Testimonials rotation
-        let currentTestimonial = 0;
-        const testimonials = document.querySelectorAll('.testimonial-item');
-        const dots = document.querySelectorAll('.testimonial-dot');
-
-        function showTestimonial(index) {
-            testimonials.forEach(t => t.classList.remove('active'));
-            dots.forEach(d => d.classList.remove('active'));
-            testimonials[index].classList.add('active');
-            dots[index].classList.add('active');
-            currentTestimonial = index;
-        }
-
-        // Auto-rotate testimonials
-        setInterval(() => {
-            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-            showTestimonial(currentTestimonial);
-        }, 8000);
 
         // Form submission handler — persistencia + pixel + redirect vía GTrack (_tracking.js).
         // Mensaje de WhatsApp CONGELADO: el CRM de Diego lo clasifica por IA. No tocar.
@@ -2090,8 +1069,6 @@
             });
         });
     </script>
-
-    </div><!-- ↑ FIN CONTENIDO LEGACY ↑ -->
 
     <!-- ========== COOKIE BANNER ========== -->
     <div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies" style="display:none;position:fixed;bottom:20px;left:20px;right:20px;max-width:560px;margin:0 auto;background:rgba(10,14,31,0.98);backdrop-filter:blur(20px);border:1px solid rgba(31,105,255,0.3);border-radius:16px;padding:20px 24px;z-index:10000;font-family:'Inter',sans-serif;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
