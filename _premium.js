@@ -449,6 +449,21 @@
       </div>
     `;
     document.body.appendChild(bar);
+
+    // Con el banner de cookies visible, banner + sticky + botón de WhatsApp
+    // apilados tapan ~35% del viewport en pantallas chicas: el sticky espera
+    // al "Entendido". El script inline del banner corre antes que este (defer),
+    // así que su estado ya es definitivo acá.
+    const banner = document.getElementById('cookie-banner');
+    if (banner && getComputedStyle(banner).display !== 'none') {
+      bar.style.display = 'none';
+      new MutationObserver((_, obs) => {
+        if (getComputedStyle(banner).display === 'none') {
+          bar.style.display = '';
+          obs.disconnect();
+        }
+      }).observe(banner, { attributes: true, attributeFilter: ['style'] });
+    }
   }
 
   function setupStickyMobileCTA() {
@@ -564,8 +579,42 @@
     });
   }
 
+  // ═══ Fix repintado de <select> en iOS Safari ═══
+  // Bug de WebKit: un transform residual de animación (fill-mode forwards) en un
+  // ancestro deja al <select> nativo en una capa que a veces NO repinta su texto
+  // tras elegir una opción — el usuario ve el placeholder aunque el value esté bien.
+  // Al terminar la animación de cualquier contenedor de form, se fija el estado
+  // final a mano y se limpia la animación para restaurar el repaint normal.
+  function fixSelectRepaintIOS() {
+    document.querySelectorAll('.hero-form, .hero-form-panel, .form-tab-pane').forEach(el => {
+      if (!el.querySelector('select')) return;
+
+      function limpiar() {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.style.animation = 'none';
+        el.removeEventListener('animationend', alTerminar);
+      }
+      function alTerminar(ev) {
+        // animationend burbujea desde hijos animados: solo cuenta la del panel
+        if (ev.target === el) limpiar();
+      }
+
+      // Si la animación del panel ya terminó cuando corre este script (defer),
+      // el evento no va a llegar: limpiar directo.
+      const anims = (el.getAnimations ? el.getAnimations() : []);
+      const enCurso = anims.some(a => a.playState === 'running' || a.playState === 'pending');
+      if (getComputedStyle(el).animationName !== 'none' && !enCurso) {
+        limpiar();
+      } else {
+        el.addEventListener('animationend', alTerminar);
+      }
+    });
+  }
+
   // ═══ INIT ═══
   function init() {
+    fixSelectRepaintIOS();
     // ensureHeroPhotoBackground(); // photo now set directly via .hero::before in index.html
     setupHeroPhotoParallax();
     ensureCurtain();

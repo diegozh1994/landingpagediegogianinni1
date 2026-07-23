@@ -2605,6 +2605,16 @@
             .servicios-grid { grid-template-columns: 1fr 1fr; }
             .about-section { flex-direction: column; align-items: center; }
         }
+    
+        /* Anti-zoom iOS: controles con font-size < 16px hacen zoom al enfocar */
+        @media (max-width: 768px) {
+            .form-tab-pane input,
+            .form-tab-pane select,
+            .form-field input,
+            .form-field select {
+                font-size: 16px;
+            }
+        }
     </style>
     <link rel="stylesheet" href="_premium.css">
     <script src="_tracking.js" defer></script>
@@ -2667,31 +2677,27 @@
                     <div class="form-tab-pane active" id="pane-vender">
                         <form onsubmit="submitHeroForm(event,'vender')">
                             <div class="form-row">
-                                <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre"></div>
-                                <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido"></div>
+                                <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre" autocomplete="given-name"></div>
+                                <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido" autocomplete="family-name"></div>
                             </div>
                             <div class="form-row">
-                                <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono"></div>
-                                <div class="form-field"><input type="email" name="email" placeholder="Email (opcional)"></div>
+                                <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono" autocomplete="tel"></div>
+                                <div class="form-field"><input type="email" name="email" placeholder="Email (opcional)" autocomplete="email"></div>
                             </div>
                             <div class="form-row">
                                 <div class="form-field">
-                                    <select name="tipo" title="Tipo de propiedad" required>
+                                    <select name="tipo" title="Tipo de propiedad" required onchange="handleVendedorTipo(this)">
                                         <option value="">Tipo de propiedad</option>
                                         <option value="Casa">Casa</option>
                                         <option value="Departamento">Departamento</option>
                                         <option value="PH">PH</option>
-                                        <option value="Lote">Lote</option>
-                                        <option value="Casa en barrio privado">Casa en barrio privado</option>
+                                        <option value="Terreno">Terreno</option>
+                                        <option value="Lote-Casa en barrio privado">Lote-Casa en barrio privado</option>
                                     </select>
                                 </div>
                                 <div class="form-field">
-                                    <select name="zona" title="Zona de la propiedad" required>
-                                        <option value="">Zona</option>
-                                        <option value="CABA">CABA</option>
-                                        <option value="Canning">Canning</option>
-                                        <option value="Berazategui-Hudson">Berazategui-Hudson</option>
-                                        <option value="Otra zona PBA">Otra zona PBA</option>
+                                    <select name="zona" title="Zona de la propiedad" required disabled>
+                                        <option value="">Zona — elegí el tipo primero</option>
                                     </select>
                                 </div>
                             </div>
@@ -2703,10 +2709,10 @@
                     <!-- Pane: Compradores -->
                     <div class="form-tab-pane" id="pane-comprar">
                         <form onsubmit="submitHeroForm(event,'comprar')" id="form-comprar">
-                            <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre"></div>
-                            <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido"></div>
-                            <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono"></div>
-                            <div class="form-field"><input type="email" name="email" placeholder="Email (opcional)"></div>
+                            <div class="form-field"><input type="text" name="nombre" required placeholder="Nombre" autocomplete="given-name"></div>
+                            <div class="form-field"><input type="text" name="apellido" required placeholder="Apellido" autocomplete="family-name"></div>
+                            <div class="form-field"><input type="tel" name="telefono" required placeholder="Teléfono" autocomplete="tel"></div>
+                            <div class="form-field"><input type="email" name="email" placeholder="Email (opcional)" autocomplete="email"></div>
                             <div class="form-field">
                                 <select name="perfil" title="Qué buscás" required onchange="handleCompradorPerfil(this)">
                                     <option value="">¿Qué buscás?</option>
@@ -3232,10 +3238,28 @@
             const phone = '5491157274477';
             const message = 'Hola Diego, me gustaría conocer sobre tus servicios de real estate.';
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
+            window.location.href = url;
         }
 
         // Hero form tabs
+        // Zonas por tipo de propiedad — pane vender (mismo esquema que la landing)
+        const ZONAS_POR_TIPO_HOME = {
+            'Casa': ['CABA', 'PBA'],
+            'Departamento': ['CABA', 'PBA'],
+            'PH': ['CABA', 'PBA'],
+            'Terreno': ['CABA', 'PBA'],
+            'Lote-Casa en barrio privado': ['Canning', 'Berazategui']
+        };
+
+        function handleVendedorTipo(sel) {
+            const zonaSel = sel.form.querySelector('select[name="zona"]');
+            const zonas = ZONAS_POR_TIPO_HOME[sel.value] || [];
+            zonaSel.innerHTML = '<option value="">' +
+                (zonas.length ? 'Zona' : 'Zona — elegí el tipo primero') + '</option>' +
+                zonas.map(z => '<option value="' + z + '">' + z + '</option>').join('');
+            zonaSel.disabled = zonas.length === 0;
+        }
+
         // Zonas por perfil (mismo esquema que la landing de compradores)
         const ZONAS_POR_PERFIL_HOME = {
             'Propiedad': ['CABA', 'PBA'],
