@@ -857,16 +857,24 @@
                         <input type="email" id="email" name="email" placeholder="tu@email.com">
                     </div>
                     <div class="form-group">
+                        <label for="tipo_propiedad">Tipo de propiedad *</label>
+                        <select id="tipo_propiedad" name="tipo_propiedad" required>
+                            <option value="">Seleccionar tipo</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Departamento">Departamento</option>
+                            <option value="PH">PH</option>
+                            <option value="Lote">Lote</option>
+                            <option value="Casa en barrio privado">Casa en barrio privado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="zona">¿Dónde está tu propiedad? *</label>
                         <select id="zona" name="zona" required>
                             <option value="">Seleccionar zona</option>
-                            <option value="Villalobos">Villalobos</option>
-                            <option value="Magallanes">Magallanes</option>
-                            <option value="Sebastián Gaboto">Sebastián Gaboto</option>
-                            <option value="Canning">Canning</option>
-                            <option value="Berazategui">Berazategui</option>
                             <option value="CABA">CABA</option>
-                            <option value="Otra">Otra</option>
+                            <option value="Canning">Canning</option>
+                            <option value="Berazategui-Hudson">Berazategui-Hudson</option>
+                            <option value="Otra zona PBA">Otra zona PBA</option>
                         </select>
                     </div>
                     <button type="submit" class="form-submit">QUIERO MI TASACIÓN GRATUITA →</button>
@@ -1047,7 +1055,13 @@
             if (!telefono) { GTrack.marcarErrorTelefono(telInput); return; }
 
             GTrack.enviarLead({
-                payload: { nombre, apellido, telefono, email, zona, tipo: 'propietario', landing: 'propietarios' },
+                payload: {
+                    nombre, apellido, telefono, email, zona,
+                    // Tipo de propiedad viaja en Perfil (columna de texto en Airtable)
+                    perfil: form.querySelector('select[name="tipo_propiedad"]')?.value || '',
+                    tipo: 'propietario',
+                    landing: 'propietarios'
+                },
                 contentName: 'propietarios',
                 mensajeWA
             });

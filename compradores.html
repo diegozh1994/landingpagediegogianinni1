@@ -819,26 +819,21 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Zona de interés <span class="required">*</span></label>
-                        <select name="zona" required>
-                            <option value="">Seleccionar zona</option>
-                            <option value="Villalobos">Villalobos</option>
-                            <option value="Magallanes">Magallanes</option>
-                            <option value="Sebastián Gaboto">Sebastián Gaboto</option>
-                            <option value="Canning">Canning</option>
-                            <option value="Berazategui">Berazategui</option>
-                            <option value="CABA">CABA</option>
-                            <option value="Otra">Otra</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
                         <label class="form-label">¿Qué buscás? <span class="required">*</span></label>
                         <select name="perfil" id="perfilSelect" required onchange="toggleConditionalFields()">
                             <option value="">Selecciona una opción</option>
                             <option value="propiedad">Propiedad</option>
                             <option value="inversion">Inversión / Renta</option>
-                            <option value="lote">Lote / Barrio privado</option>
+                            <option value="lote">Lote / Casa en barrio privado</option>
+                        </select>
+                    </div>
+
+                    <!-- Las opciones de zona dependen del perfil (toggleConditionalFields las carga).
+                         Un solo select siempre visible: evita el bug de required oculto. -->
+                    <div class="form-group">
+                        <label class="form-label">Zona de interés <span class="required">*</span></label>
+                        <select name="zona" required disabled>
+                            <option value="">Elegí primero qué buscás</option>
                         </select>
                     </div>
 
@@ -1045,6 +1040,14 @@
         })();
 
         // Toggle conditional form fields
+        // Zonas por perfil: la granularidad fina viaja en utm_content de los ads
+        // y el pueblo exacto sale en la primera conversación de WhatsApp.
+        const ZONAS_POR_PERFIL = {
+            propiedad: ['CABA', 'PBA'],
+            inversion: ['CABA', 'PBA'],
+            lote: ['Canning', 'Berazategui']
+        };
+
         function toggleConditionalFields() {
             const perfil = document.getElementById('perfilSelect').value;
             const compradorFields = document.getElementById('compradorFields');
@@ -1062,6 +1065,14 @@
             } else if (perfil === 'lote') {
                 if (loteFields) loteFields.classList.add('show');
             }
+
+            // Cargar las opciones de zona según el perfil elegido
+            const zonaSel = document.querySelector('#leadForm select[name="zona"]');
+            const zonas = ZONAS_POR_PERFIL[perfil] || [];
+            zonaSel.innerHTML = '<option value="">' +
+                (zonas.length ? 'Seleccionar zona' : 'Elegí primero qué buscás') + '</option>' +
+                zonas.map(z => '<option value="' + z + '">' + z + '</option>').join('');
+            zonaSel.disabled = zonas.length === 0;
         }
 
         function openWhatsApp() {
@@ -1092,7 +1103,7 @@
 
             // Los condicionales ocultos retienen valores viejos: se lee solo lo del perfil activo
             const perfilSlug = formData.get('perfil') || '';
-            const perfilLabel = ({ propiedad: 'Propiedad', inversion: 'Inversión / Renta', lote: 'Lote / Barrio privado' })[perfilSlug] || perfilSlug;
+            const perfilLabel = ({ propiedad: 'Propiedad', inversion: 'Inversión / Renta', lote: 'Lote / Casa en barrio privado' })[perfilSlug] || perfilSlug;
             const ambientes = perfilSlug === 'propiedad' ? (formData.get('ambientes') || '') : '';
             const presupuesto = perfilSlug === 'propiedad' ? (formData.get('presupuesto_prop') || '')
                 : perfilSlug === 'inversion' ? (formData.get('presupuesto_inv') || '') : '';

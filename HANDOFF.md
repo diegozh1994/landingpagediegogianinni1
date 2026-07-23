@@ -56,8 +56,17 @@ la env var `LEAD_DESTINATION`. **Las landings no se tocan.**
    (fire-and-forget) → `fbq Lead` con eventID → redirect a wa.me a ~300ms. El guard de
    reentrada se libera en `pageshow` (bfcache) y a los 5s — hay test en CI que protege
    ese ciclo; no tocar sin correrlo.
-6. **Zonas canónicas** (ambas landings + home): Villalobos / Magallanes / Sebastián Gaboto /
-   Canning / Berazategui / CABA / Otra.
+6. **Zonas por flujo** (vigente desde jul 2026, reemplaza al set canónico único anterior):
+   - **Compradores** (landing + home): "Zona de interés" depende de "¿Qué buscás?" —
+     Propiedad o Inversión/Renta → CABA / PBA; Lote / Casa en barrio privado → Canning / Berazategui.
+     Implementado como UN select cuyas opciones cambian por perfil (nunca selects required ocultos).
+   - **Propietarios** (landing + home): "Tipo de propiedad" (Casa / Departamento / PH / Lote /
+     Casa en barrio privado → viaja en `Perfil`) + "¿Dónde está tu propiedad?":
+     CABA / Canning / Berazategui-Hudson / Otra zona PBA.
+   - Racional: la granularidad fina por propiedad viaja en `utm_content` de los ads, y el
+     pueblo exacto sale en la primera conversación de WhatsApp. El vocabulario nuevo de zona
+     entra al mensaje congelado (formato intacto) — el clasificador del CRM fue verificado
+     contra estas zonas por Diego post-deploy.
 7. **Pixel `1609863687137753` activo por defecto** (banner informativo, Ley 25.326, público
    solo Argentina). El ID viejo `1646890566557004` está descartado — no reintroducir ninguno
    de los dos: ni el ID ni `consent revoke`.

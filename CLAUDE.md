@@ -90,7 +90,7 @@ Form (landings + home) → GTrack.enviarLead (_tracking.js)
   - propietarios: `Hola Diego, soy {nombre}, quiero vender en {zona}. Vi tu anuncio.`
   - compradores: `Hola Diego, soy {nombre}, estoy buscando en {zona}. Vi tu anuncio.`
   - Siempre **label** de zona, nunca slug. El email nunca viaja en el mensaje (solo en el payload).
-- **Zonas canónicas** (select en ambas landings): Villalobos / Magallanes / Sebastián Gaboto / Canning / Berazategui / CABA / Otra.
+- **Zonas por flujo** (jul 2026 — detalle completo en HANDOFF.md §3.6): compradores → zona dependiente del perfil (CABA/PBA, o Canning/Berazategui para lote/barrio privado); propietarios → tipo de propiedad (viaja en `Perfil`) + zona CABA/Canning/Berazategui-Hudson/Otra zona PBA.
 
 ## Cómo verificar el sitio localmente
 

@@ -2678,23 +2678,20 @@
                                 <div class="form-field">
                                     <select name="tipo" title="Tipo de propiedad" required>
                                         <option value="">Tipo de propiedad</option>
-                                        <option value="Departamento">Departamento</option>
                                         <option value="Casa">Casa</option>
-                                        <option value="Lote / Terreno">Lote / Terreno</option>
+                                        <option value="Departamento">Departamento</option>
                                         <option value="PH">PH</option>
-                                        <option value="Local / Oficina">Local / Oficina</option>
+                                        <option value="Lote">Lote</option>
+                                        <option value="Casa en barrio privado">Casa en barrio privado</option>
                                     </select>
                                 </div>
                                 <div class="form-field">
                                     <select name="zona" title="Zona de la propiedad" required>
                                         <option value="">Zona</option>
-                                        <option value="Villalobos">Villalobos</option>
-                                        <option value="Magallanes">Magallanes</option>
-                                        <option value="Sebastián Gaboto">Sebastián Gaboto</option>
-                                        <option value="Canning">Canning</option>
-                                        <option value="Berazategui">Berazategui</option>
                                         <option value="CABA">CABA</option>
-                                        <option value="Otra">Otra</option>
+                                        <option value="Canning">Canning</option>
+                                        <option value="Berazategui-Hudson">Berazategui-Hudson</option>
+                                        <option value="Otra zona PBA">Otra zona PBA</option>
                                     </select>
                                 </div>
                             </div>
@@ -2715,20 +2712,19 @@
                                     <option value="">¿Qué buscás?</option>
                                     <option value="Propiedad">Propiedad</option>
                                     <option value="Inversión / Renta">Inversión / Renta</option>
-                                    <option value="Lote / Barrio privado">Lote / Barrio privado</option>
+                                    <option value="Lote / Casa en barrio privado">Lote / Casa en barrio privado</option>
+                                </select>
+                            </div>
+
+                            <!-- Zona dependiente del perfil: handleCompradorPerfil carga las opciones -->
+                            <div class="form-field">
+                                <select name="zona" title="Zona de interés" required disabled>
+                                    <option value="">Zona de interés — elegí qué buscás</option>
                                 </select>
                             </div>
 
                             <!-- Condicional: Propiedad -->
                             <div id="campos-propiedad" class="campos-ocultos">
-                                <div class="form-field">
-                                    <select name="zona_prop" title="Zona">
-                                        <option value="">Zona de interés</option>
-                                        <option value="Canning">Canning</option>
-                                        <option value="Berazategui">Berazategui</option>
-                                        <option value="CABA">CABA</option>
-                                    </select>
-                                </div>
                                 <div class="form-field">
                                     <select name="ambientes" title="Ambientes">
                                         <option value="">Cantidad de ambientes</option>
@@ -2752,30 +2748,11 @@
                             <!-- Condicional: Inversión / Renta -->
                             <div id="campos-inversion" class="campos-ocultos">
                                 <div class="form-field">
-                                    <select name="zona_inv" title="Zona">
-                                        <option value="">Zona de interés</option>
-                                        <option value="Canning">Canning</option>
-                                        <option value="Berazategui">Berazategui</option>
-                                        <option value="CABA">CABA</option>
-                                    </select>
-                                </div>
-                                <div class="form-field">
                                     <select name="presupuesto_inv" title="Presupuesto">
                                         <option value="">Presupuesto de inversión</option>
                                         <option value="Hasta USD 100.000">Hasta USD 100.000</option>
                                         <option value="USD 100.000 – 300.000">USD 100.000 – 300.000</option>
                                         <option value="Más de USD 300.000">Más de USD 300.000</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Condicional: Lote / Barrio privado -->
-                            <div id="campos-lote" class="campos-ocultos">
-                                <div class="form-field">
-                                    <select name="ubicacion_lote" title="Ubicación">
-                                        <option value="">Ubicación del lote</option>
-                                        <option value="Canning">Canning</option>
-                                        <option value="Berazategui">Berazategui</option>
                                     </select>
                                 </div>
                             </div>
@@ -3259,8 +3236,15 @@
         }
 
         // Hero form tabs
+        // Zonas por perfil (mismo esquema que la landing de compradores)
+        const ZONAS_POR_PERFIL_HOME = {
+            'Propiedad': ['CABA', 'PBA'],
+            'Inversión / Renta': ['CABA', 'PBA'],
+            'Lote / Casa en barrio privado': ['Canning', 'Berazategui']
+        };
+
         function handleCompradorPerfil(sel) {
-            const grupos = ['campos-propiedad', 'campos-inversion', 'campos-lote'];
+            const grupos = ['campos-propiedad', 'campos-inversion'];
             grupos.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('campos-ocultos');
@@ -3269,9 +3253,15 @@
                 document.getElementById('campos-propiedad').classList.remove('campos-ocultos');
             } else if (sel.value === 'Inversión / Renta') {
                 document.getElementById('campos-inversion').classList.remove('campos-ocultos');
-            } else if (sel.value === 'Lote / Barrio privado') {
-                document.getElementById('campos-lote').classList.remove('campos-ocultos');
             }
+
+            // Cargar las opciones de zona según el perfil elegido
+            const zonaSel = sel.form.querySelector('select[name="zona"]');
+            const zonas = ZONAS_POR_PERFIL_HOME[sel.value] || [];
+            zonaSel.innerHTML = '<option value="">' +
+                (zonas.length ? 'Zona de interés' : 'Zona de interés — elegí qué buscás') + '</option>' +
+                zonas.map(z => '<option value="' + z + '">' + z + '</option>').join('');
+            zonaSel.disabled = zonas.length === 0;
         }
 
         function switchTab(tab, btn) {
@@ -3307,25 +3297,22 @@
             } else {
                 const perfil = (f.perfil ? f.perfil.value : '') || '';
                 let extra = '';
+                const zonaComprar = (f.zona ? f.zona.value : '') || '';
                 if (perfil === 'Propiedad') {
-                    const zona = (f.zona_prop ? f.zona_prop.value : '') || '';
                     const amb = (f.ambientes ? f.ambientes.value : '') || '';
                     const pres = (f.presupuesto_prop ? f.presupuesto_prop.value : '') || '';
-                    extra = `${zona ? '\n📍 Zona: ' + zona : ''}${amb ? '\n🏠 Ambientes: ' + amb : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
+                    extra = `${zonaComprar ? '\n📍 Zona: ' + zonaComprar : ''}${amb ? '\n🏠 Ambientes: ' + amb : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
                 } else if (perfil === 'Inversión / Renta') {
-                    const zona = (f.zona_inv ? f.zona_inv.value : '') || '';
                     const pres = (f.presupuesto_inv ? f.presupuesto_inv.value : '') || '';
-                    extra = `${zona ? '\n📍 Zona: ' + zona : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
-                } else if (perfil === 'Lote / Barrio privado') {
-                    const ubi = (f.ubicacion_lote ? f.ubicacion_lote.value : '') || '';
-                    extra = `${ubi ? '\n📍 Ubicación: ' + ubi : ''}`;
+                    extra = `${zonaComprar ? '\n📍 Zona: ' + zonaComprar : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
+                } else if (perfil === 'Lote / Casa en barrio privado') {
+                    extra = `${zonaComprar ? '\n📍 Zona: ' + zonaComprar : ''}`;
                 }
                 msg = `Hola Diego, estoy buscando propiedades.\n👤 ${nombre} ${apellido}\n📱 ${telefono}${perfil ? '\n🔍 Busco: ' + perfil : ''}${extra}`;
             }
 
             // Zona best-effort según la variante del form (para el payload, no el mensaje)
-            const zonaPayload = (f.zona ? f.zona.value : '') || (f.zona_prop ? f.zona_prop.value : '') ||
-                (f.zona_inv ? f.zona_inv.value : '') || (f.ubicacion_lote ? f.ubicacion_lote.value : '') || '';
+            const zonaPayload = (f.zona ? f.zona.value : '') || '';
 
             // En el pane "vender" no hay perfil de comprador: viaja el tipo de propiedad
             // (Departamento/Casa/…) en Perfil para no perder el dato.
