@@ -3303,58 +3303,47 @@
             const telInput = f.telefono;
             if (!nombre || !telInput) return;
 
+            const zona = (f.zona ? f.zona.value : '') || '';
+            // Mensaje de WhatsApp CONGELADO (contrato con el clasificador IA del CRM).
+            // Sin teléfono, sin email, sin emojis, sin campos extra: TODO lo demás
+            // viaja solo en el payload. No tocar sin evaluación explícita de Diego.
+            const mensajeWA = tipo === 'vender'
+                ? `Hola Diego, soy ${nombre}, quiero vender en ${zona}. Vi tu anuncio.`
+                : `Hola Diego, soy ${nombre}, estoy buscando en ${zona}. Vi tu anuncio.`;
+
             // Respaldo: si _tracking.js no cargó (falla de red), el lead va a WhatsApp igual
             if (!window.GTrack) {
-                const msgFallback = `Hola Diego, ${tipo === 'vender' ? 'quiero tasar mi propiedad' : 'estoy buscando propiedades'}.\n👤 ${nombre} ${apellido}\n📱 ${telInput.value}`;
-                window.location.href = 'https://wa.me/5491157274477?text=' + encodeURIComponent(msgFallback);
+                window.location.href = 'https://wa.me/5491157274477?text=' + encodeURIComponent(mensajeWA);
                 return;
             }
 
             const telefono = GTrack.normalizarTelefonoAR(telInput.value);
             if (!telefono) { GTrack.marcarErrorTelefono(telInput); return; }
 
-            let msg = '';
-            if (tipo === 'vender') {
-                const propTipo = (f.tipo ? f.tipo.value : '') || '';
-                const zona = (f.zona ? f.zona.value : '') || '';
-                msg = `Hola Diego, quiero tasar mi propiedad.\n👤 ${nombre} ${apellido}\n📱 ${telefono}${propTipo ? '\n🏠 Tipo: ' + propTipo : ''}${zona ? '\n📍 Zona: ' + zona : ''}`;
-            } else {
-                const perfil = (f.perfil ? f.perfil.value : '') || '';
-                let extra = '';
-                const zonaComprar = (f.zona ? f.zona.value : '') || '';
-                if (perfil === 'Propiedad') {
-                    const amb = (f.ambientes ? f.ambientes.value : '') || '';
-                    const pres = (f.presupuesto_prop ? f.presupuesto_prop.value : '') || '';
-                    extra = `${zonaComprar ? '\n📍 Zona: ' + zonaComprar : ''}${amb ? '\n🏠 Ambientes: ' + amb : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
-                } else if (perfil === 'Inversión / Renta') {
-                    const pres = (f.presupuesto_inv ? f.presupuesto_inv.value : '') || '';
-                    extra = `${zonaComprar ? '\n📍 Zona: ' + zonaComprar : ''}${pres ? '\n💰 Presupuesto: ' + pres : ''}`;
-                } else if (perfil === 'Lote / Casa en barrio privado') {
-                    extra = `${zonaComprar ? '\n📍 Zona: ' + zonaComprar : ''}`;
-                }
-                msg = `Hola Diego, estoy buscando propiedades.\n👤 ${nombre} ${apellido}\n📱 ${telefono}${perfil ? '\n🔍 Busco: ' + perfil : ''}${extra}`;
-            }
-
-            // Zona best-effort según la variante del form (para el payload, no el mensaje)
-            const zonaPayload = (f.zona ? f.zona.value : '') || '';
-
             // En el pane "vender" no hay perfil de comprador: viaja el tipo de propiedad
-            // (Departamento/Casa/…) en Perfil para no perder el dato.
+            // en Perfil para no perder el dato. Los condicionales ocultos retienen
+            // valores viejos: se lee solo lo del perfil activo.
+            const perfilForm = (f.perfil ? f.perfil.value : '') || '';
             const perfilPayload = tipo === 'vender'
                 ? ((f.tipo ? f.tipo.value : '') || '')
-                : ((f.perfil ? f.perfil.value : '') || '');
+                : perfilForm;
+            const ambientes = perfilForm === 'Propiedad' ? ((f.ambientes ? f.ambientes.value : '') || '') : '';
+            const presupuesto = perfilForm === 'Propiedad' ? ((f.presupuesto_prop ? f.presupuesto_prop.value : '') || '')
+                : perfilForm === 'Inversión / Renta' ? ((f.presupuesto_inv ? f.presupuesto_inv.value : '') || '') : '';
 
             GTrack.enviarLead({
                 payload: {
                     nombre, apellido, telefono,
                     email: (f.email ? f.email.value : '').trim(),
-                    zona: zonaPayload,
+                    zona,
                     perfil: perfilPayload,
+                    ambientes,
+                    presupuesto,
                     tipo: tipo === 'vender' ? 'propietario' : 'comprador',
                     landing: 'home'
                 },
                 contentName: 'home',
-                mensajeWA: msg
+                mensajeWA
             });
         }
 
