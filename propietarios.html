@@ -787,6 +787,14 @@
                 gap: 30px;
             }
         }
+    
+        /* Anti-zoom iOS: controles con font-size < 16px hacen zoom al enfocar */
+        @media (max-width: 768px) {
+            .form-group input,
+            .form-group select {
+                font-size: 16px;
+            }
+        }
     </style>
     <link rel="stylesheet" href="_premium.css">
     <script src="_tracking.js" defer></script>
@@ -842,39 +850,37 @@
                     </div>
                     <div class="form-group">
                         <label for="name">Tu nombre *</label>
-                        <input type="text" id="name" name="nombre" required placeholder="Nombre">
+                        <input type="text" id="name" name="nombre" required placeholder="Nombre" autocomplete="given-name">
                     </div>
                     <div class="form-group">
                         <label for="apellido">Tu apellido *</label>
-                        <input type="text" id="apellido" name="apellido" required placeholder="Apellido">
+                        <input type="text" id="apellido" name="apellido" required placeholder="Apellido" autocomplete="family-name">
                     </div>
                     <div class="form-group">
                         <label for="whatsapp">WhatsApp *</label>
-                        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="+54 9 11 XXXX-XXXX">
+                        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="+54 9 11 XXXX-XXXX" autocomplete="tel">
                     </div>
                     <div class="form-group">
                         <label for="email">Email (opcional)</label>
-                        <input type="email" id="email" name="email" placeholder="tu@email.com">
+                        <input type="email" id="email" name="email" placeholder="tu@email.com" autocomplete="email">
                     </div>
                     <div class="form-group">
                         <label for="tipo_propiedad">Tipo de propiedad *</label>
-                        <select id="tipo_propiedad" name="tipo_propiedad" required>
+                        <select id="tipo_propiedad" name="tipo_propiedad" required onchange="actualizarZonaPropietarios(this)">
                             <option value="">Seleccionar tipo</option>
                             <option value="Casa">Casa</option>
                             <option value="Departamento">Departamento</option>
                             <option value="PH">PH</option>
-                            <option value="Lote">Lote</option>
-                            <option value="Casa en barrio privado">Casa en barrio privado</option>
+                            <option value="Terreno">Terreno</option>
+                            <option value="Lote-Casa en barrio privado">Lote-Casa en barrio privado</option>
                         </select>
                     </div>
+                    <!-- Las opciones de zona dependen del tipo (actualizarZonaPropietarios las carga).
+                         Un solo select siempre visible: evita el bug de required oculto. -->
                     <div class="form-group">
                         <label for="zona">¿Dónde está tu propiedad? *</label>
-                        <select id="zona" name="zona" required>
-                            <option value="">Seleccionar zona</option>
-                            <option value="CABA">CABA</option>
-                            <option value="Canning">Canning</option>
-                            <option value="Berazategui-Hudson">Berazategui-Hudson</option>
-                            <option value="Otra zona PBA">Otra zona PBA</option>
+                        <select id="zona" name="zona" required disabled>
+                            <option value="">Elegí primero el tipo</option>
                         </select>
                     </div>
                     <button type="submit" class="form-submit">QUIERO MI TASACIÓN GRATUITA →</button>
@@ -1033,6 +1039,26 @@
             });
         })();
 
+        // Zonas por tipo de propiedad (mismo patrón que compradores):
+        // la granularidad fina viaja en utm_content de los ads y el detalle
+        // sale en la primera conversación de WhatsApp.
+        const ZONAS_POR_TIPO = {
+            'Casa': ['CABA', 'PBA'],
+            'Departamento': ['CABA', 'PBA'],
+            'PH': ['CABA', 'PBA'],
+            'Terreno': ['CABA', 'PBA'],
+            'Lote-Casa en barrio privado': ['Canning', 'Berazategui']
+        };
+
+        function actualizarZonaPropietarios(sel) {
+            const zonaSel = sel.form.querySelector('select[name="zona"]');
+            const zonas = ZONAS_POR_TIPO[sel.value] || [];
+            zonaSel.innerHTML = '<option value="">' +
+                (zonas.length ? 'Seleccionar zona' : 'Elegí primero el tipo') + '</option>' +
+                zonas.map(z => '<option value="' + z + '">' + z + '</option>').join('');
+            zonaSel.disabled = zonas.length === 0;
+        }
+
         // Form submission handler — persistencia + pixel + redirect vía GTrack (_tracking.js).
         // Mensaje de WhatsApp CONGELADO: el CRM de Diego lo clasifica por IA. No tocar.
         function handleFormSubmit(event) {
@@ -1069,7 +1095,7 @@
 
         // WhatsApp flotante
         function openWhatsApp() {
-            window.open('https://wa.me/5491157274477?text=Hola%20Diego%2C%20quiero%20consultar%20sobre%20la%20venta%20de%20mi%20propiedad.', '_blank');
+            window.location.href = 'https://wa.me/5491157274477?text=Hola%20Diego%2C%20quiero%20consultar%20sobre%20la%20venta%20de%20mi%20propiedad.';
         }
 
         // Smooth scroll for buttons

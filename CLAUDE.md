@@ -90,7 +90,8 @@ Form (landings + home) → GTrack.enviarLead (_tracking.js)
   - propietarios: `Hola Diego, soy {nombre}, quiero vender en {zona}. Vi tu anuncio.`
   - compradores: `Hola Diego, soy {nombre}, estoy buscando en {zona}. Vi tu anuncio.`
   - Siempre **label** de zona, nunca slug. El email nunca viaja en el mensaje (solo en el payload).
-- **Zonas por flujo** (jul 2026 — detalle completo en HANDOFF.md §3.6): compradores → zona dependiente del perfil (CABA/PBA, o Canning/Berazategui para lote/barrio privado); propietarios → tipo de propiedad (viaja en `Perfil`) + zona CABA/Canning/Berazategui-Hudson/Otra zona PBA.
+- **Zonas por flujo** (jul 2026 — detalle completo en HANDOFF.md §3.6): en AMBOS flujos la zona depende de la primera elección — compradores: perfil → CABA/PBA (o Canning/Berazategui para "Lote / Casa en barrio privado"); propietarios: tipo de propiedad (Casa/Departamento/PH/Terreno/Lote-Casa en barrio privado, viaja en `Perfil`) → CABA/PBA (o Canning/Berazategui para barrio privado).
+- **Forms en mobile:** controles a 16px en mobile (regla anti-zoom iOS en `_premium.css`), `fixSelectRepaintIOS` en `_premium.js` (no sacar — repara el repintado de selects bajo transforms residuales), nada de `window.open` para wa.me (los webviews de IG/FB lo bloquean — siempre `location.href`). Cambios de forms se verifican en dispositivo real antes del merge (HANDOFF §7.9).
 
 ## Cómo verificar el sitio localmente
 

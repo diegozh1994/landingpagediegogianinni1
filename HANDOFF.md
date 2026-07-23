@@ -60,9 +60,10 @@ la env var `LEAD_DESTINATION`. **Las landings no se tocan.**
    - **Compradores** (landing + home): "Zona de interés" depende de "¿Qué buscás?" —
      Propiedad o Inversión/Renta → CABA / PBA; Lote / Casa en barrio privado → Canning / Berazategui.
      Implementado como UN select cuyas opciones cambian por perfil (nunca selects required ocultos).
-   - **Propietarios** (landing + home): "Tipo de propiedad" (Casa / Departamento / PH / Lote /
-     Casa en barrio privado → viaja en `Perfil`) + "¿Dónde está tu propiedad?":
-     CABA / Canning / Berazategui-Hudson / Otra zona PBA.
+   - **Propietarios** (landing + home): misma lógica condicional que compradores — "Tipo de
+     propiedad" (Casa / Departamento / PH / Terreno / Lote-Casa en barrio privado → viaja en
+     `Perfil`) determina la zona: Casa/Departamento/PH/Terreno → CABA / PBA;
+     Lote-Casa en barrio privado → Canning / Berazategui.
    - Racional: la granularidad fina por propiedad viaja en `utm_content` de los ads, y el
      pueblo exacto sale en la primera conversación de WhatsApp. El vocabulario nuevo de zona
      entra al mensaje congelado (formato intacto) — el clasificador del CRM fue verificado
@@ -118,3 +119,9 @@ o query param). Pedírselo a Diego.
 6. **Una sola sesión de trabajo** — no abrir sesiones/worktrees paralelos sin OK explícito de Diego.
 7. Comunicación en rioplatense, directo, sin teoría.
 8. Todo lead de prueba se marca con apellido `(borrar)` — Diego los limpia de Airtable.
+9. **Todo cambio que toque los formularios se verifica en iPhone real + Android real
+   (idealmente vía webview de Instagram) antes del merge.** El QA de emulador no alcanza
+   para bugs de repintado de selects nativos, pickers y webviews — lección aprendida: el
+   bug del transform residual de `fadeInUp` que dejaba el select mostrando el placeholder
+   en iOS solo era visible en dispositivo real (fix en `fixSelectRepaintIOS`, `_premium.js`).
+   El tráfico pago entra casi todo por el webview de IG/FB: ese es el entorno que manda.
