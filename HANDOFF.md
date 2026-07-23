@@ -108,6 +108,7 @@ o query param). Pedírselo a Diego.
 | **CRM propio como destino** (endpoint `/api/leads/web` del CRM) | **BLOQUEADO hasta cerrar R1 del CRM** (prerequisito de seguridad). Cuando destrabe: adapter nuevo en `api/lead.js` + `LEAD_DESTINATION` — sin tocar landings |
 | **CAPI offline / eventos adicionales** (compra cerrada, calificación) | Futuro, post-campañas. La base (Event ID en Airtable) ya lo soporta |
 | **CI actual** (workflow `validate`) | html-validate (sintaxis) + `test/tracking.test.js` + `test/api-lead.test.js` + check REPLACE — todos bloqueantes. Cualquier feature nueva de tracking suma su test acá |
+| **Versionado de `_premium.js/css` en deploys** | Backlog (decisión jul 2026): el cache de 300s puede servir JS viejo hasta 5 min post-deploy. Riesgo bajo; se resuelve con query de versión en los links cuando se justifique el tooling |
 
 ## 7. Reglas de trabajo del proyecto (innegociables)
 

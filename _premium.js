@@ -449,6 +449,21 @@
       </div>
     `;
     document.body.appendChild(bar);
+
+    // Con el banner de cookies visible, banner + sticky + botón de WhatsApp
+    // apilados tapan ~35% del viewport en pantallas chicas: el sticky espera
+    // al "Entendido". El script inline del banner corre antes que este (defer),
+    // así que su estado ya es definitivo acá.
+    const banner = document.getElementById('cookie-banner');
+    if (banner && getComputedStyle(banner).display !== 'none') {
+      bar.style.display = 'none';
+      new MutationObserver((_, obs) => {
+        if (getComputedStyle(banner).display === 'none') {
+          bar.style.display = '';
+          obs.disconnect();
+        }
+      }).observe(banner, { attributes: true, attributeFilter: ['style'] });
+    }
   }
 
   function setupStickyMobileCTA() {
