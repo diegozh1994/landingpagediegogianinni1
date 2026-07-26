@@ -41,7 +41,7 @@
     { "source": "/propiedad", "destination": "/compradores", "permanent": false }
   ],
   "rewrites": [
-    { "source": "/propiedad/:slug", "destination": "/propiedad.html" }
+    { "source": "/propiedad/:slug", "destination": "/propiedad" }
   ],
   "cleanUrls": true,
   "trailingSlash": false
