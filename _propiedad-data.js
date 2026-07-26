@@ -27,10 +27,25 @@ window.PROPIEDADES = {
       'Consultá superficie y plantas'
     ],
     fotos: [
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg'
+      '/img/prop/terralagos-01.webp',
+      '/img/prop/terralagos-02.webp',
+      '/img/prop/terralagos-03.webp',
+      '/img/prop/terralagos-04.webp',
+      '/img/prop/terralagos-05.webp',
+      '/img/prop/terralagos-06.webp',
+      '/img/prop/terralagos-07.webp',
+      '/img/prop/terralagos-08.webp',
+      '/img/prop/terralagos-09.webp',
+      '/img/prop/terralagos-10.webp',
+      '/img/prop/terralagos-11.webp',
+      '/img/prop/terralagos-12.webp',
+      '/img/prop/terralagos-13.webp',
+      '/img/prop/terralagos-14.webp',
+      '/img/prop/terralagos-15.webp',
+      '/img/prop/terralagos-16.webp',
+      '/img/prop/terralagos-17.webp',
+      '/img/prop/terralagos-18.webp',
+      '/img/prop/terralagos-19.webp'
     ]
   },
   mag299: {
@@ -46,10 +61,20 @@ window.PROPIEDADES = {
       'Fondo a la laguna'
     ],
     fotos: [
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg'
+      '/img/prop/mag299-01.webp',
+      '/img/prop/mag299-02.webp',
+      '/img/prop/mag299-03.webp',
+      '/img/prop/mag299-04.webp',
+      '/img/prop/mag299-05.webp',
+      '/img/prop/mag299-06.webp',
+      '/img/prop/mag299-07.webp',
+      '/img/prop/mag299-08.webp',
+      '/img/prop/mag299-09.webp',
+      '/img/prop/mag299-10.webp',
+      '/img/prop/mag299-11.webp',
+      '/img/prop/mag299-12.webp',
+      '/img/prop/mag299-13.webp',
+      '/img/prop/mag299-14.webp'
     ]
   },
   gaboto: {
@@ -65,10 +90,21 @@ window.PROPIEDADES = {
       'Orientación con luz todo el día'
     ],
     fotos: [
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg',
-      '/img/prop-placeholder.svg'
+      '/img/prop/gaboto-01.webp',
+      '/img/prop/gaboto-02.webp',
+      '/img/prop/gaboto-03.webp',
+      '/img/prop/gaboto-04.webp',
+      '/img/prop/gaboto-05.webp',
+      '/img/prop/gaboto-06.webp',
+      '/img/prop/gaboto-07.webp',
+      '/img/prop/gaboto-08.webp',
+      '/img/prop/gaboto-09.webp',
+      '/img/prop/gaboto-10.webp',
+      '/img/prop/gaboto-11.webp',
+      '/img/prop/gaboto-12.webp',
+      '/img/prop/gaboto-13.webp',
+      '/img/prop/gaboto-14.webp',
+      '/img/prop/gaboto-15.webp'
     ]
   }
 };

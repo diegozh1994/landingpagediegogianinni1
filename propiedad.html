@@ -545,6 +545,14 @@
                 mensajeWA
             });
         }
+
+        // Embudo FormView/FormStart (aditivo — helper en _tracking.js)
+        window.addEventListener('DOMContentLoaded', function () {
+            if (window.GTrack && GTrack.instrumentarForm) {
+                GTrack.instrumentarForm(document.getElementById('leadForm'),
+                    { landing: 'propiedad', propiedad: window.PROP_SLUG });
+            }
+        });
     </script>
 
     <script src="/_tracking.js" defer></script>

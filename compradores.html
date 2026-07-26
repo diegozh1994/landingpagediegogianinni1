@@ -1150,6 +1150,14 @@
     <script>
       (function(){var key='cb_banner_visto';if(!localStorage.getItem(key)){document.getElementById('cookie-banner').style.display='block';}window.cookieConsent=function(){localStorage.setItem(key,'1');document.getElementById('cookie-banner').style.display='none';};})();
     </script>
+    <script>
+      // Embudo FormView/FormStart (aditivo — helper en _tracking.js)
+      window.addEventListener('DOMContentLoaded', function () {
+        if (window.GTrack && GTrack.instrumentarForm) {
+          GTrack.instrumentarForm(document.getElementById('leadForm'), { landing: 'compradores' });
+        }
+      });
+    </script>
     <script src="_premium.js" defer></script>
 </body>
 </html>

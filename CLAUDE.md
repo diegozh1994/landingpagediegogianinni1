@@ -71,7 +71,8 @@ El tráfico se va a originar principalmente desde **Meta Ads** (paid). El home t
 - Cargado en el `<head>` de **todas** las páginas con `PageView` automático.
 - Eventos:
   - `PageView` (page load, todas las páginas)
-  - `ViewLanding` custom (en `propietarios` y `compradores` con label de landing)
+  - `ViewLanding` custom (en `propietarios` y `compradores` con label de landing); `ViewProperty` custom (páginas de propiedad, con `{propiedad: slug}`)
+  - `FormView` / `FormStart` custom (embudo por escalón, jul 2026): el form entra al viewport / primer foco en un control — una vez por pageload, vía `GTrack.instrumentarForm` (landings + home + páginas de propiedad). Con PageView → FormView → FormStart → Lead se ve en Events Manager dónde fuga cada página. Aditivo: no toca el contrato del Lead
   - `Lead` (en submit vía `GTrack.enviarLead`, con `content_name` = landing y **`eventID` = event_id del payload** — clave de deduplicación con CAPI server-side; el mismo valor queda en la columna `Event ID` de Airtable)
 - **Privacy/consent:** pixel activo por defecto (público solo Argentina, Ley 25.326 — régimen informativo). Banner de cookies informativo con botón "Entendido" + link a `/privacidad`. Leyenda de consentimiento bajo el submit de cada form. NO reintroducir `consent revoke` sin decisión de Diego.
 
