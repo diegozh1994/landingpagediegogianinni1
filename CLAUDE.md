@@ -27,6 +27,8 @@ El tráfico se va a originar principalmente desde **Meta Ads** (paid). El home t
 | `compradores.html` | Landing de captura para compradores/inversores |
 | `propiedades.html` | Catálogo de propiedades (off-market) |
 | `propiedades.json` | Data del catálogo (consumida por `_properties.js`) |
+| `propiedad.html` | Template único de páginas de propiedad (`/propiedad/{slug}` vía rewrite en `vercel.json`) — message match con ads de propiedades específicas. `noindex`, fuera del sitemap, assets con rutas absolutas. Detalle en HANDOFF.md §2 |
+| `_propiedad-data.js` | Datos por propiedad (`window.PROPIEDADES`): gancho, precio, zona canónica, specs, fotos. Propiedad nueva = entrada acá; vendida/pausada = `activo:false` (su URL redirige a `/compradores` preservando UTMs, nunca 404) |
 | `tasador-ai.html` | Tasador con IA |
 | `calculadora.html` | Calculadora simple de valor de propiedad |
 | `referidos.html` | Programa de referidos |
@@ -90,6 +92,7 @@ Form (landings + home) → GTrack.enviarLead (_tracking.js)
   - propietarios: `Hola Diego, soy {nombre}, quiero vender en {zona}. Vi tu anuncio.`
   - compradores: `Hola Diego, soy {nombre}, estoy buscando en {zona}. Vi tu anuncio.`
   - Siempre **label** de zona, nunca slug. El email nunca viaja en el mensaje (solo en el payload).
+- **Páginas de propiedad** (jul 2026): el form embebido usa el mensaje congelado de compradores con la zona precargada desde `_propiedad-data.js` — la propiedad NO viaja en el mensaje, solo en el payload (`propiedad`, columna `Propiedad` en Airtable, single select), en `utm_content` y en `content_name` (`propiedad-{slug}`, browser y CAPI). `landing: 'propiedad'`. Pixel: `ViewProperty {propiedad}` al cargar.
 - **Zonas por flujo** (jul 2026 — detalle completo en HANDOFF.md §3.6): en AMBOS flujos la zona depende de la primera elección — compradores: perfil → CABA/PBA (o Canning/Berazategui para "Lote / Casa en barrio privado"); propietarios: tipo de propiedad (Casa/Departamento/PH/Terreno/Lote-Casa en barrio privado, viaja en `Perfil`) → CABA/PBA (o Canning/Berazategui para barrio privado).
 - **Forms en mobile:** controles a 16px en mobile (regla anti-zoom iOS en `_premium.css`), `fixSelectRepaintIOS` en `_premium.js` (no sacar — repara el repintado de selects bajo transforms residuales), nada de `window.open` para wa.me (los webviews de IG/FB lo bloquean — siempre `location.href`). Cambios de forms se verifican en dispositivo real antes del merge (HANDOFF §7.9).
 

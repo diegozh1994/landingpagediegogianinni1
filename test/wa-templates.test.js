@@ -13,7 +13,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert');
 
-const ARCHIVOS = ['propietarios.html', 'compradores.html', 'index.html', '_premium.js', '_tracking.js'];
+const ARCHIVOS = ['propietarios.html', 'compradores.html', 'propiedad.html', 'index.html', '_premium.js', '_tracking.js'];
 
 const CONGELADOS = [
   /^Hola Diego, soy \$\{nombre\}, quiero vender en \$\{zona\}\. Vi tu anuncio\.$/,
@@ -62,7 +62,7 @@ for (const archivo of ARCHIVOS) {
 }
 
 // Sanidad del propio test: si no encontró templates, el extractor se rompió
-assert.ok(templatesSubmit >= 4, `el test debe encontrar ≥4 templates de submit (encontró ${templatesSubmit}) — ¿cambió la estructura?`);
+assert.ok(templatesSubmit >= 5, `el test debe encontrar ≥5 templates de submit (encontró ${templatesSubmit}) — ¿cambió la estructura?`);
 assert.ok(ctasEstaticos >= 3, `el test debe encontrar ≥3 CTAs estáticos (encontró ${ctasEstaticos})`);
 
 if (errores.length) {

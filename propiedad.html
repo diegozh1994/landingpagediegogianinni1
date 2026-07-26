@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="facebook-domain-verification" content="9wqd86re8c8wj3uc9cjf0utwmukpk8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Destino de pauta: NO indexar (precios volátiles, message match con ads) -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>Propiedad en venta | Diego Giannini · Coldwell Banker</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230A0E1F'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='54' font-weight='700' text-anchor='middle' fill='%231F69FF'%3ECB%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="/logo-cb.png">
+
+    <!-- Open Graph mínimo (previews de WhatsApp/Meta; la página no se indexa) -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:site_name" content="Diego Giannini · Coldwell Banker">
+    <meta property="og:title" content="Propiedad en venta · Coldwell Banker Buenos Aires">
+    <meta property="og:description" content="Consultá por esta propiedad. Diego te responde en menos de 2 horas.">
+    <meta property="og:image" content="https://gianninirealestate.com.ar/og-compradores.jpg">
+
+    <!-- Slug de la propiedad: /propiedad/{slug} en producción.
+         Fallback ?slug= SOLO para QA local (python http.server no aplica el rewrite). -->
+    <script>
+      (function () {
+        var seg = window.location.pathname.split('/').filter(Boolean);
+        var slug = seg.length > 1 && seg[0] === 'propiedad' ? seg[seg.length - 1] : '';
+        if (!slug) slug = new URLSearchParams(window.location.search).get('slug') || '';
+        window.PROP_SLUG = slug;
+      })();
+    </script>
+
+    <!-- Meta Pixel -->
+    <script>
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1609863687137753');
+      fbq('track', 'PageView');
+      if (window.PROP_SLUG) fbq('trackCustom', 'ViewProperty', {propiedad: window.PROP_SLUG});
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1609863687137753&ev=PageView&noscript=1"/></noscript>
+
+    <!-- GA4 placeholder — reemplazar G-XXXXXXXXXX y descomentar cuando esté el ID -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <meta name="theme-color" content="#0A0E1F">
+
+    <!-- Compartido: footer, anti-zoom iOS 16px, resets de forms -->
+    <link rel="stylesheet" href="/_premium.css">
+
+    <style>
+        /* Performance: sin animaciones para reduce-motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Performance mobile: backdrop-filter caro en GPU mobile, desactivado */
+        @media (max-width: 768px) {
+            *, *::before, *::after {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-dark: #0A0E1F;
+            --navy: #122455;
+            --electric-blue: #1F69FF;
+            --french-blue: #004DE6;
+            --soft-blue: #4D8AFF;
+            --white: #FFFFFF;
+            --muted: #7A8BAD;
+            --success: #32E5A7;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        html, body {
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            color: var(--white);
+            background: var(--primary-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Nav mínima: destino de pauta, sin menú que distraiga */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 76px;
+            border-bottom: 1px solid rgba(31, 105, 255, 0.15);
+        }
+
+        .logo img { height: 56px; max-width: 200px; width: auto; display: block; }
+
+        .nav-cta {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid rgba(31, 105, 255, 0.5);
+            border-radius: 8px;
+            background: rgba(31, 105, 255, 0.12);
+        }
+
+        /* Hero: gancho + precio ARRIBA DEL FOLD */
+        .prop-hero {
+            padding: 44px 40px 28px;
+            max-width: 1100px;
+            margin: 0 auto;
+            background:
+                radial-gradient(ellipse 70% 50% at 50% 0%, rgba(31, 105, 255, 0.14) 0%, transparent 70%);
+        }
+
+        .prop-eyebrow {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--soft-blue);
+            margin-bottom: 14px;
+        }
+
+        .prop-gancho {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(38px, 7vw, 64px);
+            font-weight: 600;
+            line-height: 1.08;
+            margin-bottom: 18px;
+        }
+
+        .prop-precio {
+            display: inline-block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 5vw, 40px);
+            font-weight: 700;
+            color: var(--white);
+            padding: 8px 22px;
+            border: 1px solid rgba(50, 229, 167, 0.4);
+            border-radius: 12px;
+            background: rgba(50, 229, 167, 0.08);
+            margin-bottom: 16px;
+        }
+
+        .prop-urgencia {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 100px;
+            background: rgba(50, 229, 167, 0.08);
+            border: 1px solid rgba(50, 229, 167, 0.25);
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .prop-urgencia .dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(50, 229, 167, 0.6);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .prop-urgencia span:last-child {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--success);
+        }
+
+        .hero-cta {
+            display: inline-block;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--white);
+            text-decoration: none;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
+            box-shadow: 0 10px 40px rgba(31, 105, 255, 0.25);
+            margin-top: 6px;
+        }
+
+        /* Galería: swipe horizontal en mobile, grilla en desktop */
+        .prop-galeria {
+            max-width: 1100px;
+            margin: 18px auto 0;
+            padding: 0 40px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .prop-galeria img {
+            width: min(78vw, 560px);
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid rgba(31, 105, 255, 0.2);
+            scroll-snap-align: center;
+            flex-shrink: 0;
+            background: #0F1630;
+        }
+
+        @media (min-width: 900px) {
+            .prop-galeria {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                overflow: visible;
+            }
+            .prop-galeria img { width: 100%; }
+            .prop-galeria img:first-child { grid-row: span 3; height: 100%; }
+        }
+
+        /* Specs */
+        .prop-specs {
+            max-width: 1100px;
+            margin: 26px auto 0;
+            padding: 0 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .prop-specs li {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--white);
+            padding: 9px 16px;
+            border: 1px solid rgba(31, 105, 255, 0.3);
+            border-radius: 100px;
+            background: rgba(31, 105, 255, 0.08);
+        }
+
+        /* Form embebido (mismo funnel que /compradores) */
+        .prop-form-section {
+            max-width: 640px;
+            margin: 44px auto 70px;
+            padding: 0 24px;
+        }
+
+        .hero-form-panel {
+            background: rgba(31, 105, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(31, 105, 255, 0.25);
+            border-radius: 16px;
+            padding: 44px 34px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .form-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--white);
+        }
+
+        .form-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 26px;
+        }
+
+        .form-group { margin-bottom: 22px; }
+
+        .form-label {
+            display: block;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-label .required { color: var(--electric-blue); }
+
+        .prop-form-section input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(31, 105, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .prop-form-section input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .prop-form-section input:focus {
+            outline: none;
+            border-color: var(--electric-blue);
+            background: rgba(31, 105, 255, 0.15);
+            box-shadow: 0 0 20px rgba(31, 105, 255, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
+            color: var(--white);
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(31, 105, 255, 0.25);
+            margin-top: 14px;
+        }
+
+        .form-privacy {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 16px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* Anti-zoom iOS: controles < 16px hacen zoom al enfocar */
+        @media (max-width: 768px) {
+            .prop-form-section input { font-size: 16px; }
+            nav { padding: 0 20px; height: 62px; }
+            .logo img { height: 44px; }
+            .prop-hero { padding: 30px 24px 20px; }
+            .prop-galeria, .prop-specs { padding: 0 24px; }
+            .prop-urgencia { margin-left: 0; margin-top: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation mínima -->
+    <nav>
+        <a href="/" class="logo">
+            <img src="/logo-cb.png" alt="Coldwell Banker">
+        </a>
+        <a class="nav-cta" href="#consulta">Consultar →</a>
+    </nav>
+
+    <!-- Hero: gancho del anuncio + precio, visibles sin scroll -->
+    <section class="prop-hero">
+        <div class="prop-eyebrow" id="prop-ubicacion"></div>
+        <h1 class="prop-gancho" id="prop-gancho"></h1>
+        <div>
+            <div class="prop-precio" id="prop-precio"></div>
+            <div class="prop-urgencia">
+                <span class="dot"></span>
+                <span>Disponible · respondo en menos de 2 horas</span>
+            </div>
+        </div>
+        <div style="margin-top:18px;">
+            <a class="hero-cta" href="#consulta">Quiero verla →</a>
+        </div>
+    </section>
+
+    <!-- Galería (la primera foto carga eager, el resto lazy) -->
+    <div class="prop-galeria" id="prop-galeria"></div>
+
+    <!-- Specs -->
+    <ul class="prop-specs" id="prop-specs"></ul>
+
+    <!-- Form de captura embebido — mismo funnel que /compradores -->
+    <section class="prop-form-section" id="consulta">
+        <div class="hero-form-panel">
+            <h3 class="form-title">Consultá por esta propiedad</h3>
+            <div class="form-sub" id="prop-form-sub">Diego te responde en menos de 2 horas.</div>
+            <form id="leadForm" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Tu nombre <span class="required">*</span></label>
+                    <input type="text" name="nombre" required placeholder="Nombre" autocomplete="given-name">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tu apellido <span class="required">*</span></label>
+                    <input type="text" name="apellido" required placeholder="Apellido" autocomplete="family-name">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">WhatsApp <span class="required">*</span></label>
+                    <input type="tel" name="whatsapp" placeholder="+54 9 11 XXXX-XXXX" required autocomplete="tel">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email (opcional)</label>
+                    <input type="email" name="email" placeholder="tu@email.com" autocomplete="email">
+                </div>
+
+                <button type="submit" class="btn-submit">QUIERO VER ESTA PROPIEDAD →</button>
+
+                <div class="form-privacy">
+                    🔒 Solo te contactamos nosotros. Sin spam, sin terceros.<br>Al enviar aceptás la <a href="/privacidad" style="color:#4D8AFF;text-decoration:underline;">política de privacidad</a> y que te contactemos por WhatsApp.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer de compliance — VERBATIM de las landings (destino de pauta, no tocar) -->
+    <footer id="contact">
+        <div class="footer-main">
+            <div class="footer-brand-col">
+                <div class="footer-brand-name">Diego Giannini</div>
+                <div class="footer-brand-sub">Coldwell Banker Livello</div>
+                <a href="mailto:diego.giannini@coldwellbanker.com.ar">diego.giannini@coldwellbanker.com.ar</a>
+                <a href="tel:+5491157274477">+54 9 11 5727-4477</a>
+                <p>Av. Córdoba 5637 - 4B, Palermo, CABA</p>
+            </div>
+            <div class="footer-col">
+                <div class="footer-col-title">Páginas</div>
+                <a href="/propietarios">Propietarios</a>
+                <a href="/compradores">Compradores</a>
+                <a href="/referidos">Referidos · USD 500</a>
+                <a href="/propiedades">Propiedades</a>
+            </div>
+            <div class="footer-col">
+                <div class="footer-col-title">Zonas</div>
+                <a href="/compradores">Canning</a>
+                <a href="/compradores">Berazategui</a>
+                <a href="/compradores">CABA</a>
+            </div>
+            <div class="footer-col">
+                <div class="footer-col-title">Redes</div>
+                <a href="https://instagram.com/gianninirealestate" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://wa.me/5491157274477" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="/privacidad">Privacidad</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-bottom-legal">©️2026 Coldwell Banker. Todos los derechos reservados. Coldwell Banker y los logotipos de Coldwell Banker son marcas de servicio de propiedad de Coldwell Banker Real Estate LLC. El sistema Coldwell Banker está compuesto por oficinas propias de propiedad de una subsidiaria de Anywhere Advisors LLC y por oficinas adheridas al Sistema Coldwell Banker que son de propiedad y operación independientes. En cumplimiento con la normativa vigente, los asistentes NO ejercen el corretaje inmobiliario. La intermediación y conclusión de las operaciones inmobiliarias es desarrollada por Martilleros y Corredores Públicos. Esta Oficina Inmobiliaria se encuentra a cargo de <strong>AGUSTINA PELAEZ</strong> Matrícula n4025, folio 4025, tomo 9 y Matrícula n9084, folio 39, tomo 2 adherida al Sistema Coldwell Banker Livello, C.U.I.T.: 30-71783116-7, Av. Córdoba 5637, oficina 4B, C.A.B.A.</p>
+            <div class="footer-bottom-links">
+                <a href="/privacidad">Política de Privacidad</a>
+                <a href="mailto:diego.giannini@coldwellbanker.com.ar">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Datos de propiedades + render -->
+    <script src="/_propiedad-data.js"></script>
+    <script>
+        // Propiedad apagada o slug desconocido → /compradores preservando la
+        // query string (UTMs/fbclid de ads viejos siguen atribuyendo). Nunca 404.
+        var PROP = (window.PROPIEDADES || {})[window.PROP_SLUG];
+        if (!PROP || !PROP.activo) {
+            window.location.replace('/compradores' + window.location.search);
+        } else {
+            document.title = PROP.gancho + ' — ' + PROP.precio + ' | Diego Giannini · Coldwell Banker';
+            document.getElementById('prop-ubicacion').textContent = PROP.ubicacion;
+            document.getElementById('prop-gancho').textContent = PROP.gancho;
+            document.getElementById('prop-precio').textContent = PROP.precio;
+            document.getElementById('prop-form-sub').textContent =
+                PROP.ubicacion + ' · Diego te responde en menos de 2 horas.';
+
+            document.getElementById('prop-galeria').innerHTML = PROP.fotos.map(function (src, i) {
+                var attrs = i === 0 ? ' fetchpriority="high"' : ' loading="lazy"';
+                var alt = PROP.ubicacion + ' — foto ' + (i + 1);
+                if (src.slice(-5) === '.webp') {
+                    // WebP + JPG fallback: mismo nombre, otra extensión
+                    return '<picture><source srcset="' + src + '" type="image/webp">' +
+                        '<img src="' + src.slice(0, -5) + '.jpg" alt="' + alt + '"' + attrs + '></picture>';
+                }
+                return '<img src="' + src + '" alt="' + alt + '"' + attrs + '>';
+            }).join('');
+
+            document.getElementById('prop-specs').innerHTML = PROP.specs.map(function (s) {
+                return '<li></li>';
+            }).join('');
+            var items = document.querySelectorAll('#prop-specs li');
+            PROP.specs.forEach(function (s, i) { items[i].textContent = s; });
+        }
+
+        // Persistencia + pixel + redirect vía GTrack (_tracking.js).
+        // Mensaje de WhatsApp CONGELADO: el CRM de Diego lo clasifica por IA. No tocar.
+        // La zona viene precargada del archivo de datos (label canónico, nunca slug).
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const nombre = (formData.get('nombre') || '').trim();
+            const apellido = (formData.get('apellido') || '').trim();
+            const telInput = form.querySelector('input[name="whatsapp"]');
+            const zona = PROP.zona;
+            const mensajeWA = `Hola Diego, soy ${nombre}, estoy buscando en ${zona}. Vi tu anuncio.`;
+
+            // Respaldo: si _tracking.js no cargó (falla de red), el lead va a WhatsApp igual
+            if (!window.GTrack) {
+                window.location.href = 'https://wa.me/5491157274477?text=' + encodeURIComponent(mensajeWA);
+                return;
+            }
+
+            const telefono = GTrack.normalizarTelefonoAR(telInput.value);
+            if (!telefono) { GTrack.marcarErrorTelefono(telInput); return; }
+
+            GTrack.enviarLead({
+                payload: {
+                    nombre,
+                    apellido,
+                    telefono,
+                    email: formData.get('email') || '',
+                    zona,
+                    propiedad: window.PROP_SLUG,
+                    tipo: 'comprador',
+                    landing: 'propiedad'
+                },
+                contentName: 'propiedad-' + window.PROP_SLUG,
+                mensajeWA
+            });
+        }
+    </script>
+
+    <script src="/_tracking.js" defer></script>
+
+    <!-- ========== COOKIE BANNER ========== -->
+    <div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies" style="display:none;position:fixed;bottom:20px;left:20px;right:20px;max-width:560px;margin:0 auto;background:rgba(10,14,31,0.98);backdrop-filter:blur(20px);border:1px solid rgba(31,105,255,0.3);border-radius:16px;padding:20px 24px;z-index:10000;font-family:'Inter',sans-serif;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="flex:1;min-width:220px;">
+          <div style="font-weight:600;margin-bottom:6px;font-size:14px;">🍪 Usamos cookies</div>
+          <div style="font-size:13px;opacity:0.8;line-height:1.5;">Usamos cookies para analizar el tráfico y mejorar tu experiencia. <a href="/privacidad" style="color:#4D8AFF;text-decoration:underline;">Política de privacidad</a>.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="cookieConsent()" style="background:linear-gradient(135deg,#1F69FF,#004DE6);border:none;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Entendido</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function(){var key='cb_banner_visto';if(!localStorage.getItem(key)){document.getElementById('cookie-banner').style.display='block';}window.cookieConsent=function(){localStorage.setItem(key,'1');document.getElementById('cookie-banner').style.display='none';};})();
+    </script>
+</body>
+</html>

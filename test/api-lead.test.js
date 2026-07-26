@@ -99,6 +99,30 @@ const airtableDe = () => llamadas.find((c) => !c.esCAPI);
     assert.ok(!('test_event_code' in capi.body), 'sin env var no viaja test_event_code');
   });
 
+  // Páginas de propiedad: campo Propiedad + landing 'propiedad' + content_name por slug
+  const leadPropiedad = {
+    ...leadCompleto, landing: 'propiedad', propiedad: 'terralagos',
+    landing_url: 'https://gianninirealestate.com.ar/propiedad/terralagos?utm_content=ad_terralagos_video_v1',
+  };
+  await correr('lead de página de propiedad → Propiedad + content_name por slug', leadPropiedad, 200, () => {
+    const airtable = airtableDe();
+    assert.strictEqual(airtable.body.fields['Propiedad'], 'terralagos');
+    assert.strictEqual(airtable.body.fields['Landing'], 'propiedad', "landing 'propiedad' es válida");
+    assert.strictEqual(capiDe().body.data[0].custom_data.content_name, 'propiedad-terralagos');
+  });
+
+  // Slug inválido no viaja (typecast:true crearía opciones fantasma en el select)
+  await correr('slug de propiedad inválido → se descarta', { ...leadPropiedad, propiedad: 'Terra Lagos!<script>' }, 200, () => {
+    assert.ok(!('Propiedad' in airtableDe().body.fields));
+    assert.strictEqual(capiDe().body.data[0].custom_data.content_name, 'propiedad');
+  });
+
+  // Regresión: leads de landings siguen sin campo Propiedad ni cambio de content_name
+  await correr('lead de /compradores sin propiedad → sin campo Propiedad', leadCompleto, 200, () => {
+    assert.ok(!('Propiedad' in airtableDe().body.fields));
+    assert.strictEqual(capiDe().body.data[0].custom_data.content_name, 'compradores');
+  });
+
   // Campos vacíos se omiten del user_data
   await correr('user_data omite vacíos', { ...leadCompleto, email: '', apellido: '', fbc: '' }, 200, () => {
     const ud = capiDe().body.data[0].user_data;
