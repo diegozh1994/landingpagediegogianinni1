@@ -21,10 +21,12 @@ window.PROPIEDADES = {
     ubicacion: 'Terralagos, Canning',
     zona: 'Canning',
     specs: [
-      'Casa en barrio privado',
-      'Terralagos · Canning',
-      'Garage integrado al living',
-      'Consultá superficie y plantas'
+      'Lote 1.000 m² · 420 m² cubiertos',
+      '6 ambientes · 4 dormitorios · 4 baños',
+      '2 plantas · 2 cocheras',
+      'Living comedor de doble altura · Cocina con isla',
+      'Pileta · Galería · Jardín',
+      'Seguridad 24 hs · Club house · Centro de deportes'
     ],
     fotos: [
       '/img/prop/terralagos-01.webp',
@@ -55,10 +57,12 @@ window.PROPIEDADES = {
     ubicacion: 'Magallanes · Pueblos del Plata, Hudson',
     zona: 'Berazategui',
     specs: [
-      'Casa en barrio privado',
-      'Magallanes · Pueblos del Plata',
-      'Pileta y galería',
-      'Fondo a la laguna'
+      'Lote 709 m² · 165 m² cubiertos',
+      '5 ambientes · 4 dormitorios · 3 baños',
+      'A estrenar · 2 plantas · 3 cocheras',
+      'Piscina climatizada · Galería con parrilla',
+      'Balcón terraza con vista a la laguna',
+      'Seguridad 24 hs · Club house · Gimnasio · Tenis y fútbol'
     ],
     fotos: [
       '/img/prop/mag299-01.webp',
@@ -84,10 +88,11 @@ window.PROPIEDADES = {
     ubicacion: 'Sebastián Gaboto · Pueblos del Plata, Hudson',
     zona: 'Berazategui',
     specs: [
-      'Casa en barrio privado',
-      'Sebastián Gaboto · Pueblos del Plata',
-      'Living de doble altura',
-      'Orientación con luz todo el día'
+      'Lote 602 m² · 180 m² cubiertos',
+      '4 ambientes · 3 dormitorios · 2 baños',
+      'A estrenar · 1 planta · Suite con vestidor',
+      'Pileta · Galería con parrilla · Jardín',
+      'Seguridad 24 hs · Club house · Centro de deportes'
     ],
     fotos: [
       '/img/prop/gaboto-01.webp',
