@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Foto próximamente">
+  <rect width="800" height="600" fill="#0F1630"/>
+  <rect x="1" y="1" width="798" height="598" fill="none" stroke="#1F69FF" stroke-opacity="0.25" stroke-width="2"/>
+  <g fill="none" stroke="#1F69FF" stroke-opacity="0.45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M310 330 L400 240 L490 330"/>
+    <path d="M335 315 L335 380 L465 380 L465 315"/>
+  </g>
+  <text x="400" y="440" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#7A8BAD">Fotos en camino</text>
+</svg>

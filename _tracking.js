@@ -169,11 +169,43 @@
     }, 300);
   }
 
+  // Embudo por escalón (jul 2026): con PageView → FormView → FormStart → Lead
+  // se ve en Events Manager dónde fuga cada página, sin herramienta nueva.
+  // ADITIVO PURO: no toca enviarLead, ni el contrato del Lead, ni el mensaje WA.
+  //   FormView  — el form entró al viewport (≥25%), una vez por pageload.
+  //   FormStart — primer foco en un control del form, una vez por pageload.
+  function instrumentarForm(form, params) {
+    if (!form) return;
+    var visto = false;
+    var iniciado = false;
+    function disparar(nombre) {
+      if (window.fbq) fbq('trackCustom', nombre, params || {});
+    }
+    if (window.IntersectionObserver) {
+      var obs = new IntersectionObserver(function (entradas) {
+        for (var i = 0; i < entradas.length; i++) {
+          if (entradas[i].isIntersecting && !visto) {
+            visto = true;
+            disparar('FormView');
+            obs.disconnect();
+          }
+        }
+      }, { threshold: 0.25 });
+      obs.observe(form);
+    }
+    form.addEventListener('focusin', function () {
+      if (iniciado) return;
+      iniciado = true;
+      disparar('FormStart');
+    });
+  }
+
   window.GTrack = {
     datosTracking: datosTracking,
     eventId: eventId,
     normalizarTelefonoAR: normalizarTelefonoAR,
     marcarErrorTelefono: marcarErrorTelefono,
-    enviarLead: enviarLead
+    enviarLead: enviarLead,
+    instrumentarForm: instrumentarForm
   };
 })();

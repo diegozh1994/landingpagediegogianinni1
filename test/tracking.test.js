@@ -24,6 +24,8 @@ function crearPagina() {
   const listeners = {};
   const fetches = [];
   const timeouts = [];
+  const eventosFbq = [];
+  const io = { cb: null };
   let uuidN = 0;
 
   const sandbox = {
@@ -33,6 +35,12 @@ function crearPagina() {
     localStorage: storageEnMemoria(),
     sessionStorage: storageEnMemoria(),
     crypto: { randomUUID: () => `uuid-${++uuidN}` },
+    fbq: (...args) => { eventosFbq.push(args); },
+    IntersectionObserver: function (cb) {
+      io.cb = cb;
+      this.observe = () => {};
+      this.disconnect = () => {};
+    },
     document: {
       cookie: '',
       referrer: '',
@@ -56,6 +64,17 @@ function crearPagina() {
     dispararPageshow: () => (listeners.pageshow || []).forEach((fn) => fn()),
     ejecutarTimeouts: (ms) => timeouts.filter((t) => t.ms === ms).splice(0).forEach((t) => t.fn()),
     eventIds: () => fetches.map((f) => JSON.parse(f.opts.body).event_id),
+    eventosFbq,
+    io,
+    sandbox,
+    // Form fake para instrumentarForm: captura listeners y permite dispararlos
+    crearForm: () => {
+      const ls = {};
+      return {
+        addEventListener: (e, fn) => { (ls[e] = ls[e] || []).push(fn); },
+        disparar: (e) => (ls[e] || []).forEach((fn) => fn()),
+      };
+    },
   };
 }
 
@@ -98,6 +117,45 @@ function crearPagina() {
   p.enviar();
   assert.strictEqual(p.fetches.length, 1);
   console.log('OK  pageshow inicial inofensivo');
+}
+
+// 5) Embudo FormView/FormStart: una sola vez cada uno, con los params correctos
+{
+  const p = crearPagina();
+  const form = p.crearForm();
+  p.sandbox.GTrack.instrumentarForm(form, { landing: 'propiedad', propiedad: 'terralagos' });
+
+  p.io.cb([{ isIntersecting: false }]);
+  assert.strictEqual(p.eventosFbq.length, 0, 'sin intersección no dispara nada');
+  p.io.cb([{ isIntersecting: true }]);
+  p.io.cb([{ isIntersecting: true }]);
+  form.disparar('focusin');
+  form.disparar('focusin');
+
+  assert.deepStrictEqual(p.eventosFbq, [
+    ['trackCustom', 'FormView', { landing: 'propiedad', propiedad: 'terralagos' }],
+    ['trackCustom', 'FormStart', { landing: 'propiedad', propiedad: 'terralagos' }],
+  ], 'FormView y FormStart: una vez cada uno, con params');
+  console.log('OK  FormView/FormStart una sola vez con params');
+}
+
+// 6) Sin IntersectionObserver (browser viejo): FormView se saltea, FormStart vive
+{
+  const p = crearPagina();
+  delete p.sandbox.IntersectionObserver;
+  const form = p.crearForm();
+  p.sandbox.GTrack.instrumentarForm(form, { landing: 'compradores' });
+  form.disparar('focusin');
+  assert.deepStrictEqual(p.eventosFbq, [['trackCustom', 'FormStart', { landing: 'compradores' }]]);
+  console.log('OK  sin IntersectionObserver → solo FormStart, sin romper');
+}
+
+// 7) instrumentarForm con form inexistente no explota (página sin form)
+{
+  const p = crearPagina();
+  p.sandbox.GTrack.instrumentarForm(null, { landing: 'x' });
+  assert.strictEqual(p.eventosFbq.length, 0);
+  console.log('OK  form null inofensivo');
 }
 
 console.log('\nTodos los tests de tracking pasaron.');

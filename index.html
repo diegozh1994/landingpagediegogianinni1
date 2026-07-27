@@ -3377,6 +3377,16 @@
       (function(){var key='cb_banner_visto';if(!localStorage.getItem(key)){document.getElementById('cookie-banner').style.display='block';}window.cookieConsent=function(){localStorage.setItem(key,'1');document.getElementById('cookie-banner').style.display='none';};})();
     </script>
     <script src="_properties.js" defer></script>
+    <script>
+      // Embudo FormView/FormStart en los dos tabs del hero (aditivo — helper en _tracking.js)
+      window.addEventListener('DOMContentLoaded', function () {
+        if (window.GTrack && GTrack.instrumentarForm) {
+          document.querySelectorAll('form[onsubmit^="submitHeroForm"]').forEach(function (f) {
+            GTrack.instrumentarForm(f, { landing: 'home' });
+          });
+        }
+      });
+    </script>
     <script src="_premium.js" defer></script>
     <script src="_three.js" defer></script>
 </body>

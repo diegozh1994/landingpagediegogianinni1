@@ -27,7 +27,11 @@ const META_PIXEL_ID = '1609863687137753';
 const LARGO_MAX = 500;
 
 const TIPOS_VALIDOS = ['propietario', 'comprador'];
-const LANDINGS_VALIDAS = ['propietarios', 'compradores', 'home'];
+const LANDINGS_VALIDAS = ['propietarios', 'compradores', 'home', 'propiedad'];
+// Slug de propiedad (páginas /propiedad/{slug}): formato estricto para que un
+// valor basura no cree opciones fantasma en el single select de Airtable
+// (el POST va con typecast:true, que crea opciones nuevas sin preguntar).
+const SLUG_PROPIEDAD = /^[a-z0-9-]{2,30}$/;
 
 function limpiar(valor) {
   return typeof valor === 'string' ? valor.trim().slice(0, LARGO_MAX) : '';
@@ -48,6 +52,7 @@ async function enviarAAirtable(lead) {
     'Telefono': lead.telefono,
     'Email': lead.email,
     'Zona': lead.zona,
+    'Propiedad': lead.propiedad,
     'Tipo': lead.tipo,
     'Perfil': lead.perfil,
     'Ambientes': lead.ambientes,
@@ -125,7 +130,13 @@ async function enviarACAPI(lead, req) {
     // Mismo event_id que el fbq('track','Lead') del browser: Meta deduplica el par.
     event_id: lead.event_id,
     action_source: 'website',
-    custom_data: { content_name: lead.landing },
+    // En páginas de propiedad el content_name distingue por slug (igual que el
+    // pixel browser-side); en las landings sigue siendo el nombre de la landing.
+    custom_data: {
+      content_name: lead.landing === 'propiedad' && lead.propiedad
+        ? `propiedad-${lead.propiedad}`
+        : lead.landing,
+    },
     user_data: userData,
   };
   if (lead.landing_url) evento.event_source_url = lead.landing_url;
@@ -172,6 +183,7 @@ module.exports = async (req, res) => {
     telefono: limpiar(body.telefono),
     email: limpiar(body.email),
     zona: limpiar(body.zona),
+    propiedad: limpiar(body.propiedad),
     tipo: limpiar(body.tipo),
     perfil: limpiar(body.perfil),
     ambientes: limpiar(body.ambientes),
@@ -199,6 +211,9 @@ module.exports = async (req, res) => {
   }
   if (!TIPOS_VALIDOS.includes(lead.tipo)) {
     lead.tipo = '';
+  }
+  if (!SLUG_PROPIEDAD.test(lead.propiedad)) {
+    lead.propiedad = '';
   }
   if (!LANDINGS_VALIDAS.includes(lead.landing)) {
     lead.landing = '';

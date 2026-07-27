@@ -27,12 +27,13 @@ lead clasificado en el CRM. Apto para tráfico pago (veredicto de auditoría: S�
 
 | Pieza | Qué hace |
 |---|---|
-| `_tracking.js` | Al cargar: captura `fbclid` + `utm_*` de la URL (last-touch: `localStorage.meta_tracking` si hay fbclid, `sessionStorage.lead_utms` siempre), lee cookies `_fbp`/`_fbc` (sintetiza `fb.1.{ts}.{fbclid}` si falta). Expone `window.GTrack`: `normalizarTelefonoAR` (acepta +54/54/9/0 y el "15" doméstico intercalado), `marcarErrorTelefono` (error inline), `enviarLead` (el orden congelado, ver §3). |
+| `_tracking.js` | Al cargar: captura `fbclid` + `utm_*` de la URL (last-touch: `localStorage.meta_tracking` si hay fbclid, `sessionStorage.lead_utms` siempre), lee cookies `_fbp`/`_fbc` (sintetiza `fb.1.{ts}.{fbclid}` si falta). Expone `window.GTrack`: `normalizarTelefonoAR` (acepta +54/54/9/0 y el "15" doméstico intercalado), `marcarErrorTelefono` (error inline), `enviarLead` (el orden congelado, ver §3), `instrumentarForm` (embudo FormView/FormStart: form visible ≥25% / primer foco, una vez por pageload — cableado en landings, home y páginas de propiedad; aditivo, no toca el Lead). |
 | Forms (`propietarios.html`, `compradores.html`, `index.html` hero tabs) | Handlers inline: arman payload + mensaje congelado y llaman `GTrack.enviarLead`. **Respaldo:** si `_tracking.js` no cargó, redirigen a WhatsApp igual con el mensaje congelado. |
 | `api/lead.js` | Vercel Function. Valida (nombre + teléfono → 422 si faltan), y dispara EN PARALELO (`Promise.allSettled`): persistencia (adapter según `LEAD_DESTINATION`) y evento CAPI. `Fecha` y `Estado: Nuevo` server-side. |
 | Airtable | Base `appJV4Yzdd6P6g9JU`, tabla `Leads Landing`. Los nombres de columna deben matchear EXACTOS el mapeo de `api/lead.js`. `typecast: true` (opción nueva de select no rechaza el lead). |
 | CAPI | `graph.facebook.com/{GRAPH_API_VERSION}/{pixel}/events` — versión como constante comentada al tope de `api/lead.js` (v25.0 al escribir esto). `user_data`: em/ph/fn/ln SHA-256 (lowercase+trim; tel E.164 solo dígitos), fbc/fbp crudos, IP real (`x-forwarded-for`) + user-agent. |
-| Tests (`test/*.test.js`, corren en CI) | `tracking.test.js`: guard de reentrada + ciclo submit→pageshow→submit (bfcache). `api-lead.test.js`: validación, mapeo Airtable, hashing CAPI con vectores, independencia de canales en ambas direcciones. |
+| Tests (`test/*.test.js`, corren en CI) | `tracking.test.js`: guard de reentrada + ciclo submit→pageshow→submit (bfcache). `api-lead.test.js`: validación, mapeo Airtable, hashing CAPI con vectores, independencia de canales en ambas direcciones. `wa-templates.test.js`: contrato de mensajes WA en todas las superficies. |
+| Páginas de propiedad (`propiedad.html` + `_propiedad-data.js`) | **Template único por slug** para message match con ads de propiedades específicas: `/propiedad/{slug}` (rewrite en `vercel.json` → `propiedad.html`; el JS lee el slug del pathname y renderiza desde `window.PROPIEDADES`). Propiedad nueva = entrada en `_propiedad-data.js` + fotos, cero HTML. Form embebido con zona precargada (label canónico del archivo de datos) → `GTrack.enviarLead` con `propiedad: slug`, `landing: 'propiedad'`, `contentName: 'propiedad-{slug}'`. Pixel: `PageView` + `ViewProperty {propiedad}` al cargar. **Apagar una propiedad** (vendida/pausada): `activo: false` → su URL redirige client-side a `/compradores` preservando la query (UTMs de ads viejos siguen atribuyendo); slug desconocido, ídem — nunca 404. `/propiedad` sin slug redirige por `vercel.json`. `noindex` (destino de pauta, precios volátiles) y fuera del sitemap. Assets con rutas ABSOLUTAS (la página vive bajo `/propiedad/…`). QA local: `propiedad.html?slug={slug}` (python http.server no aplica el rewrite). |
 
 **Patrón adapter del destino:** `DESTINOS` en `api/lead.js` mapea nombre → función.
 Cambiar de Airtable al CRM propio = escribir `enviarACRM(lead)`, registrarla, y cambiar
@@ -72,6 +73,12 @@ la env var `LEAD_DESTINATION`. **Las landings no se tocan.**
    solo Argentina). El ID viejo `1646890566557004` está descartado — no reintroducir ninguno
    de los dos: ni el ID ni `consent revoke`.
 8. Email: **opcional** en todos los forms, viaja solo en el payload.
+9. **Páginas de propiedad** (`/propiedad/{slug}`): usan el mensaje congelado de compradores
+   TAL CUAL, con `{zona}` = label canónico precargado desde `_propiedad-data.js`. La
+   propiedad NUNCA viaja en el mensaje de WhatsApp — solo en el payload (`propiedad`),
+   en `utm_content` del ad y en el `content_name` del pixel/CAPI (`propiedad-{slug}`).
+   El slug se valida server-side (`^[a-z0-9-]{2,30}$`) para que un valor basura no cree
+   opciones fantasma en el single select `Propiedad` de Airtable (el POST va con typecast).
 
 ## 4. Env vars (en Vercel — nunca valores en el repo)
 
@@ -105,6 +112,7 @@ o query param). Pedírselo a Diego.
 | Qué | Estado |
 |---|---|
 | **GA4** | Esperando Measurement ID (lo crea Diego). Bloques comentados listos en los `<head>` — pegar el ID y descomentar. Sin consent gating (decisión tomada) |
+| **Páginas de propiedad — bloqueantes pre-deploy** | (a) Diego crea a mano en Airtable la columna `Propiedad` (single select: `terralagos`, `mag299`, `gaboto`) + opción `propiedad` en el select `Landing` — sin la columna, Airtable devuelve 422 y la fila se pierde; (b) fotos reales reemplazan los placeholders en `_propiedad-data.js` (el PR no se mergea sin fotos); (c) QA en iPhone vía webview IG (regla §7.9) |
 | **CRM propio como destino** (endpoint `/api/leads/web` del CRM) | **BLOQUEADO hasta cerrar R1 del CRM** (prerequisito de seguridad). Cuando destrabe: adapter nuevo en `api/lead.js` + `LEAD_DESTINATION` — sin tocar landings |
 | **CAPI offline / eventos adicionales** (compra cerrada, calificación) | Futuro, post-campañas. La base (Event ID en Airtable) ya lo soporta |
 | **CI actual** (workflow `validate`) | html-validate (sintaxis) + `test/tracking.test.js` + `test/api-lead.test.js` + check REPLACE — todos bloqueantes. Cualquier feature nueva de tracking suma su test acá |

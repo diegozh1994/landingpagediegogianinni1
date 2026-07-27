@@ -19,6 +19,12 @@
       ]
     },
     {
+      "source": "/_propiedad-data\\.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
+      ]
+    },
+    {
       "source": "/propiedades\\.json",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=60, must-revalidate" }
@@ -30,6 +36,12 @@
         { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
       ]
     }
+  ],
+  "redirects": [
+    { "source": "/propiedad", "destination": "/compradores", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/propiedad/:slug", "destination": "/propiedad" }
   ],
   "cleanUrls": true,
   "trailingSlash": false
