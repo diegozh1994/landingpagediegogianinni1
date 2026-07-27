@@ -41,6 +41,22 @@ la env var `LEAD_DESTINATION`. **Las landings no se tocan.**
 
 ## 3. Decisiones CONGELADAS — nadie toca esto sin evaluación explícita de Diego
 
+0. **MODO TEST (`?test=1`) — todo QA del funnel se corre con el flag. Sin excepción.**
+   Origen: jul 2026, un QA nocturno sin flag generó **7 leads fantasma** atribuidos a un
+   anuncio activo (contaminación confirmada contra Airtable). Con `?test=1` en la URL:
+   - el browser **no** dispara `fbq Lead` ni `generate_lead` → cero conversiones falsas;
+   - el browser **no** redirige a wa.me → cero chats nuevos, cero ruido en el CRM;
+   - el payload lleva `test:true` → el server usa `test_event_code` **en ese request**
+     y marca la fila de Airtable como `Estado: PRUEBA` (filtrable y borrable);
+   - si el lead es de prueba y **no** hay `META_TEST_EVENT_CODE`, el evento CAPI **no sale**:
+     mandarlo sin código lo convertiría en una conversión real. Ante la duda, no se manda.
+
+   El flag se lee del querystring en cada pageload y **NUNCA se persiste** (no entra a
+   `persistir()` ni a `UTM_PARAMS`). Si sobreviviera en sessionStorage, un submit real
+   posterior en la misma sesión saldría marcado como prueba y perderíamos una conversión
+   de verdad — el bug inverso, y más caro. Tests 8–13 de `test/tracking.test.js` blindan
+   ambas direcciones; el bloque MODO TEST de `test/api-lead.test.js` hace lo propio server-side.
+
 1. **Mensajes de wa.me (contrato con el clasificador IA del CRM), carácter por carácter:**
    - propietarios: `Hola Diego, soy {nombre}, quiero vender en {zona}. Vi tu anuncio.`
    - compradores: `Hola Diego, soy {nombre}, estoy buscando en {zona}. Vi tu anuncio.`
@@ -89,7 +105,7 @@ la env var `LEAD_DESTINATION`. **Las landings no se tocan.**
 | `AIRTABLE_TABLE` | (opcional) | Default `Leads Landing` |
 | `LEAD_DESTINATION` | (opcional) | Adapter de persistencia activo (default `airtable`) |
 | `META_CAPI_TOKEN` | Prod + Preview | Access token de la Conversions API (Events Manager) |
-| `META_TEST_EVENT_CODE` | **SOLO Preview** | Manda los eventos CAPI a Test Events. Si aparece en Production es un bug de configuración: las conversiones reales dejarían de contar |
+| `META_TEST_EVENT_CODE` | Prod + Preview | Código de Test Events. **Desde jul 2026 se aplica SOLO a leads con `test:true`** (ver §3.1). Antes era global y mandaba TODAS las conversiones a Test Events — por eso decía "solo Preview". Ahora es seguro (y necesario) tenerla en Production: sin ella el modo test no puede mandar el evento CAPI a ningún lado y lo saltea |
 
 Además (no es env var): **Protection Bypass for Automation** en Deployment Protection —
 necesario para testear previews con curl/browser (`x-vercel-protection-bypass` en header

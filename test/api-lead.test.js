@@ -156,11 +156,52 @@ const airtableDe = () => llamadas.find((c) => !c.esCAPI);
   });
   process.env.META_CAPI_TOKEN = 'capiFAKE';
 
-  // test_event_code solo cuando la env var existe
+  // --------------------------------------------------------------------------
+  // MODO TEST (jul 2026, tras el incidente de los 7 leads fantasma).
+  // El invariante que protegen estos tests: un lead de prueba NUNCA puede
+  // producir una conversión real, y un lead real NUNCA puede caer en Test Events.
+  // --------------------------------------------------------------------------
+
+  // Regresión del bug original: la env var sola YA NO manda todo a Test Events.
+  // Antes bastaba con que existiera para que las conversiones reales dejaran de
+  // contar. Es el test más importante del bloque.
   process.env.META_TEST_EVENT_CODE = 'TEST12345';
-  await correr('META_TEST_EVENT_CODE presente → viaja en el payload', leadCompleto, 200, () => {
-    assert.strictEqual(capiDe().body.test_event_code, 'TEST12345');
+  await correr('lead REAL con la env var puesta → NO viaja test_event_code', leadCompleto, 200, () => {
+    assert.strictEqual(capiDe().body.test_event_code, undefined,
+      'un lead real jamás debe caer en Test Events, aunque la env var exista');
+    assert.strictEqual(airtableDe().body.fields.Estado, 'Nuevo');
   });
+
+  await correr('lead de PRUEBA → test_event_code en ESE request', { ...leadCompleto, test: true }, 200, () => {
+    assert.strictEqual(capiDe().body.test_event_code, 'TEST12345');
+    assert.strictEqual(airtableDe().body.fields.Estado, 'PRUEBA',
+      'la fila de prueba se marca sola para poder filtrarla y borrarla');
+  });
+
+  // Guarda dura: prueba sin código de test → el evento NO sale. Sin esto, un QA
+  // con la env var mal configurada seguiría inyectando conversiones al pixel.
+  delete process.env.META_TEST_EVENT_CODE;
+  await correr('PRUEBA sin META_TEST_EVENT_CODE → CAPI salteado, Airtable sí', { ...leadCompleto, test: true }, 200, (res) => {
+    assert.ok(!capiDe(), 'sin código de test el evento NO puede salir: contaminaría el pixel');
+    assert.strictEqual(airtableDe().body.fields.Estado, 'PRUEBA');
+    assert.strictEqual(res.body.capi, false);
+  });
+  process.env.META_TEST_EVENT_CODE = 'TEST12345';
+
+  // El flag es estricto: nada de truthy accidental marcando PRUEBA un lead real.
+  for (const valor of [false, 'false', 0, null, undefined, '', 'no']) {
+    await correr(`test=${JSON.stringify(valor)} → se trata como lead REAL`, { ...leadCompleto, test: valor }, 200, () => {
+      assert.strictEqual(airtableDe().body.fields.Estado, 'Nuevo');
+      assert.strictEqual(capiDe().body.test_event_code, undefined);
+    });
+  }
+  // Las formas string se aceptan para poder correr el E2E con curl.
+  for (const valor of [true, 'true', '1']) {
+    await correr(`test=${JSON.stringify(valor)} → se trata como PRUEBA`, { ...leadCompleto, test: valor }, 200, () => {
+      assert.strictEqual(airtableDe().body.fields.Estado, 'PRUEBA');
+      assert.strictEqual(capiDe().body.test_event_code, 'TEST12345');
+    });
+  }
   delete process.env.META_TEST_EVENT_CODE;
 
   console.log('\nTodos los tests de /api/lead pasaron.');

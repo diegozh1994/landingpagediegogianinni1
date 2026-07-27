@@ -20,22 +20,46 @@ function storageEnMemoria() {
 }
 
 // Entorno browser mínimo para evaluar _tracking.js fuera del navegador.
-function crearPagina() {
+// `opts.search` permite simular el querystring (lo usa el modo test con ?test=1).
+function crearPagina(opts = {}) {
+  const search = opts.search || '?utm_source=test';
   const listeners = {};
   const fetches = [];
   const timeouts = [];
   const eventosFbq = [];
+  const eventosGtag = [];
   const io = { cb: null };
   let uuidN = 0;
 
+  // DOM mínimo con árbol real: el panel del modo test crea nodos, los cuelga de
+  // body y los busca por id, así que el mock necesita más que un stub vacío.
+  const nuevoNodo = (tag) => {
+    const nodo = {
+      tag, style: {}, hijos: [], atributos: {}, textContent: '',
+      appendChild(h) { this.hijos.push(h); h.padre = this; return h; },
+      setAttribute(k, v) { this.atributos[k] = v; },
+      addEventListener(e, fn) { (this.listeners = this.listeners || {})[e] = fn; },
+      remove() {
+        if (this.padre) this.padre.hijos = this.padre.hijos.filter((h) => h !== this);
+      },
+      // Texto acumulado del subárbol — para poder afirmar sobre lo que se ve.
+      texto() {
+        return this.textContent + this.hijos.map((h) => (h.texto ? h.texto() : String(h.nodeValue || ''))).join(' ');
+      },
+    };
+    return nodo;
+  };
+  const body = nuevoNodo('body');
+
   const sandbox = {
     console, JSON, Object, String, Date, Math, URLSearchParams, encodeURIComponent,
-    fetch: (url, opts) => { fetches.push({ url: String(url), opts }); return { catch: () => {} }; },
+    fetch: (url, opts2) => { fetches.push({ url: String(url), opts: opts2 }); return { catch: () => {} }; },
     setTimeout: (fn, ms) => { timeouts.push({ fn, ms }); return timeouts.length; },
     localStorage: storageEnMemoria(),
     sessionStorage: storageEnMemoria(),
     crypto: { randomUUID: () => `uuid-${++uuidN}` },
     fbq: (...args) => { eventosFbq.push(args); },
+    gtag: (...args) => { eventosGtag.push(args); },
     IntersectionObserver: function (cb) {
       io.cb = cb;
       this.observe = () => {};
@@ -44,11 +68,15 @@ function crearPagina() {
     document: {
       cookie: '',
       referrer: '',
-      createElement: () => ({ style: {}, addEventListener: () => {}, appendChild: () => {} }),
+      body,
+      createElement: (tag) => nuevoNodo(tag),
+      createTextNode: (t) => ({ nodeValue: t, texto: () => String(t) }),
+      getElementById: (id) => body.hijos.find((h) => h.atributos && h.atributos.id === id)
+        || body.hijos.find((h) => h.id === id) || null,
     },
   };
   sandbox.window = sandbox;
-  sandbox.location = { href: 'https://test.local/compradores?utm_source=test', search: '?utm_source=test' };
+  sandbox.location = { href: 'https://test.local/compradores' + search, search };
   sandbox.addEventListener = (evento, fn) => { (listeners[evento] = listeners[evento] || []).push(fn); };
 
   vm.createContext(sandbox);
@@ -64,7 +92,13 @@ function crearPagina() {
     dispararPageshow: () => (listeners.pageshow || []).forEach((fn) => fn()),
     ejecutarTimeouts: (ms) => timeouts.filter((t) => t.ms === ms).splice(0).forEach((t) => t.fn()),
     eventIds: () => fetches.map((f) => JSON.parse(f.opts.body).event_id),
+    payloads: () => fetches.map((f) => JSON.parse(f.opts.body)),
+    // Redirects: el submit real agenda el wa.me en un setTimeout de 300ms.
+    redirects: () => timeouts.filter((t) => t.ms === 300),
     eventosFbq,
+    eventosGtag,
+    body,
+    panel: () => body.hijos.find((h) => h.id === 'gtrack-test-panel') || null,
     io,
     sandbox,
     // Form fake para instrumentarForm: captura listeners y permite dispararlos
@@ -156,6 +190,99 @@ function crearPagina() {
   p.sandbox.GTrack.instrumentarForm(null, { landing: 'x' });
   assert.strictEqual(p.eventosFbq.length, 0);
   console.log('OK  form null inofensivo');
+}
+
+// ----------------------------------------------------------------------------
+// MODO TEST (?test=1) — jul 2026, tras el incidente de los 7 leads fantasma.
+// Invariante: con el flag, el submit NO puede producir una conversión ni un chat.
+// ----------------------------------------------------------------------------
+
+// 8) Submit normal (sin flag): dispara Lead y agenda el redirect. Línea de base.
+{
+  const p = crearPagina();
+  p.enviar();
+  assert.strictEqual(p.fetches.length, 1, 'el POST a /api/lead sale siempre');
+  assert.strictEqual(p.payloads()[0].test, undefined, 'sin flag no viaja `test` en el payload');
+  assert.deepStrictEqual(
+    p.eventosFbq.filter((e) => e[1] === 'Lead').length, 1, 'submit real dispara fbq Lead');
+  assert.strictEqual(p.redirects().length, 1, 'submit real agenda el redirect a wa.me');
+  assert.strictEqual(p.panel(), null, 'sin flag no aparece el panel');
+  console.log('OK  submit normal → Lead + redirect (línea de base)');
+}
+
+// 9) LO CENTRAL: con ?test=1 el POST sale, pero NO hay Lead ni redirect.
+{
+  const p = crearPagina({ search: '?test=1&utm_source=qa' });
+  assert.strictEqual(p.sandbox.GTrack.modoTest, true, 'el flag se levanta del querystring');
+  p.enviar();
+
+  assert.strictEqual(p.fetches.length, 1, 'el pipeline se ejercita igual: el POST sale');
+  assert.strictEqual(p.payloads()[0].test, true, '`test:true` viaja al server');
+  assert.strictEqual(p.eventosFbq.filter((e) => e[1] === 'Lead').length, 0,
+    'NINGÚN fbq Lead en modo test: es la contaminación que causó los 7 fantasma');
+  assert.strictEqual(p.eventosGtag.length, 0, 'tampoco generate_lead de GA4');
+  assert.strictEqual(p.redirects().length, 0,
+    'NINGÚN redirect a wa.me: cero chats nuevos, cero ruido en el CRM');
+  assert.ok(p.panel(), 'aparece el panel de verificación en lugar del redirect');
+  assert.ok(p.panel().texto().includes('Hola Diego, test.'),
+    'el panel muestra el mensaje WA que se habría mandado, para poder verificarlo');
+  console.log('OK  ?test=1 → POST sí, Lead NO, redirect NO, panel sí');
+}
+
+// 10) La atribución se sigue capturando en modo test (el QA valida fbc/fbp/UTMs).
+{
+  const p = crearPagina({ search: '?test=1&utm_source=meta&utm_campaign=camp-qa&fbclid=ABC123' });
+  p.enviar();
+  const payload = p.payloads()[0];
+  assert.strictEqual(payload.utm_source, 'meta');
+  assert.strictEqual(payload.utm_campaign, 'camp-qa');
+  assert.ok(payload.fbc && payload.fbc.includes('ABC123'), 'fbc se deriva del fbclid igual que en real');
+  console.log('OK  modo test conserva la atribución completa (fbc/UTMs)');
+}
+
+// 11) EL FLAG NO SE PEGA: es el bug inverso y el más caro (perder una conversión
+//     real). `test` no se persiste, así que otra página de la misma sesión —
+//     mismo storage, sin ?test=1 — envía como lead REAL.
+{
+  const p1 = crearPagina({ search: '?test=1&utm_source=meta' });
+  p1.enviar();
+  assert.strictEqual(p1.payloads()[0].test, true);
+
+  const p2 = crearPagina({ search: '?utm_source=meta' });
+  // Se le pasa el storage de la sesión anterior para simular la misma pestaña.
+  assert.strictEqual(p2.sandbox.GTrack.modoTest, false, 'sin ?test=1 el modo test está apagado');
+  p2.enviar();
+  assert.strictEqual(p2.payloads()[0].test, undefined, 'el flag NO sobrevive a la navegación');
+  assert.strictEqual(p2.eventosFbq.filter((e) => e[1] === 'Lead').length, 1,
+    'un lead real posterior dispara su conversión normalmente');
+  assert.strictEqual(p2.redirects().length, 1, 'y redirige a WhatsApp como corresponde');
+  console.log('OK  el flag no se pega: submit posterior sin ?test=1 es lead REAL');
+}
+
+// 12) test=0 / test=cualquier-cosa NO activa el modo test (solo ?test=1).
+{
+  for (const search of ['?test=0', '?test=false', '?test=', '?testigo=1']) {
+    const p = crearPagina({ search });
+    assert.strictEqual(p.sandbox.GTrack.modoTest, false, `${search} no debe activar modo test`);
+    p.enviar();
+    assert.strictEqual(p.redirects().length, 1, `${search}: sigue siendo un submit real`);
+  }
+  console.log('OK  solo ?test=1 activa el modo (nada de valores ambiguos)');
+}
+
+// 13) El panel permite repetir el QA sin recargar (libera el guard de reentrada).
+{
+  const p = crearPagina({ search: '?test=1' });
+  p.enviar();
+  p.enviar();
+  assert.strictEqual(p.fetches.length, 1, 'el guard anti-doble-tap sigue vivo en modo test');
+  const cerrar = p.panel().hijos.find((h) => h.tag === 'button');
+  assert.ok(cerrar, 'el panel tiene botón de cerrar');
+  cerrar.listeners.click();
+  assert.strictEqual(p.panel(), null, 'el panel se cierra');
+  p.enviar();
+  assert.strictEqual(p.fetches.length, 2, 'tras cerrar se puede repetir la corrida');
+  console.log('OK  cerrar el panel habilita la corrida siguiente');
 }
 
 console.log('\nTodos los tests de tracking pasaron.');
