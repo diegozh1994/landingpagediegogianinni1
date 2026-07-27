@@ -208,28 +208,55 @@
             margin-top: 6px;
         }
 
-        /* Galería: swipe horizontal en mobile, grilla en desktop */
-        .prop-galeria {
+        /* Galería: UNA banda horizontal de altura fija en todos los tamaños
+           (patrón portal inmobiliario mobile: foto dominante + la siguiente
+           asomando como affordance). La expansión es el lightbox, no la página. */
+        .prop-galeria-wrap {
+            position: relative;
             max-width: 1100px;
             margin: 18px auto 0;
-            padding: 0 40px;
+        }
+
+        .prop-galeria {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
+            padding: 0 24px;
+            scrollbar-width: none;
         }
 
+        .prop-galeria::-webkit-scrollbar { display: none; }
+
+        .prop-galeria picture { display: contents; }
+
         .prop-galeria img {
-            width: min(78vw, 560px);
-            aspect-ratio: 4 / 3;
+            /* dominante + peek: ancho fijo < viewport; altura contenida ~42vh */
+            flex: 0 0 auto;
+            width: min(82vw, 520px);
+            height: min(42vh, 400px);
             object-fit: cover;
             border-radius: 12px;
             border: 1px solid rgba(31, 105, 255, 0.2);
             scroll-snap-align: center;
-            flex-shrink: 0;
             background: #0F1630;
             cursor: pointer;
+        }
+
+        .galeria-contador {
+            position: absolute;
+            right: 34px;
+            bottom: 12px;
+            padding: 5px 12px;
+            border-radius: 100px;
+            background: rgba(6, 9, 20, 0.72);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: rgba(255, 255, 255, 0.85);
+            pointer-events: none;
         }
 
         /* Lightbox — vanilla, sin libs. No toca form/tracking. */
@@ -281,16 +308,6 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             color: rgba(255, 255, 255, 0.75);
-        }
-
-        @media (min-width: 900px) {
-            .prop-galeria {
-                display: grid;
-                grid-template-columns: 2fr 1fr;
-                overflow: visible;
-            }
-            .prop-galeria img { width: 100%; }
-            .prop-galeria img:first-child { grid-row: span 3; height: 100%; }
         }
 
         /* Specs */
@@ -445,8 +462,11 @@
         </div>
     </section>
 
-    <!-- Galería (la primera foto carga eager, el resto lazy) -->
-    <div class="prop-galeria" id="prop-galeria"></div>
+    <!-- Galería: carrusel horizontal (primeras 2 eager, resto lazy al deslizar) -->
+    <div class="prop-galeria-wrap">
+        <div class="prop-galeria" id="prop-galeria"></div>
+        <div class="galeria-contador" id="galeria-contador"></div>
+    </div>
 
     <!-- Specs -->
     <ul class="prop-specs" id="prop-specs"></ul>
@@ -549,7 +569,8 @@
                 PROP.ubicacion + ' · Diego te responde en menos de 2 horas.';
 
             document.getElementById('prop-galeria').innerHTML = PROP.fotos.map(function (src, i) {
-                var attrs = i === 0 ? ' fetchpriority="high"' : ' loading="lazy"';
+                // primeras 2 eager (la 01 con prioridad alta), el resto carga al deslizar
+                var attrs = i === 0 ? ' fetchpriority="high"' : i === 1 ? '' : ' loading="lazy"';
                 var alt = PROP.ubicacion + ' — foto ' + (i + 1);
                 if (src.slice(-5) === '.webp') {
                     // WebP + JPG fallback: mismo nombre, otra extensión
@@ -564,6 +585,21 @@
             }).join('');
             var items = document.querySelectorAll('#prop-specs li');
             PROP.specs.forEach(function (s, i) { items[i].textContent = s; });
+
+            // Contador "n / total" del carrusel. Update directo en el scroll
+            // (cálculo trivial — sin rAF, que se congela en tabs/webviews ocultos).
+            var galeriaEl = document.getElementById('prop-galeria');
+            var contadorEl = document.getElementById('galeria-contador');
+            var totalFotos = PROP.fotos.length;
+            function actualizarContador() {
+                var primera = galeriaEl.querySelector('img');
+                if (!primera) return;
+                var paso = primera.offsetWidth + 10; // ancho del slide + gap
+                var i = Math.min(totalFotos - 1, Math.max(0, Math.round(galeriaEl.scrollLeft / paso)));
+                contadorEl.textContent = (i + 1) + ' / ' + totalFotos;
+            }
+            actualizarContador();
+            galeriaEl.addEventListener('scroll', actualizarContador, { passive: true });
         }
 
         // Persistencia + pixel + redirect vía GTrack (_tracking.js).
