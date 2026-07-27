@@ -229,6 +229,58 @@
             scroll-snap-align: center;
             flex-shrink: 0;
             background: #0F1630;
+            cursor: pointer;
+        }
+
+        /* Lightbox — vanilla, sin libs. No toca form/tracking. */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: rgba(6, 9, 20, 0.96);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.abierto { display: flex; }
+
+        .lightbox img {
+            max-width: 100vw;
+            max-height: 100vh;
+            max-height: 100dvh;
+            object-fit: contain;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .lightbox-cerrar {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--white);
+            font-size: 22px;
+            line-height: 44px;
+            text-align: center;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .lightbox-contador {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.75);
         }
 
         @media (min-width: 900px) {
@@ -473,6 +525,13 @@
         </div>
     </footer>
 
+    <!-- Lightbox de galería (tap → pantalla completa, swipe entre fotos, X cierra) -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto en pantalla completa">
+        <img id="lightbox-img" alt="">
+        <button type="button" class="lightbox-cerrar" id="lightbox-cerrar" aria-label="Cerrar">✕</button>
+        <div class="lightbox-contador" id="lightbox-contador"></div>
+    </div>
+
     <!-- Datos de propiedades + render -->
     <script src="/_propiedad-data.js"></script>
     <script>
@@ -553,6 +612,68 @@
                     { landing: 'propiedad', propiedad: window.PROP_SLUG });
             }
         });
+
+        // Lightbox de galería — vanilla, aislado del funnel (no toca form/tracking).
+        (function () {
+            var lb = document.getElementById('lightbox');
+            var lbImg = document.getElementById('lightbox-img');
+            var contador = document.getElementById('lightbox-contador');
+            var galeria = document.getElementById('prop-galeria');
+            var idx = 0;
+
+            function fotos() {
+                return Array.prototype.slice.call(galeria.querySelectorAll('img'));
+            }
+
+            function mostrar(i) {
+                var lista = fotos();
+                idx = (i + lista.length) % lista.length; // wrap en ambos sentidos
+                lbImg.src = lista[idx].currentSrc || lista[idx].src;
+                lbImg.alt = lista[idx].alt;
+                contador.textContent = (idx + 1) + ' / ' + lista.length;
+            }
+
+            function abrir(i) {
+                mostrar(i);
+                lb.classList.add('abierto');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function cerrar() {
+                lb.classList.remove('abierto');
+                document.body.style.overflow = '';
+            }
+
+            galeria.addEventListener('click', function (e) {
+                var img = e.target.closest('img');
+                if (img) abrir(fotos().indexOf(img));
+            });
+
+            document.getElementById('lightbox-cerrar').addEventListener('click', cerrar);
+            lb.addEventListener('click', function (e) {
+                if (e.target === lb) cerrar(); // tap en el fondo cierra, en la foto no
+            });
+
+            // Swipe horizontal (webviews de IG/FB incluidos: touch events planos)
+            var t0 = null;
+            lb.addEventListener('touchstart', function (e) {
+                if (e.touches.length === 1) t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }, { passive: true });
+            lb.addEventListener('touchend', function (e) {
+                if (!t0) return;
+                var dx = e.changedTouches[0].clientX - t0.x;
+                var dy = e.changedTouches[0].clientY - t0.y;
+                t0 = null;
+                if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) mostrar(idx + (dx < 0 ? 1 : -1));
+            }, { passive: true });
+
+            document.addEventListener('keydown', function (e) {
+                if (!lb.classList.contains('abierto')) return;
+                if (e.key === 'Escape') cerrar();
+                if (e.key === 'ArrowRight') mostrar(idx + 1);
+                if (e.key === 'ArrowLeft') mostrar(idx - 1);
+            });
+        })();
     </script>
 
     <script src="/_tracking.js" defer></script>
