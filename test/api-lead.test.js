@@ -204,5 +204,79 @@ const airtableDe = () => llamadas.find((c) => !c.esCAPI);
   }
   delete process.env.META_TEST_EVENT_CODE;
 
+  // --------------------------------------------------------------------------
+  // ORIGEN whatsapp_directo (jul 2026) — click en "Escribime por WhatsApp" del
+  // CTA sticky de las páginas de propiedad. No hay nombre ni teléfono todavía;
+  // lo que se guarda es la atribución del click, que si no se pierde.
+  // --------------------------------------------------------------------------
+  const clickWA = {
+    zona: 'Berazategui', propiedad: 'gaboto', tipo: 'comprador', landing: 'propiedad',
+    origen: 'whatsapp_directo', event_id: 'aa11bb22-cc33-4d44-8e55-ff6677889900',
+    fbc: 'fb.1.1752600000000.abc', fbp: 'fb.1.1752500000000.987',
+    utm_source: 'meta', utm_campaign: 'gaboto-jul',
+    landing_url: 'https://gianninirealestate.com.ar/propiedad/gaboto',
+  };
+
+  await correr('whatsapp_directo sin teléfono → se acepta y persiste', clickWA, 200, () => {
+    const f = airtableDe().body.fields;
+    assert.strictEqual(f.Propiedad, 'gaboto');
+    assert.strictEqual(f['UTM Campaign'], 'gaboto-jul');
+    assert.strictEqual(f.FBC, 'fb.1.1752600000000.abc');
+    assert.strictEqual(f.Origen, 'whatsapp_directo');
+    assert.ok(!('Telefono' in f), 'sin teléfono el campo ni se manda');
+    assert.ok(capiDe(), 'el evento CAPI sale igual: es la señal que Meta necesita');
+    assert.strictEqual(capiDe().body.data[0].custom_data.lead_origen, 'whatsapp_directo');
+    assert.strictEqual(capiDe().body.data[0].event_id, clickWA.event_id, 'mismo event_id → dedup con el pixel');
+  });
+
+  // LA GUARDA: el form NO se afloja. Un submit de landing sin teléfono sigue 422.
+  await correr('form sin teléfono → SIGUE rebotando 422', { nombre: 'Juan', landing: 'compradores' }, 422, () => {
+    assert.strictEqual(llamadas.length, 0, 'nada sale: la validación del form no se tocó');
+  });
+  await correr('origen inválido → se trata como form (y exige teléfono)',
+    { nombre: 'Juan', landing: 'propiedad', origen: 'inventado' }, 422);
+
+  // Un click sin nada que atribuir no justifica una fila.
+  await correr('whatsapp_directo sin propiedad ni event_id → 422',
+    { landing: 'propiedad', origen: 'whatsapp_directo' }, 422, () => {
+    assert.strictEqual(llamadas.length, 0);
+  });
+
+  // Sin `origen` explícito, todo sigue comportándose como antes.
+  await correr('lead del form → Origen=form por default', leadCompleto, 200, () => {
+    assert.strictEqual(airtableDe().body.fields.Origen, 'form');
+  });
+
+  // --------------------------------------------------------------------------
+  // Fallback de columna opcional: Airtable rebota el registro ENTERO con 422 si
+  // mandás una columna inexistente. Antes eso era un lead perdido (le pasó a
+  // `Propiedad`). Ahora se reintenta sin las opcionales.
+  // --------------------------------------------------------------------------
+  {
+    llamadas = [];
+    let intentos = 0;
+    const fetchOriginal = global.fetch;
+    global.fetch = async (url, opts) => {
+      const esCAPI = String(url).includes('graph.facebook.com');
+      if (esCAPI) return fetchOriginal(url, opts);
+      intentos += 1;
+      llamadas.push({ url: String(url), body: JSON.parse(opts.body), esCAPI: false });
+      // Primer intento: Airtable no conoce la columna Origen.
+      if (intentos === 1) {
+        return { ok: false, status: 422, text: async () => 'Unknown field name: "Origen"' };
+      }
+      return { ok: true, status: 200, text: async () => '{}' };
+    };
+    const res = fakeRes();
+    await handler({ method: 'POST', body: clickWA, headers: HEADERS }, res);
+    assert.strictEqual(res.statusCode, 200, 'la fila se guarda igual: NO se pierde el lead');
+    assert.strictEqual(intentos, 2, 'reintenta exactamente una vez');
+    const segundo = llamadas.filter((c) => !c.esCAPI)[1].body.fields;
+    assert.ok(!('Origen' in segundo), 'el reintento va sin la columna opcional');
+    assert.strictEqual(segundo.Propiedad, 'gaboto', 'el resto de la metadata se conserva');
+    global.fetch = fetchOriginal;
+    console.log('OK  Airtable 422 por columna opcional → reintenta sin ella, no pierde el lead');
+  }
+
   console.log('\nTodos los tests de /api/lead pasaron.');
 })();

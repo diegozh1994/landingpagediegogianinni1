@@ -94,22 +94,28 @@ window.PROPIEDADES = {
       'Pileta · Galería con parrilla · Jardín',
       'Seguridad 24 hs · Club house · Centro de deportes'
     ],
+    // ORDEN REVISADO (jul 2026). La 01 era un frame del reel del anuncio —
+    // vertical, con el texto "CASA en SEBASTIAN GABOTO" sobreimpreso y el cordón
+    // desenfocado en primer plano— y era lo primero que veía alguien que venía
+    // de pauta. Ahora abre la 05 (cocina con el ventanal alto), que es la que
+    // ilustra el gancho "Doble altura, luz todo el día"; el frame del reel pasa
+    // al final. terralagos y mag299 NO se tocaron: sus 01 ya son fotos hero.
     fotos: [
-      '/img/prop/gaboto-01.webp',
-      '/img/prop/gaboto-02.webp',
-      '/img/prop/gaboto-03.webp',
-      '/img/prop/gaboto-04.webp',
       '/img/prop/gaboto-05.webp',
+      '/img/prop/gaboto-02.webp',
+      '/img/prop/gaboto-13.webp',
+      '/img/prop/gaboto-15.webp',
+      '/img/prop/gaboto-09.webp',
+      '/img/prop/gaboto-04.webp',
+      '/img/prop/gaboto-14.webp',
+      '/img/prop/gaboto-03.webp',
       '/img/prop/gaboto-06.webp',
       '/img/prop/gaboto-07.webp',
       '/img/prop/gaboto-08.webp',
-      '/img/prop/gaboto-09.webp',
       '/img/prop/gaboto-10.webp',
       '/img/prop/gaboto-11.webp',
       '/img/prop/gaboto-12.webp',
-      '/img/prop/gaboto-13.webp',
-      '/img/prop/gaboto-14.webp',
-      '/img/prop/gaboto-15.webp'
+      '/img/prop/gaboto-01.webp'
     ]
   }
 };

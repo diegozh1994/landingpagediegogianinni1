@@ -187,7 +187,13 @@
     // no emitir el evento. La cobertura en Test Events la da el CAPI server-side,
     // que sí lo acepta por request.
     if (window.fbq && !MODO_TEST) {
-      fbq('track', 'Lead', { content_name: opciones.contentName }, { eventID: lead.event_id });
+      // `fbqParams` (opcional) suma parámetros custom al Lead sin tocar el
+      // contrato: content_name y eventID siguen siendo los mismos de siempre.
+      // Lo usa el botón de WhatsApp de las páginas de propiedad para marcarse
+      // como `lead_origen: whatsapp_directo` y poder medirse aparte.
+      var params = { content_name: opciones.contentName };
+      for (var p in (opciones.fbqParams || {})) params[p] = opciones.fbqParams[p];
+      fbq('track', 'Lead', params, { eventID: lead.event_id });
     }
     if (window.gtag && !MODO_TEST) {
       gtag('event', 'generate_lead', { form: opciones.contentName, zona: lead.zona || '' });
