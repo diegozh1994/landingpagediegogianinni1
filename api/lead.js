@@ -28,6 +28,12 @@ const LARGO_MAX = 500;
 
 const TIPOS_VALIDOS = ['propietario', 'comprador'];
 const LANDINGS_VALIDAS = ['propietarios', 'compradores', 'home', 'propiedad'];
+// Origen de la captura. 'form' (default) = completó el formulario, con teléfono.
+// 'whatsapp_directo' = tocó "Escribime por WhatsApp" en el CTA sticky de una
+// página de propiedad: NO hay teléfono ni nombre (todavía no los dio), pero sí
+// hay atribución completa (UTMs/fbclid/fbp/fbc/propiedad) y no la queremos perder
+// — sin esta fila el click se va a WhatsApp sin dejar rastro en el CRM.
+const ORIGENES_VALIDOS = ['form', 'whatsapp_directo'];
 // Slug de propiedad (páginas /propiedad/{slug}): formato estricto para que un
 // valor basura no cree opciones fantasma en el single select de Airtable
 // (el POST va con typecast:true, que crea opciones nuevas sin preguntar).
@@ -70,6 +76,9 @@ async function enviarAAirtable(lead) {
     'Referrer': lead.referrer,
     'Landing': lead.landing,
     'Fecha': lead.fecha,
+    // Origen de la captura: 'form' o 'whatsapp_directo'. Columna OPCIONAL — ver
+    // COLUMNAS_OPCIONALES abajo: si no existe en la tabla, la fila se guarda igual.
+    'Origen': lead.origen,
     // Modo test: la fila queda marcada PRUEBA para poder filtrarla y borrarla de
     // un saque. No hace falta columna nueva — `typecast:true` crea la opción sola.
     'Estado': lead.test ? 'PRUEBA' : 'Nuevo',
@@ -78,21 +87,48 @@ async function enviarAAirtable(lead) {
     if (!campos[clave]) delete campos[clave];
   }
 
-  const respuesta = await fetch(
-    `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tabla)}`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      // typecast: crea opciones nuevas en selects en vez de rechazar el registro
-      body: JSON.stringify({ fields: campos, typecast: true }),
+  const respuesta = await postAAirtable(token, baseId, tabla, campos);
+  if (respuesta.ok) return;
+
+  // Airtable rebota el registro ENTERO con 422 si mandás una columna que no
+  // existe (`typecast` crea opciones de select, NO columnas). Eso ya costó
+  // leads: la columna `Propiedad` hubo que crearla a mano antes de deployar las
+  // páginas de propiedad. En vez de perder el lead, reintentamos sin las
+  // columnas opcionales y dejamos un error bien visible en los logs de Vercel.
+  const detalle = await respuesta.text();
+  const opcionalesPresentes = COLUMNAS_OPCIONALES.filter((c) => c in campos);
+  if (respuesta.status === 422 && opcionalesPresentes.length > 0) {
+    console.error(
+      `Airtable 422 — reintentando sin columnas opcionales [${opcionalesPresentes.join(', ')}]. ` +
+      `Crealas en la tabla para no perder esta metadata. Detalle: ${detalle}`
+    );
+    for (const c of opcionalesPresentes) delete campos[c];
+    const reintento = await postAAirtable(token, baseId, tabla, campos);
+    if (!reintento.ok) {
+      throw new Error(`Airtable respondió ${reintento.status}: ${await reintento.text()}`);
     }
-  );
-  if (!respuesta.ok) {
-    throw new Error(`Airtable respondió ${respuesta.status}: ${await respuesta.text()}`);
+    return;
   }
+  throw new Error(`Airtable respondió ${respuesta.status}: ${detalle}`);
+}
+
+/**
+ * Columnas que pueden no existir todavía en la tabla del cliente. Si Airtable
+ * rebota por una de estas, se reintenta sin ellas: preferimos un lead con menos
+ * metadata a un lead perdido. Las obligatorias (Nombre, Telefono, ...) NO van acá.
+ */
+const COLUMNAS_OPCIONALES = ['Origen'];
+
+function postAAirtable(token, baseId, tabla, campos) {
+  return fetch(`https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tabla)}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    // typecast: crea opciones nuevas en selects en vez de rechazar el registro
+    body: JSON.stringify({ fields: campos, typecast: true }),
+  });
 }
 
 const DESTINOS = {
@@ -146,6 +182,11 @@ async function enviarACAPI(lead, req) {
       content_name: lead.landing === 'propiedad' && lead.propiedad
         ? `propiedad-${lead.propiedad}`
         : lead.landing,
+      // Permite separar en Events Manager los Lead del formulario (con teléfono,
+      // contactables) de los del botón de WhatsApp (solo atribución). Los dos
+      // cuentan como conversión —es lo que queremos que Meta optimice— pero no
+      // valen lo mismo y hay que poder medirlos por separado.
+      lead_origen: lead.origen,
     },
     user_data: userData,
   };
@@ -219,14 +260,28 @@ module.exports = async (req, res) => {
     landing_url: limpiar(body.landing_url),
     referrer: limpiar(body.referrer),
     landing: limpiar(body.landing),
+    origen: limpiar(body.origen) || 'form',
     fecha: new Date().toISOString(),
     // Flag de prueba. Estricto a propósito (no truthy): un valor accidental que
     // marcara como PRUEBA un lead real nos haría perder una conversión.
     test: body.test === true || body.test === 'true' || body.test === '1',
   };
 
-  if (!lead.nombre || !lead.telefono) {
+  if (!ORIGENES_VALIDOS.includes(lead.origen)) {
+    lead.origen = 'form';
+  }
+
+  // Nombre y teléfono siguen siendo OBLIGATORIOS para todo lo que venga de un
+  // formulario — la validación de las landings no se afloja ni un poco. La única
+  // excepción es 'whatsapp_directo': ahí el usuario todavía no dio sus datos (se
+  // va a identificar solo al escribir por WhatsApp), y lo que estamos guardando
+  // es la ATRIBUCIÓN del click, que si no se pierde para siempre.
+  if (lead.origen !== 'whatsapp_directo' && (!lead.nombre || !lead.telefono)) {
     return res.status(422).json({ ok: false, error: 'Faltan nombre o teléfono' });
+  }
+  // Un click de WhatsApp sin nada que atribuir no vale una fila.
+  if (lead.origen === 'whatsapp_directo' && !lead.propiedad && !lead.event_id) {
+    return res.status(422).json({ ok: false, error: 'Click sin propiedad ni event_id' });
   }
   if (!TIPOS_VALIDOS.includes(lead.tipo)) {
     lead.tipo = '';
