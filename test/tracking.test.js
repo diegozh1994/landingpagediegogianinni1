@@ -285,4 +285,37 @@ function crearPagina(opts = {}) {
   console.log('OK  cerrar el panel habilita la corrida siguiente');
 }
 
+// 14) fbqParams: suma params custom al Lead sin tocar content_name ni eventID.
+//     Lo usa el botón "Escribime por WhatsApp" de las páginas de propiedad.
+{
+  const p = crearPagina();
+  p.sandbox.GTrack.enviarLead({
+    payload: { nombre: '', telefono: '', propiedad: 'gaboto', origen: 'whatsapp_directo' },
+    contentName: 'propiedad-gaboto',
+    fbqParams: { lead_origen: 'whatsapp_directo' },
+    mensajeWA: 'Hola Diego, vi Sebastián Gaboto (USD 340.000) y quiero más info',
+  });
+  const lead = p.eventosFbq.find((e) => e[1] === 'Lead');
+  assert.ok(lead, 'el click de WhatsApp dispara Lead');
+  assert.strictEqual(lead[2].content_name, 'propiedad-gaboto', 'content_name intacto');
+  assert.strictEqual(lead[2].lead_origen, 'whatsapp_directo', 'param custom presente');
+  assert.ok(lead[3].eventID, 'eventID presente → dedup con CAPI');
+  assert.strictEqual(p.payloads()[0].event_id, lead[3].eventID,
+    'el event_id del POST y el eventID del pixel son EL MISMO (dedup)');
+  assert.strictEqual(p.redirects().length, 1, 'y recién después abre WhatsApp');
+  console.log('OK  fbqParams: Lead del botón WhatsApp con dedup y param propio');
+}
+
+// 15) Sin fbqParams el Lead sale exactamente como siempre (no rompimos el form).
+{
+  const p = crearPagina();
+  p.enviar();
+  const lead = p.eventosFbq.find((e) => e[1] === 'Lead');
+  // Comparación por contenido: el objeto viene del sandbox de vm y su prototipo
+  // no es el mismo Object que el de este archivo (deepStrictEqual lo rechazaría).
+  assert.deepStrictEqual(Object.keys(lead[2]), ['content_name'], 'sin fbqParams: ni una key extra');
+  assert.strictEqual(lead[2].content_name, 'test');
+  console.log('OK  sin fbqParams el contrato del Lead no cambia');
+}
+
 console.log('\nTodos los tests de tracking pasaron.');

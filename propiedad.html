@@ -332,6 +332,90 @@
             background: rgba(31, 105, 255, 0.08);
         }
 
+        /* Ver todas las fotos (galería recortada a las primeras N) */
+        .galeria-vertodas {
+            display: block;
+            margin: 14px auto 0;
+            background: transparent;
+            border: 1px solid rgba(31, 105, 255, 0.45);
+            color: var(--soft-blue);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            padding: 11px 22px;
+            border-radius: 100px;
+            cursor: pointer;
+        }
+
+        /* CTA sticky — dos acciones, siempre a mano. Se oculta cuando el form
+           ya está en viewport (no compite con el submit real). */
+        .cta-sticky {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 900;
+            display: flex;
+            gap: 10px;
+            padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+            background: rgba(10, 14, 31, 0.97);
+            border-top: 1px solid rgba(31, 105, 255, 0.3);
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .cta-sticky[hidden] {
+            display: none;
+        }
+
+        .cta-sticky.oculta {
+            transform: translateY(110%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .cta-sticky a {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            /* 48px de alto mínimo: target táctil cómodo en mobile */
+            min-height: 48px;
+            padding: 12px 10px;
+            border-radius: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            line-height: 1.2;
+        }
+
+        .cta-sticky .cta-form {
+            background: linear-gradient(135deg, var(--electric-blue), var(--french-blue));
+            color: var(--white);
+        }
+
+        .cta-sticky .cta-wa {
+            background: rgba(50, 229, 167, 0.12);
+            border: 1px solid rgba(50, 229, 167, 0.5);
+            color: #32E5A7;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cta-sticky { transition: none; }
+        }
+
+        /* El banner de cookies vive en bottom:20px con z-index 10000, así que en
+           la primera visita tapaba justo las dos acciones del sticky. Se corre
+           por encima mientras el sticky está en pantalla (solo mobile: en
+           desktop el sticky no se muestra). */
+        @media (max-width: 768px) {
+            #cookie-banner {
+                bottom: 84px !important;
+            }
+        }
+
         /* Form embebido (mismo funnel que /compradores) */
         .prop-form-section {
             max-width: 640px;
@@ -418,6 +502,16 @@
             margin-top: 14px;
         }
 
+        /* Micro-copy bajo el campo WhatsApp: baja la ansiedad justo donde se
+           abandonaba (16 FormStart → 0 Lead antes de este cambio). */
+        .form-nota {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
         .form-privacy {
             font-size: 11px;
             color: var(--muted);
@@ -434,6 +528,34 @@
             .prop-hero { padding: 30px 24px 20px; }
             .prop-galeria, .prop-specs { padding: 0 24px; }
             .prop-urgencia { margin-left: 0; margin-top: 12px; }
+
+            /* Specs en 2 columnas: 5 filas de ancho completo eran ~5 pantallazos
+               de scroll entre la galería y el form. Grid en vez de flex-wrap
+               para que las dos columnas queden parejas. */
+            .prop-specs {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .prop-specs li {
+                font-size: 12px;
+                padding: 8px 12px;
+                border-radius: 10px;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* El sticky no debe tapar el footer de compliance ni el final del form */
+            body { padding-bottom: 76px; }
+        }
+
+        /* Desktop: el sticky no se muestra (el form entra en pantalla), así que
+           no hace falta compensar el padding. */
+        @media (min-width: 769px) {
+            .cta-sticky { display: none; }
         }
     </style>
 </head>
@@ -462,10 +584,12 @@
         </div>
     </section>
 
-    <!-- Galería: carrusel horizontal (primeras 2 eager, resto lazy al deslizar) -->
+    <!-- Galería: carrusel horizontal (primeras 2 eager, resto lazy al deslizar).
+         Se muestran FOTOS_INICIALES y el resto entra con "Ver todas". -->
     <div class="prop-galeria-wrap">
         <div class="prop-galeria" id="prop-galeria"></div>
         <div class="galeria-contador" id="galeria-contador"></div>
+        <button type="button" class="galeria-vertodas" id="galeria-vertodas" hidden></button>
     </div>
 
     <!-- Specs -->
@@ -477,24 +601,19 @@
             <h3 class="form-title">Consultá por esta propiedad</h3>
             <div class="form-sub" id="prop-form-sub">Diego te responde en menos de 2 horas.</div>
             <form id="leadForm" onsubmit="handleFormSubmit(event)">
+                <!-- Form mínimo (jul 2026): solo Nombre + WhatsApp. Apellido y
+                     Email se sacaron del render por fricción —el embudo medía
+                     16 FormStart y 0 Lead— pero SIGUEN viajando vacíos en el
+                     payload, así que el contrato con Airtable no cambia. -->
                 <div class="form-group">
-                    <label class="form-label">Tu nombre <span class="required">*</span></label>
-                    <input type="text" name="nombre" required placeholder="Nombre" autocomplete="given-name">
+                    <label class="form-label" for="prop-nombre">Tu nombre <span class="required">*</span></label>
+                    <input type="text" id="prop-nombre" name="nombre" required placeholder="Nombre" autocomplete="given-name">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Tu apellido <span class="required">*</span></label>
-                    <input type="text" name="apellido" required placeholder="Apellido" autocomplete="family-name">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">WhatsApp <span class="required">*</span></label>
-                    <input type="tel" name="whatsapp" placeholder="+54 9 11 XXXX-XXXX" required autocomplete="tel">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Email (opcional)</label>
-                    <input type="email" name="email" placeholder="tu@email.com" autocomplete="email">
+                    <label class="form-label" for="prop-whatsapp">WhatsApp <span class="required">*</span></label>
+                    <input type="tel" id="prop-whatsapp" name="whatsapp" placeholder="+54 9 11 XXXX-XXXX" required autocomplete="tel" aria-describedby="prop-whatsapp-nota">
+                    <div class="form-nota" id="prop-whatsapp-nota">Te escribo yo. No te llamo sin avisar.</div>
                 </div>
 
                 <button type="submit" class="btn-submit">QUIERO VER ESTA PROPIEDAD →</button>
@@ -545,6 +664,15 @@
         </div>
     </footer>
 
+    <!-- CTA sticky (solo mobile): dos salidas siempre a mano. Arranca oculto y
+         lo revela el JS —así no parpadea si el JS no corre— y se esconde solo
+         cuando el form entra en viewport. El botón de WhatsApp dispara Lead
+         (browser + CAPI, mismo eventID) ANTES de abrir el chat. -->
+    <div class="cta-sticky" id="cta-sticky" hidden>
+        <a class="cta-form" href="#consulta" id="cta-sticky-form">Quiero ver esta propiedad →</a>
+        <a class="cta-wa" href="#" id="cta-sticky-wa" rel="noopener">Escribime por WhatsApp</a>
+    </div>
+
     <!-- Lightbox de galería (tap → pantalla completa, swipe entre fotos, X cierra) -->
     <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto en pantalla completa">
         <img id="lightbox-img" alt="">
@@ -568,7 +696,14 @@
             document.getElementById('prop-form-sub').textContent =
                 PROP.ubicacion + ' · Diego te responde en menos de 2 horas.';
 
-            document.getElementById('prop-galeria').innerHTML = PROP.fotos.map(function (src, i) {
+            // Galería recortada: 15-19 fotos de una eran demasiado scroll lateral
+            // antes de llegar al form. Se muestran las primeras N y el resto entra
+            // con "Ver todas" (mismo carrusel, sin recargar nada).
+            var FOTOS_INICIALES = 7;
+            var galeriaEl = document.getElementById('prop-galeria');
+            var verTodasBtn = document.getElementById('galeria-vertodas');
+
+            function marcarFoto(src, i) {
                 // primeras 2 eager (la 01 con prioridad alta), el resto carga al deslizar
                 var attrs = i === 0 ? ' fetchpriority="high"' : i === 1 ? '' : ' loading="lazy"';
                 var alt = PROP.ubicacion + ' — foto ' + (i + 1);
@@ -578,7 +713,23 @@
                         '<img src="' + src.slice(0, -5) + '.jpg" alt="' + alt + '"' + attrs + '></picture>';
                 }
                 return '<img src="' + src + '" alt="' + alt + '"' + attrs + '>';
-            }).join('');
+            }
+
+            function pintarGaleria(hasta) {
+                galeriaEl.innerHTML = PROP.fotos.slice(0, hasta).map(marcarFoto).join('');
+            }
+
+            pintarGaleria(FOTOS_INICIALES);
+
+            if (PROP.fotos.length > FOTOS_INICIALES) {
+                verTodasBtn.hidden = false;
+                verTodasBtn.textContent = 'Ver las ' + PROP.fotos.length + ' fotos';
+                verTodasBtn.addEventListener('click', function () {
+                    pintarGaleria(PROP.fotos.length);
+                    verTodasBtn.hidden = true;
+                    actualizarContador();
+                });
+            }
 
             document.getElementById('prop-specs').innerHTML = PROP.specs.map(function (s) {
                 return '<li></li>';
@@ -588,15 +739,15 @@
 
             // Contador "n / total" del carrusel. Update directo en el scroll
             // (cálculo trivial — sin rAF, que se congela en tabs/webviews ocultos).
-            var galeriaEl = document.getElementById('prop-galeria');
+            // El total es el de fotos RENDERIZADAS: sube al tocar "Ver todas".
             var contadorEl = document.getElementById('galeria-contador');
-            var totalFotos = PROP.fotos.length;
             function actualizarContador() {
-                var primera = galeriaEl.querySelector('img');
-                if (!primera) return;
-                var paso = primera.offsetWidth + 10; // ancho del slide + gap
-                var i = Math.min(totalFotos - 1, Math.max(0, Math.round(galeriaEl.scrollLeft / paso)));
-                contadorEl.textContent = (i + 1) + ' / ' + totalFotos;
+                var fotosVisibles = galeriaEl.querySelectorAll('img');
+                var total = fotosVisibles.length;
+                if (!total) return;
+                var paso = fotosVisibles[0].offsetWidth + 10; // ancho del slide + gap
+                var i = Math.min(total - 1, Math.max(0, Math.round(galeriaEl.scrollLeft / paso)));
+                contadorEl.textContent = (i + 1) + ' / ' + total;
             }
             actualizarContador();
             galeriaEl.addEventListener('scroll', actualizarContador, { passive: true });
@@ -611,6 +762,9 @@
             const form = e.target;
             const formData = new FormData(form);
             const nombre = (formData.get('nombre') || '').trim();
+            // Apellido y Email ya no se piden (form mínimo, jul 2026) pero siguen
+            // viajando vacíos: el contrato del payload con Airtable no cambia y el
+            // día que se quieran volver a pedir alcanza con re-agregar el input.
             const apellido = (formData.get('apellido') || '').trim();
             const telInput = form.querySelector('input[name="whatsapp"]');
             const zona = PROP.zona;
@@ -648,6 +802,95 @@
                     { landing: 'propiedad', propiedad: window.PROP_SLUG });
             }
         });
+
+        // ---------------------------------------------------------------------
+        // CTAs: hero + sticky. Ambos llevan al mismo lugar y hacen lo mismo.
+        // ---------------------------------------------------------------------
+        (function () {
+            if (!PROP) return; // slug apagado: la página ya redirigió
+
+            var form = document.getElementById('leadForm');
+            var sticky = document.getElementById('cta-sticky');
+            var inputNombre = document.getElementById('prop-nombre');
+
+            // Scroll al form + FOCO en el primer campo. El foco es lo que hace que
+            // el CTA "termine el trabajo": abre el teclado en mobile y dispara
+            // FormStart, en vez de dejar al usuario mirando el form sin actuar.
+            //
+            // NO hacemos preventDefault a propósito: el scroll lo resuelve el salto
+            // NATIVO del ancla (`href="#consulta"` + `scroll-behavior:smooth` del
+            // CSS), que funciona siempre — incluso si este JS falla o el webview
+            // ignora scrollIntoView. Acá sólo SUMAMOS el foco. Interceptar el click
+            // nos dejaría sin scroll en cualquier browser donde scrollIntoView no
+            // corra, que es peor que no tener foco.
+            function irAlForm() {
+                // Diferido: el foco inmediato cancela el scroll suave en iOS.
+                // preventScroll evita que el foco pelee con el salto del ancla.
+                setTimeout(function () {
+                    try { inputNombre.focus({ preventScroll: true }); } catch (err) { inputNombre.focus(); }
+                }, 500);
+            }
+
+            // Punto 5: el CTA del hero comparte comportamiento con el sticky.
+            var heroCta = document.querySelector('.prop-hero .hero-cta');
+            if (heroCta) heroCta.addEventListener('click', irAlForm);
+            var navCta = document.querySelector('nav .nav-cta');
+            if (navCta) navCta.addEventListener('click', irAlForm);
+            document.getElementById('cta-sticky-form').addEventListener('click', irAlForm);
+
+            // --- Botón "Escribime por WhatsApp" -------------------------------
+            // Mensaje propio de esta superficie (los dos congelados de
+            // propietarios/compradores NO se tocan). Lleva propiedad + precio para
+            // que Diego sepa de qué hablan sin preguntar.
+            var nombreCorto = PROP.nombreCorto || PROP.ubicacion.split('·')[0].split(',')[0].trim();
+            var mensajeWA = 'Hola Diego, vi ' + nombreCorto + ' (' + PROP.precio + ') y quiero más info';
+            var waLink = document.getElementById('cta-sticky-wa');
+            // href real: si el JS de tracking falla, el botón sigue funcionando.
+            waLink.href = 'https://wa.me/5491157274477?text=' + encodeURIComponent(mensajeWA);
+
+            waLink.addEventListener('click', function (e) {
+                // Sin GTrack (falla de red del script) el href nativo hace el trabajo.
+                if (!window.GTrack || !GTrack.enviarLead) return;
+                e.preventDefault();
+                // enviarLead hace, EN ESTE ORDEN: POST /api/lead → fbq Lead con
+                // eventID → redirect a los 300ms. O sea la conversión se despacha
+                // ANTES de abrir el chat, que es justo lo que necesitábamos: sin
+                // esto Meta perdía la señal y la campaña optimizaba a ciegas.
+                GTrack.enviarLead({
+                    payload: {
+                        // Sin nombre ni teléfono: todavía no los dio. Lo que guardamos
+                        // es la ATRIBUCIÓN del click (UTMs/fbclid/fbp/fbc/propiedad).
+                        nombre: '',
+                        apellido: '',
+                        telefono: '',
+                        email: '',
+                        zona: PROP.zona,
+                        propiedad: window.PROP_SLUG,
+                        tipo: 'comprador',
+                        landing: 'propiedad',
+                        origen: 'whatsapp_directo'
+                    },
+                    contentName: 'propiedad-' + window.PROP_SLUG,
+                    // Distingue en Events Manager los Lead del form (contactables)
+                    // de los del botón (solo atribución). Ambos cuentan igual para
+                    // la optimización, pero no valen lo mismo.
+                    fbqParams: { lead_origen: 'whatsapp_directo' },
+                    mensajeWA: mensajeWA
+                });
+            });
+
+            // --- Visibilidad del sticky ---------------------------------------
+            // Lo revela el JS (arranca hidden) y se esconde cuando el form ya está
+            // en pantalla: ahí el CTA real es el botón del propio form.
+            sticky.hidden = false;
+            if (window.IntersectionObserver) {
+                new IntersectionObserver(function (entradas) {
+                    for (var i = 0; i < entradas.length; i++) {
+                        sticky.classList.toggle('oculta', entradas[i].isIntersecting);
+                    }
+                }, { threshold: 0.2 }).observe(form);
+            }
+        })();
 
         // Lightbox de galería — vanilla, aislado del funnel (no toca form/tracking).
         (function () {
