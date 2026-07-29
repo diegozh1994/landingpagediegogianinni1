@@ -5,6 +5,16 @@
 //   1) POST /api/lead con keepalive (fire-and-forget: la captura NUNCA bloquea)
 //   2) fbq Lead con eventID (dedup con CAPI server-side vía Event ID en Airtable)
 //   3) redirect a wa.me a los ~300ms (deja despachar al pixel)
+//
+// MODO TEST (`?test=1`) — jul 2026, tras el incidente de los 7 leads fantasma:
+// un QA nocturno generó 7 conversiones reales atribuidas a un anuncio activo.
+// Con el flag, el submit ejercita el pipeline entero SIN contaminar nada:
+//   - NO dispara `fbq Lead` (ni `generate_lead` de GA4): cero conversiones.
+//   - NO redirige a wa.me: cero chats nuevos, cero ruido en el CRM.
+//   - Manda `test:true` en el payload → el server usa test_event_code en ESE
+//     request y marca la fila de Airtable como PRUEBA.
+// Los eventos de embudo (FormView/FormStart) siguen intactos: son custom, no
+// conversiones, y no afectan atribución.
 (function () {
   'use strict';
 
@@ -12,6 +22,19 @@
   var UTM_KEY = 'lead_utms';
   var UTM_PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
   var WHATSAPP_DIEGO = '5491157274477';
+
+  // El flag se lee del querystring en CADA pageload y NUNCA se persiste (no entra
+  // a persistir() ni a UTM_PARAMS). Es deliberado: si sobreviviera en
+  // sessionStorage, un submit real posterior en la misma sesión saldría marcado
+  // como prueba — el bug inverso, y peor, porque perderíamos una conversión real.
+  function leerModoTest() {
+    try {
+      return new URLSearchParams(window.location.search).get('test') === '1';
+    } catch (e) {
+      return false;
+    }
+  }
+  var MODO_TEST = leerModoTest();
 
   function leerParamsURL() {
     var params = new URLSearchParams(window.location.search);
@@ -147,6 +170,7 @@
     for (k in tracking) lead[k] = tracking[k];
     lead.event_id = eventId();
     lead.submitted_at = new Date().toISOString();
+    if (MODO_TEST) lead.test = true;
 
     try {
       fetch('/api/lead', {
@@ -157,16 +181,77 @@
       }).catch(function () {});
     } catch (e) { /* la captura nunca bloquea al usuario */ }
 
-    if (window.fbq) {
+    // Conversiones: en modo test NO se disparan. `fbq` no acepta test_event_code
+    // como parámetro (el Test Events tool captura por sesión de navegador, no por
+    // argumento), así que la única forma confiable de no ensuciar la atribución es
+    // no emitir el evento. La cobertura en Test Events la da el CAPI server-side,
+    // que sí lo acepta por request.
+    if (window.fbq && !MODO_TEST) {
       fbq('track', 'Lead', { content_name: opciones.contentName }, { eventID: lead.event_id });
     }
-    if (window.gtag) {
+    if (window.gtag && !MODO_TEST) {
       gtag('event', 'generate_lead', { form: opciones.contentName, zona: lead.zona || '' });
+    }
+
+    if (MODO_TEST) {
+      mostrarPanelTest(lead, opciones);
+      return;
     }
 
     setTimeout(function () {
       window.location.href = 'https://wa.me/' + WHATSAPP_DIEGO + '?text=' + encodeURIComponent(opciones.mensajeWA);
     }, 300);
+  }
+
+  // Panel de verificación del modo test. Reemplaza al redirect: muestra en
+  // pantalla lo que se habría mandado (mensaje WA textual + event_id + payload)
+  // para poder chequear el mensaje congelado y la atribución sin abrir WhatsApp.
+  function mostrarPanelTest(lead, opciones) {
+    var previo = document.getElementById('gtrack-test-panel');
+    if (previo) previo.remove();
+
+    var panel = document.createElement('div');
+    panel.id = 'gtrack-test-panel';
+    panel.setAttribute('role', 'status');
+    panel.style.cssText = 'position:fixed;inset:auto 12px 12px 12px;z-index:99999;max-height:70vh;overflow:auto;' +
+      'background:#0A0E1F;border:2px solid #32E5A7;border-radius:12px;padding:16px;' +
+      'font-family:Inter,system-ui,sans-serif;font-size:13px;color:#fff;box-shadow:0 8px 40px rgba(0,0,0,.5);';
+
+    var titulo = document.createElement('div');
+    titulo.style.cssText = 'font-weight:600;color:#32E5A7;margin-bottom:10px;font-size:14px;';
+    titulo.textContent = 'MODO TEST — no se disparó Lead ni se abrió WhatsApp';
+    panel.appendChild(titulo);
+
+    function fila(rotulo, valor) {
+      var d = document.createElement('div');
+      d.style.cssText = 'margin-bottom:8px;line-height:1.45;word-break:break-word;';
+      var b = document.createElement('strong');
+      b.style.cssText = 'color:#4D8AFF;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;';
+      b.textContent = rotulo;
+      d.appendChild(b);
+      // textContent en vez de innerHTML: el contenido viene del form del usuario.
+      d.appendChild(document.createTextNode(valor));
+      panel.appendChild(d);
+    }
+
+    fila('Mensaje WhatsApp (no enviado)', opciones.mensajeWA);
+    fila('Event ID', lead.event_id);
+    fila('Landing', lead.landing || '(vacío)');
+    fila('fbc / fbp', (lead.fbc || '—') + ' / ' + (lead.fbp || '—'));
+    fila('Payload completo', JSON.stringify(lead));
+
+    var cerrar = document.createElement('button');
+    cerrar.type = 'button';
+    cerrar.textContent = 'Cerrar';
+    cerrar.style.cssText = 'margin-top:6px;background:#1F69FF;color:#fff;border:0;border-radius:8px;' +
+      'padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;';
+    cerrar.addEventListener('click', function () {
+      panel.remove();
+      enviando = false; // permite repetir el QA sin recargar la página
+    });
+    panel.appendChild(cerrar);
+
+    document.body.appendChild(panel);
   }
 
   // Embudo por escalón (jul 2026): con PageView → FormView → FormStart → Lead
@@ -206,6 +291,8 @@
     normalizarTelefonoAR: normalizarTelefonoAR,
     marcarErrorTelefono: marcarErrorTelefono,
     enviarLead: enviarLead,
-    instrumentarForm: instrumentarForm
+    instrumentarForm: instrumentarForm,
+    // Solo lectura, para los tests y para poder verificarlo desde la consola.
+    modoTest: MODO_TEST
   };
 })();

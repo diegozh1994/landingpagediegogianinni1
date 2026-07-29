@@ -70,7 +70,9 @@ async function enviarAAirtable(lead) {
     'Referrer': lead.referrer,
     'Landing': lead.landing,
     'Fecha': lead.fecha,
-    'Estado': 'Nuevo',
+    // Modo test: la fila queda marcada PRUEBA para poder filtrarla y borrarla de
+    // un saque. No hace falta columna nueva — `typecast:true` crea la opción sola.
+    'Estado': lead.test ? 'PRUEBA' : 'Nuevo',
   };
   for (const clave of Object.keys(campos)) {
     if (!campos[clave]) delete campos[clave];
@@ -109,6 +111,14 @@ async function enviarACAPI(lead, req) {
     return false;
   }
 
+  // Guarda dura del modo test: sin test_event_code, un evento marcado como
+  // prueba caería igual en el pixel de producción como conversión real — que es
+  // exactamente lo que el modo test viene a evitar. Ante la duda, no se manda.
+  if (lead.test && !process.env.META_TEST_EVENT_CODE) {
+    console.warn('Lead de PRUEBA sin META_TEST_EVENT_CODE — evento CAPI salteado para no contaminar el pixel');
+    return false;
+  }
+
   const userData = {};
   if (lead.email) userData.em = [hashear(lead.email)];
   // Teléfono en E.164 sin '+' (solo dígitos), ej: 5491157274477
@@ -142,7 +152,13 @@ async function enviarACAPI(lead, req) {
   if (lead.landing_url) evento.event_source_url = lead.landing_url;
 
   const payload = { data: [evento] };
-  if (process.env.META_TEST_EVENT_CODE) {
+  // test_event_code SOLO para leads marcados como prueba, nunca global (jul 2026).
+  // Antes bastaba con que la env var existiera para que TODOS los eventos —
+  // incluidas las conversiones reales — cayeran en Test Events y dejaran de
+  // contar. Con el gate, la variable puede vivir en Production sin riesgo: sin
+  // `test:true` en el payload no se aplica. No se toma del body del cliente para
+  // que nadie pueda redirigir eventos desde afuera.
+  if (lead.test && process.env.META_TEST_EVENT_CODE) {
     payload.test_event_code = process.env.META_TEST_EVENT_CODE;
   }
 
@@ -204,6 +220,9 @@ module.exports = async (req, res) => {
     referrer: limpiar(body.referrer),
     landing: limpiar(body.landing),
     fecha: new Date().toISOString(),
+    // Flag de prueba. Estricto a propósito (no truthy): un valor accidental que
+    // marcara como PRUEBA un lead real nos haría perder una conversión.
+    test: body.test === true || body.test === 'true' || body.test === '1',
   };
 
   if (!lead.nombre || !lead.telefono) {
