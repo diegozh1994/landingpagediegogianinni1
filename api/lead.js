@@ -15,7 +15,10 @@
 //   AIRTABLE_BASE_ID      id de la base (app...)
 //   AIRTABLE_TABLE        nombre de la tabla (default "Leads Landing")
 //   META_CAPI_TOKEN       access token de la Conversions API (Events Manager)
-//   META_TEST_EVENT_CODE  opcional, solo testing: los eventos caen en Test Events
+//   META_TEST_EVENT_CODE  código de Test Events; se aplica SOLO a leads test:true
+//
+// REGLA DURA (ago 2026): no se crea ninguna fila sin nombre Y teléfono. Ver la
+// "barrera de persistencia" en el handler.
 
 const crypto = require('node:crypto');
 
@@ -30,9 +33,10 @@ const TIPOS_VALIDOS = ['propietario', 'comprador'];
 const LANDINGS_VALIDAS = ['propietarios', 'compradores', 'home', 'propiedad'];
 // Origen de la captura. 'form' (default) = completó el formulario, con teléfono.
 // 'whatsapp_directo' = tocó "Escribime por WhatsApp" en el CTA sticky de una
-// página de propiedad: NO hay teléfono ni nombre (todavía no los dio), pero sí
-// hay atribución completa (UTMs/fbclid/fbp/fbc/propiedad) y no la queremos perder
-// — sin esta fila el click se va a WhatsApp sin dejar rastro en el CRM.
+// página de propiedad. Desde ago 2026 ese origen NO persiste (ver la barrera en
+// el handler): dispara la conversión a Meta y nada más. Se conserva el valor
+// porque el evento CAPI lo manda en `custom_data.lead_origen`, que es lo que
+// permite separar en Events Manager los Lead del form de los del botón.
 const ORIGENES_VALIDOS = ['form', 'whatsapp_directo'];
 // Slug de propiedad (páginas /propiedad/{slug}): formato estricto para que un
 // valor basura no cree opciones fantasma en el single select de Airtable
@@ -76,8 +80,10 @@ async function enviarAAirtable(lead) {
     'Referrer': lead.referrer,
     'Landing': lead.landing,
     'Fecha': lead.fecha,
-    // Origen de la captura: 'form' o 'whatsapp_directo'. Columna OPCIONAL — ver
-    // COLUMNAS_OPCIONALES abajo: si no existe en la tabla, la fila se guarda igual.
+    // Origen de la captura. Con la barrera de persistencia sólo llegan acá filas
+    // 'form'; se sigue escribiendo para que el día que haya otro origen
+    // persistible quede identificado desde el principio. Columna OPCIONAL —
+    // ver COLUMNAS_OPCIONALES abajo: si no existe, la fila se guarda igual.
     'Origen': lead.origen,
     // Modo test: la fila queda marcada PRUEBA para poder filtrarla y borrarla de
     // un saque. No hace falta columna nueva — `typecast:true` crea la opción sola.
@@ -271,17 +277,38 @@ module.exports = async (req, res) => {
     lead.origen = 'form';
   }
 
-  // Nombre y teléfono siguen siendo OBLIGATORIOS para todo lo que venga de un
-  // formulario — la validación de las landings no se afloja ni un poco. La única
-  // excepción es 'whatsapp_directo': ahí el usuario todavía no dio sus datos (se
-  // va a identificar solo al escribir por WhatsApp), y lo que estamos guardando
-  // es la ATRIBUCIÓN del click, que si no se pierde para siempre.
-  if (lead.origen !== 'whatsapp_directo' && (!lead.nombre || !lead.telefono)) {
-    return res.status(422).json({ ok: false, error: 'Faltan nombre o teléfono' });
+  // ──────────────────────────────────────────────────────────────────────────
+  // BARRERA DE PERSISTENCIA (Fase 0.5, ago 2026)
+  //
+  // Contexto: el botón "Escribime por WhatsApp" de las páginas de propiedad
+  // generó 60 filas con Nombre/Teléfono/Email vacíos. NO era un bug —era la
+  // atribución del click, pedida y especificada— pero en la práctica ensuciaba
+  // la bandeja: filas con `Estado: Nuevo` que no correspondían a nadie
+  // contactable, indistinguibles a simple vista de un lead roto.
+  //
+  // Decisión (Diego, 2 ago 2026): el click NO escribe más en Airtable. La señal
+  // de conversión para Meta se conserva —pixel browser + CAPI server-side con el
+  // mismo event_id— porque es lo que necesita la campaña para optimizar; lo que
+  // se elimina es la fila. Airtable queda reservado para personas contactables.
+  //
+  // Regla resultante, sin excepciones: NINGUNA fila se crea sin nombre Y
+  // teléfono. Es una barrera independiente de quién llame al endpoint: aunque
+  // mañana otro camino postee sin datos, no puede ensuciar la base.
+  // ──────────────────────────────────────────────────────────────────────────
+  const sinDatosDePersona = !lead.nombre || !lead.telefono;
+
+  // El click de WhatsApp: se acepta para poder disparar el CAPI, pero NO
+  // persiste. Responde 200 con `persisted:false` para que quede explícito.
+  const soloCAPI = lead.origen === 'whatsapp_directo';
+
+  if (sinDatosDePersona && !soloCAPI) {
+    // 400 y no 422: para el cliente esto es un request mal formado, no una
+    // entidad válida que no se pudo procesar. Nada se escribe, nada se dispara.
+    return res.status(400).json({ ok: false, error: 'Faltan nombre o teléfono' });
   }
-  // Un click de WhatsApp sin nada que atribuir no vale una fila.
-  if (lead.origen === 'whatsapp_directo' && !lead.propiedad && !lead.event_id) {
-    return res.status(422).json({ ok: false, error: 'Click sin propiedad ni event_id' });
+  // Un click sin nada que atribuir no vale ni siquiera el evento.
+  if (soloCAPI && !lead.propiedad && !lead.event_id) {
+    return res.status(400).json({ ok: false, error: 'Click sin propiedad ni event_id' });
   }
   if (!TIPOS_VALIDOS.includes(lead.tipo)) {
     lead.tipo = '';
@@ -303,8 +330,12 @@ module.exports = async (req, res) => {
   // Persistencia y CAPI en paralelo, INDEPENDIENTES: la falla de uno jamás
   // afecta al otro. Se esperan ambos (allSettled) porque en serverless un
   // fire-and-forget real puede morir cuando la función responde.
+  //
+  // `soloCAPI` (click de WhatsApp) saltea la persistencia: la conversión llega
+  // a Meta igual, pero no deja fila. Se resuelve como cumplida para no
+  // confundirla con un fallo real de Airtable en la respuesta de abajo.
   const [persistencia, capi] = await Promise.allSettled([
-    enviar(lead),
+    soloCAPI ? Promise.resolve('skipped') : enviar(lead),
     enviarACAPI(lead, req),
   ]);
 
@@ -314,6 +345,10 @@ module.exports = async (req, res) => {
     console.error('Error enviando evento CAPI:', capi.reason.message);
   } else {
     capiOk = capi.value === true;
+  }
+
+  if (soloCAPI) {
+    return res.status(200).json({ ok: true, persisted: false, capi: capiOk });
   }
 
   if (persistencia.status === 'rejected') {
