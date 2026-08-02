@@ -858,8 +858,11 @@
                 // esto Meta perdía la señal y la campaña optimizaba a ciegas.
                 GTrack.enviarLead({
                     payload: {
-                        // Sin nombre ni teléfono: todavía no los dio. Lo que guardamos
-                        // es la ATRIBUCIÓN del click (UTMs/fbclid/fbp/fbc/propiedad).
+                        // Sin nombre ni teléfono: todavía no los dio. Este POST NO
+                        // crea fila en Airtable (barrera de persistencia en
+                        // /api/lead, ago 2026): sirve para que salga el evento CAPI
+                        // server-side con el mismo event_id que el pixel. Airtable
+                        // queda reservado para personas contactables.
                         nombre: '',
                         apellido: '',
                         telefono: '',

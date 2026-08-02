@@ -64,7 +64,7 @@ const airtableDe = () => llamadas.find((c) => !c.esCAPI);
     assert.strictEqual(res.statusCode, 405);
     console.log('OK  rechaza GET');
   }
-  await correr('rechaza sin teléfono', { nombre: 'Juan' }, 422, () => {
+  await correr('rechaza sin teléfono', { nombre: 'Juan' }, 400, () => {
     assert.strictEqual(llamadas.length, 0, 'lead inválido: no sale NADA (ni Airtable ni CAPI)');
   });
 
@@ -205,9 +205,15 @@ const airtableDe = () => llamadas.find((c) => !c.esCAPI);
   delete process.env.META_TEST_EVENT_CODE;
 
   // --------------------------------------------------------------------------
-  // ORIGEN whatsapp_directo (jul 2026) — click en "Escribime por WhatsApp" del
-  // CTA sticky de las páginas de propiedad. No hay nombre ni teléfono todavía;
-  // lo que se guarda es la atribución del click, que si no se pierde.
+  // BARRERA DE PERSISTENCIA (Fase 0.5, ago 2026).
+  //
+  // Origen: 60 filas en Airtable con Nombre/Teléfono/Email vacíos, generadas por
+  // el botón "Escribime por WhatsApp". No era un bug —la atribución del click
+  // estaba especificada— pero ensuciaba la bandeja con filas no contactables.
+  //
+  // Regla que fijan estos tests: NINGUNA fila sin nombre Y teléfono, venga de
+  // donde venga. El click de WhatsApp conserva la conversión (pixel + CAPI con
+  // el mismo event_id) pero NO deja fila.
   // --------------------------------------------------------------------------
   const clickWA = {
     zona: 'Berazategui', propiedad: 'gaboto', tipo: 'comprador', landing: 'propiedad',
@@ -217,28 +223,35 @@ const airtableDe = () => llamadas.find((c) => !c.esCAPI);
     landing_url: 'https://gianninirealestate.com.ar/propiedad/gaboto',
   };
 
-  await correr('whatsapp_directo sin teléfono → se acepta y persiste', clickWA, 200, () => {
-    const f = airtableDe().body.fields;
-    assert.strictEqual(f.Propiedad, 'gaboto');
-    assert.strictEqual(f['UTM Campaign'], 'gaboto-jul');
-    assert.strictEqual(f.FBC, 'fb.1.1752600000000.abc');
-    assert.strictEqual(f.Origen, 'whatsapp_directo');
-    assert.ok(!('Telefono' in f), 'sin teléfono el campo ni se manda');
-    assert.ok(capiDe(), 'el evento CAPI sale igual: es la señal que Meta necesita');
+  // EL TEST QUE IMPIDE LA REGRESIÓN DE LAS 60 FILAS.
+  await correr('click de WhatsApp → CAPI sí, fila NO', clickWA, 200, (res) => {
+    assert.ok(!airtableDe(), 'el click NO puede escribir en Airtable: es lo que generó las 60 filas');
+    assert.strictEqual(res.body.persisted, false, 'la respuesta declara que no persistió');
+    assert.ok(capiDe(), 'pero la conversión sale igual: la campaña no pierde señal');
     assert.strictEqual(capiDe().body.data[0].custom_data.lead_origen, 'whatsapp_directo');
     assert.strictEqual(capiDe().body.data[0].event_id, clickWA.event_id, 'mismo event_id → dedup con el pixel');
   });
 
-  // LA GUARDA: el form NO se afloja. Un submit de landing sin teléfono sigue 422.
-  await correr('form sin teléfono → SIGUE rebotando 422', { nombre: 'Juan', landing: 'compradores' }, 422, () => {
-    assert.strictEqual(llamadas.length, 0, 'nada sale: la validación del form no se tocó');
-  });
-  await correr('origen inválido → se trata como form (y exige teléfono)',
-    { nombre: 'Juan', landing: 'propiedad', origen: 'inventado' }, 422);
+  // La barrera es genérica: no depende de quién llame ni de qué origen declare.
+  const sinPersona = [
+    ['form sin teléfono', { nombre: 'Juan', landing: 'compradores' }],
+    ['form sin nombre', { telefono: '+5491155554444', landing: 'propietarios' }],
+    ['request vacío con atribución completa', {
+      landing: 'propiedad', event_id: 'x1', fbp: 'fb.1.1.1', fbc: 'fb.1.1.a',
+      referrer: 'https://l.facebook.com/l.php?u=https%3A%2F%2Fx.com%2Fy',
+      landing_url: 'https://gianninirealestate.com.ar/propiedad/gaboto',
+    }],
+    ['origen inventado sin datos', { landing: 'propiedad', origen: 'inventado', event_id: 'x2' }],
+  ];
+  for (const [nombre, body] of sinPersona) {
+    await correr(`${nombre} → 400 y CERO escrituras`, body, 400, () => {
+      assert.strictEqual(llamadas.length, 0, 'no sale nada: ni Airtable ni CAPI');
+    });
+  }
 
-  // Un click sin nada que atribuir no justifica una fila.
-  await correr('whatsapp_directo sin propiedad ni event_id → 422',
-    { landing: 'propiedad', origen: 'whatsapp_directo' }, 422, () => {
+  // Un click sin nada que atribuir no justifica ni el evento.
+  await correr('whatsapp_directo sin propiedad ni event_id → 400',
+    { landing: 'propiedad', origen: 'whatsapp_directo' }, 400, () => {
     assert.strictEqual(llamadas.length, 0);
   });
 
@@ -268,12 +281,14 @@ const airtableDe = () => llamadas.find((c) => !c.esCAPI);
       return { ok: true, status: 200, text: async () => '{}' };
     };
     const res = fakeRes();
-    await handler({ method: 'POST', body: clickWA, headers: HEADERS }, res);
+    // Con un lead REAL: el click de WhatsApp ya no persiste, así que no sirve
+    // para ejercitar el fallback de columnas.
+    await handler({ method: 'POST', body: leadCompleto, headers: HEADERS }, res);
     assert.strictEqual(res.statusCode, 200, 'la fila se guarda igual: NO se pierde el lead');
     assert.strictEqual(intentos, 2, 'reintenta exactamente una vez');
     const segundo = llamadas.filter((c) => !c.esCAPI)[1].body.fields;
     assert.ok(!('Origen' in segundo), 'el reintento va sin la columna opcional');
-    assert.strictEqual(segundo.Propiedad, 'gaboto', 'el resto de la metadata se conserva');
+    assert.strictEqual(segundo.Nombre, 'Juan', 'el resto de la metadata se conserva');
     global.fetch = fetchOriginal;
     console.log('OK  Airtable 422 por columna opcional → reintenta sin ella, no pierde el lead');
   }
