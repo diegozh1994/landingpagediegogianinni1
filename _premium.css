@@ -14,9 +14,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-progress, .page-curtain, .premium-cursor,
+  .scroll-progress, .premium-cursor,
   [data-magnetic], [data-stagger], [data-counter],
-  .premium-orb, .curtain-loader::after,
+  .premium-orb,
   .premium-section-title::after {
     animation: none !important;
     transition: none !important;
@@ -43,51 +43,11 @@
 }
 
 /* ════════════════════════════════════════════
-   2. PAGE CURTAIN — entrada cinematic
+   2. (PAGE CURTAIN — eliminada, bug 1.4 ago 2026)
+   Cortina full-screen con cubo 3D "CB" que tapaba la pagina ~1-2 s antes
+   del primer contenido util. En trafico pago es friccion pura. El JS que la
+   creaba salio de _premium.js (ensureCurtain / setupCurtainReveal).
    ════════════════════════════════════════════ */
-.page-curtain {
-  position: fixed; inset: 0;
-  background: radial-gradient(ellipse at center, #0d2050 0%, #0A0E1F 100%);
-  z-index: 999999;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  transition: opacity 0.8s var(--p-ease-emph), visibility 0.8s var(--p-ease-emph);
-  gap: 24px;
-}
-.page-curtain.hidden {
-  opacity: 0; visibility: hidden; pointer-events: none;
-}
-.curtain-logo {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 64px; font-weight: 600;
-  font-style: italic;
-  letter-spacing: 4px;
-  background: linear-gradient(135deg, #FFFFFF 0%, var(--p-blue-soft) 50%, #FFFFFF 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: pCurtainShine 2.5s linear infinite;
-}
-@keyframes pCurtainShine {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-.curtain-loader {
-  width: 120px; height: 1px;
-  background: rgba(31,105,255,0.2);
-  position: relative; overflow: hidden;
-}
-.curtain-loader::after {
-  content: '';
-  position: absolute; left: -100%; top: 0; bottom: 0; width: 100%;
-  background: linear-gradient(to right, transparent, var(--p-blue), var(--p-blue-soft), transparent);
-  animation: pCurtainPulse 1.4s ease-in-out infinite;
-}
-@keyframes pCurtainPulse {
-  0%   { left: -100%; }
-  100% { left: 200%; }
-}
 
 /* ════════════════════════════════════════════
    3. STAGGER REVEAL — más pronunciado
@@ -1268,44 +1228,6 @@ html { scroll-behavior: smooth; }
 }
 
 /* ════════════════════════════════════════════
-   23. 3D LOGO INTRO (replaces flat curtain)
-   ════════════════════════════════════════════ */
-.curtain-3d-logo {
-  width: 120px; height: 120px;
-  margin-bottom: 24px;
-  position: relative;
-  perspective: 600px;
-}
-.curtain-3d-cube {
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  animation: cubeRotate 4s linear infinite;
-}
-@keyframes cubeRotate {
-  0%   { transform: rotateX(-22deg) rotateY(0deg); }
-  100% { transform: rotateX(-22deg) rotateY(360deg); }
-}
-.curtain-3d-face {
-  position: absolute;
-  width: 120px; height: 120px;
-  display: grid; place-items: center;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 56px; font-weight: 600;
-  color: #6AA0FF;
-  background: linear-gradient(135deg, rgba(31,105,255,0.15), rgba(106,160,255,0.05));
-  border: 1px solid rgba(31,105,255,0.5);
-  backdrop-filter: blur(8px);
-  box-shadow: inset 0 0 30px rgba(31,105,255,0.2);
-}
-.curtain-3d-face-front  { transform: translateZ(60px); }
-.curtain-3d-face-back   { transform: rotateY(180deg) translateZ(60px); }
-.curtain-3d-face-right  { transform: rotateY(90deg) translateZ(60px); }
-.curtain-3d-face-left   { transform: rotateY(-90deg) translateZ(60px); }
-.curtain-3d-face-top    { transform: rotateX(90deg) translateZ(60px); }
-.curtain-3d-face-bottom { transform: rotateX(-90deg) translateZ(60px); }
-
-/* ════════════════════════════════════════════
    25. HERO PHOTO BACKGROUND (Ken Burns cinematic)
    ════════════════════════════════════════════ */
 .hero-photo-bg {
@@ -1396,7 +1318,6 @@ html { scroll-behavior: smooth; }
    ════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .scroll-progress { height: 2px; }
-  .curtain-logo { font-size: 44px; }
   [data-stagger] { transform: translateY(24px); }
   [data-premium-card]:hover {
     transform: translateY(-4px) !important;
@@ -1660,7 +1581,12 @@ html { scroll-behavior: smooth; }
   .about-photo-card { width: 200px; }
   .about-photo-card img { height: 260px; }
   .about-content { max-width: 100%; }
-  .footer-main { grid-template-columns: 1fr 1fr; gap: 20px; padding: 32px 20px 24px; }
+  /* minmax(0, …) + break-word: con `1fr 1fr` la primera columna no podía bajar
+     de su min-content —el mail `diego.giannini@coldwellbanker.com.ar` es una
+     sola "palabra" de ~237px— y el footer se salía de pantalla en mobile
+     (columnas de 237+20+84 = 341px dentro de un contenedor de 270px). */
+  .footer-main { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding: 32px 20px 24px; }
+  .footer-main a, .footer-main p { overflow-wrap: anywhere; }
   .footer-bottom { flex-direction: column; padding: 14px 20px; gap: 10px; }
   .whatsapp-button { width: 48px; height: 48px; bottom: 16px; right: 16px; }
   .whatsapp-button svg { width: 22px; height: 22px; }

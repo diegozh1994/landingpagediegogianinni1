@@ -61,26 +61,13 @@
     hero.insertBefore(vignette, overlay.nextSibling);
   }
 
-  // ═══ 1. Page Curtain ═══
-  function ensureCurtain() {
-    if (document.querySelector('.page-curtain')) return;
-    const c = document.createElement('div');
-    c.className = 'page-curtain';
-    c.innerHTML = `
-      <div class="curtain-3d-logo">
-        <div class="curtain-3d-cube">
-          <div class="curtain-3d-face curtain-3d-face-front">CB</div>
-          <div class="curtain-3d-face curtain-3d-face-back">CB</div>
-          <div class="curtain-3d-face curtain-3d-face-right">CB</div>
-          <div class="curtain-3d-face curtain-3d-face-left">CB</div>
-          <div class="curtain-3d-face curtain-3d-face-top">CB</div>
-          <div class="curtain-3d-face curtain-3d-face-bottom">CB</div>
-        </div>
-      </div>
-      <div class="curtain-loader"></div>
-    `;
-    document.body.insertBefore(c, document.body.firstChild);
-  }
+  // ═══ 1. Page Curtain — ELIMINADA (bug 1.4, ago 2026) ═══
+  // Era una cortina full-screen con un cubo 3D "CB" que tapaba la página hasta
+  // 600 ms después del `load`. En tráfico pago la intención es tibia y una
+  // animación de marca antes del contenido es fricción pura: retrasaba el
+  // primer contenido útil entre 1 y 2 segundos en la página que recibe toda la
+  // pauta. Se quitaron `ensureCurtain()` y `setupCurtainReveal()` acá, y el CSS
+  // de `.page-curtain` / `.curtain-*` en _premium.css.
 
   function ensureProgressBar() {
     if (document.querySelector('.scroll-progress')) return;
@@ -285,14 +272,7 @@
     update();
   }
 
-  // ═══ 8. Page curtain reveal ═══
-  function setupCurtainReveal() {
-    const curtain = document.querySelector('.page-curtain');
-    if (!curtain) return;
-    const reveal = () => setTimeout(() => curtain.classList.add('hidden'), 600);
-    if (document.readyState === 'complete') reveal();
-    else window.addEventListener('load', reveal, { once: true });
-  }
+  // ═══ 8. Page curtain reveal — ELIMINADA junto con la cortina (bug 1.4) ═══
 
   // ═══ 9. Magnetic ═══
   function setupMagnetic() {
@@ -617,7 +597,6 @@
     fixSelectRepaintIOS();
     // ensureHeroPhotoBackground(); // photo now set directly via .hero::before in index.html
     setupHeroPhotoParallax();
-    ensureCurtain();
     ensureProgressBar();
     ensureBookingModal();
     ensureStickyMobileCTA();
@@ -631,7 +610,6 @@
     tagPropertyImages();
     setupRevealObserver();
     setupScrollProgress();
-    setupCurtainReveal();
     setupMagnetic();
     setupAutoCounters();
     setupNavScroll();

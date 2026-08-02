@@ -101,6 +101,11 @@
             --muted: #7A8BAD;
         }
 
+        /* SIN `overflow-x: hidden` a propósito (bug 1.1, ago 2026). Lo tenía, y
+           lo único que hacía era ocultar el scrollbar: el contenido se cortaba
+           igual contra el borde. Si algún día vuelve a desbordar, queremos que
+           se note como scroll horizontal en vez de descubrirlo por un lead
+           perdido. La causa real (grid con min-width:auto) está resuelta abajo. */
         html, body {
             width: 100%;
             height: 100%;
@@ -108,7 +113,6 @@
             color: var(--white);
             background: var(--primary-dark);
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
         /* Noise texture overlay */
@@ -189,6 +193,12 @@
             background: transparent;
             position: relative;
             overflow: hidden;
+            /* Bug 1.2: sin esto, entre ~900px y ~1200px el nav se comprime y
+               "Tasar mi propiedad →" se partía en 3-4 líneas (69px de alto).
+               El botón nunca debe wrappear: si no entra, se achica el padding
+               en el breakpoint intermedio de abajo. */
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .nav-cta::before {
@@ -697,13 +707,8 @@
             border-top: 1px solid rgba(31, 105, 255, 0.2);
         }
 
-        .footer-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        /* (Se eliminó `.footer-content`: clase inexistente en el DOM de esta
+           página. El footer real es `.footer-main`, estilado en _premium.css.) */
 
         /* Custom cursor - hidden on mobile */
         @media (min-width: 769px) {
@@ -728,25 +733,41 @@
             transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
+        /* Bug 1.2: breakpoint intermedio que no estaba cubierto. Entre 900 y
+           1200px el nav lleva logo + links + CTA y no entra con el padding
+           full. Se achican padding y tracking; el texto queda en una línea. */
+        @media (min-width: 769px) and (max-width: 1200px) {
+            nav { padding: 0 24px; }
+            .nav-links { gap: 20px; }
+            .nav-cta {
+                padding: 10px 16px;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
+            /* minmax(0, 1fr) y NO 1fr: los grid items traen `min-width: auto`,
+               así que una columna `1fr` no puede achicarse por debajo del
+               min-content de su contenido. Acá la columna computaba 395px
+               dentro de un contenedor de 350px y el texto del hero se cortaba
+               contra el borde (bug 1.1). El minmax(0,…) la deja encoger. */
             .hero-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 40px;
             }
 
             .solution-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
+        }
 
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-        }@media (max-width: 768px) {
+        @media (max-width: 768px) {
             nav {
                 padding: 0 20px;
                 height: 60px;
@@ -765,8 +786,10 @@
                 padding: 100px 20px 40px;
             }
 
+            /* minmax(0, …) igual que en el breakpoint de 1024: un `1fr` pelado
+               acá volvía a dejar la columna en 395px y reintroducía el corte. */
             .hero-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
 
             .hero-headline {
@@ -782,12 +805,12 @@
                 min-width: 280px;
             }
 
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
+            /* `.footer-content` NO existe en el DOM — el footer usa `.footer-main`,
+               definido en _premium.css. Las reglas locales que la apuntaban eran
+               CSS muerto y por eso el footer desbordaba igual. El fix real vive
+               en _premium.css (misma clase, todas las páginas). */
         }
-    
+
         /* Anti-zoom iOS: controles con font-size < 16px hacen zoom al enfocar */
         @media (max-width: 768px) {
             .form-group input,
