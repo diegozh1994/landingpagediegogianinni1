@@ -76,6 +76,8 @@
         }
 
         /* Performance mobile: backdrop-filter es muy caro en GPU mobile, lo desactivamos */
+
+
         @media (max-width: 768px) {
             *, *::before, *::after {
                 backdrop-filter: none !important;
@@ -211,6 +213,12 @@
             align-items: center;
             gap: 8px;
             text-decoration: none;
+            /* Bug 1.2 (ago 2026): el CTA del header se partia en 3-4 lineas
+               en anchos intermedios (~900-1200px) porque el nav se comprime y
+               el texto wrappeaba. Nunca debe wrappear: si no entra, achica el
+               padding el breakpoint intermedio. */
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .nav-cta::before {
@@ -756,6 +764,16 @@
                 font-size: 16px;
             }
         }
+        /* Bug 1.2: breakpoint intermedio que no estaba cubierto. Entre 769 y
+           1200px no entran logo + 6 links + CTA con las medidas de desktop:
+           el CTA wrappeaba a 3-4 lineas y, con nowrap, se salia de pantalla.
+           Se comprimen gaps, tracking y paddings para que entre en una linea. */
+        @media (min-width: 769px) and (max-width: 1200px) {
+            nav { padding: 0 20px; }
+            .nav-links { gap: 18px; }
+            .nav-links a { font-size: 11px; letter-spacing: 0.5px; }
+            .nav-cta { padding: 9px 14px; font-size: 11px; letter-spacing: 0.4px; }
+        }
     </style>
     <link rel="stylesheet" href="_premium.css">
     <script src="_tracking.js" defer></script>
@@ -946,8 +964,12 @@
     </section>
 
     <!-- REEMPLAZADO: Two Paths, Why, Stats, Final CTA y footer viejo eliminados -->
-    <!-- ══ VIDEO SECTION ══ -->
-    <section style="padding:32px 5%;background:#0A0E1F;">
+    <!-- ══ VIDEO SECTION — OCULTA (bug 1.5, ago 2026) ══
+         Placeholder "Video próximamente" con recuadro punteado: transmitía
+         sitio inacabado en una página de destino de pauta. Se oculta hasta que
+         exista el video real; entonces se saca el display:none y se reemplaza
+         el recuadro por el embed. Misma decisión que la sección VSL de arriba. -->
+    <section style="display:none;padding:32px 5%;background:#0A0E1F;">
         <div style="max-width:860px;margin:0 auto;">
             <div style="width:100%;height:300px;background:rgba(31,105,255,0.06);border:2px dashed rgba(31,105,255,0.3);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;">
                 <div style="width:64px;height:64px;border-radius:50%;background:rgba(31,105,255,0.18);border:2px solid rgba(31,105,255,0.4);display:flex;align-items:center;justify-content:center;">

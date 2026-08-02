@@ -112,6 +112,8 @@
             .marquee-content { animation: none !important; }
         }
         /* Mobile: foto directo en .hero para evitar bugs de compositing iOS/Android */
+
+
         @media (max-width: 768px) {
             .glow-orb { filter: blur(40px) !important; opacity: 0.2 !important; }
             .hero::before { display: none !important; }
@@ -245,6 +247,12 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            /* Bug 1.2 (ago 2026): el CTA del header se partia en 3-4 lineas
+               en anchos intermedios (~900-1200px) porque el nav se comprime y
+               el texto wrappeaba. Nunca debe wrappear: si no entra, achica el
+               padding el breakpoint intermedio. */
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .nav-cta::before {
@@ -400,13 +408,26 @@
             flex-direction: column;
             gap: 8px;
             margin-top: 28px;
+            /* Scrim (bug 1.3): estos bullets van SOBRE la foto del hero y hasta
+               ahora eran legibles solo porque esa zona de la imagen tiene pasto
+               oscuro — cualquier cambio de foto los volvía ilegibles. El fondo
+               es el mismo rgba(10,14,31,0.72) que ya usa .hero-form-panel, así
+               que no entra un color nuevo al sistema. Sin backdrop-filter: está
+               desactivado en mobile por performance. */
+            background: rgba(10, 14, 31, 0.72);
+            border-radius: 10px;
+            padding: 14px 16px;
+            align-self: flex-start;
+            max-width: 100%;
         }
 
         .hero-trust-item {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 12px;
             font-weight: 500;
-            color: rgba(255,255,255,0.6);
+            /* 0.6 → 0.88: con el scrim detrás, el texto llega a contraste AA
+               incluso en el peor caso de foto clara. */
+            color: rgba(255,255,255,0.88);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -2614,6 +2635,16 @@
             .form-field select {
                 font-size: 16px;
             }
+        }
+        /* Bug 1.2: breakpoint intermedio que no estaba cubierto. Entre 769 y
+           1200px no entran logo + 6 links + CTA con las medidas de desktop:
+           el CTA wrappeaba a 3-4 lineas y, con nowrap, se salia de pantalla.
+           Se comprimen gaps, tracking y paddings para que entre en una linea. */
+        @media (min-width: 769px) and (max-width: 1200px) {
+            nav { padding: 0 20px; }
+            .nav-links { gap: 18px; }
+            .nav-links a { font-size: 11px; letter-spacing: 0.5px; }
+            .nav-cta { padding: 9px 14px; font-size: 11px; letter-spacing: 0.4px; }
         }
     </style>
     <link rel="stylesheet" href="_premium.css">
