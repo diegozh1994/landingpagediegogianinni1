@@ -859,16 +859,22 @@
                 <!-- Urgencia/escasez real -->
                 <div style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:100px;background:rgba(50,229,167,0.08);border:1px solid rgba(50,229,167,0.25);margin-top:20px;">
                     <span style="width:7px;height:7px;border-radius:50%;background:#32E5A7;box-shadow:0 0 10px rgba(50,229,167,0.6);animation:pulse 1.8s infinite;"></span>
-                    <span style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:#32E5A7;">Tasación gratuita en 72 horas</span>
+                    <span style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:#32E5A7;">Tasación gratuita en 48 horas</span>
                 </div>
                 <button class="hero-cta" onclick="document.getElementById('hero-form').focus()" style="margin-top:24px;">
                     QUIERO MI TASACIÓN →
                 </button>
             </div>
             <div class="hero-form">
-                <form id="hero-form" class="contact-form" onsubmit="handleFormSubmit(event)">
+                <!-- 2.6: `action="#"` + `return false` en el onsubmit. Sin `action`, si
+                     el JS inline fallara el browser haría un GET nativo a la misma URL:
+                     el lead se perdería en silencio y nombre/teléfono/email quedarían
+                     expuestos en el querystring (y en el historial, y en el Referer).
+                     El `return false` es el segundo cinturón por si `handleFormSubmit`
+                     tira antes de su preventDefault. -->
+                <form id="hero-form" class="contact-form" action="#" onsubmit="handleFormSubmit(event); return false;">
                     <div style="text-align:center;margin-bottom:20px;">
-                        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;margin-bottom:4px;">Tasación gratuita en 72 hs</div>
+                        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#fff;margin-bottom:4px;">Tasación gratuita en 48 hs</div>
                         <div style="font-size:12px;color:rgba(255,255,255,0.5);font-family:'Space Grotesk',sans-serif;">Solo 4 datos. Diego te contacta personalmente.</div>
                     </div>
                     <div class="form-group">
@@ -889,7 +895,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tipo_propiedad">Tipo de propiedad *</label>
-                        <select id="tipo_propiedad" name="tipo_propiedad" required onchange="actualizarZonaPropietarios(this)">
+                        <select id="tipo_propiedad" name="tipo_propiedad" required>
                             <option value="">Seleccionar tipo</option>
                             <option value="Casa">Casa</option>
                             <option value="Departamento">Departamento</option>
@@ -898,16 +904,27 @@
                             <option value="Lote-Casa en barrio privado">Lote-Casa en barrio privado</option>
                         </select>
                     </div>
-                    <!-- Las opciones de zona dependen del tipo (actualizarZonaPropietarios las carga).
-                         Un solo select siempre visible: evita el bug de required oculto. -->
+                    <!-- 2.4: Zona SIN dependencia del tipo. Antes arrancaba `disabled` y
+                         se poblaba en el onchange del tipo. Eso no bloqueaba el submit
+                         (un control disabled queda excluido de la validación de
+                         constraints, así que `required` no aplicaba) pero sí abría un
+                         bug peor: si el `change` no disparaba —autofill, restauración de
+                         estado— el form se enviaba VÁLIDO con zona vacía y el mensaje de
+                         WhatsApp salía roto ("quiero vender en ."). Un select de zonas
+                         fijo no necesita depender de nada. -->
                     <div class="form-group">
                         <label for="zona">¿Dónde está tu propiedad? *</label>
-                        <select id="zona" name="zona" required disabled>
-                            <option value="">Elegí primero el tipo</option>
+                        <select id="zona" name="zona" required>
+                            <option value="">Seleccionar zona</option>
+                            <option value="Canning">Canning</option>
+                            <option value="Berazategui">Berazategui</option>
+                            <option value="Pueblos del Plata">Pueblos del Plata</option>
+                            <option value="CABA">CABA</option>
+                            <option value="Otra">Otra</option>
                         </select>
                     </div>
                     <button type="submit" class="form-submit">QUIERO MI TASACIÓN GRATUITA →</button>
-                    <p class="form-privacy">🔒 Sin spam. Diego te escribe en menos de 2 horas.<br>Al enviar aceptás la <a href="/privacidad" style="color:#4D8AFF;text-decoration:underline;">política de privacidad</a> y que te contactemos por WhatsApp.</p>
+                    <p class="form-privacy">🔒 Sin spam. Tasación gratuita en 48 horas.<br>Al enviar aceptás la <a href="/privacidad" style="color:#4D8AFF;text-decoration:underline;">política de privacidad</a> y que te contactemos por WhatsApp.</p>
                     <div style="display:flex;gap:16px;justify-content:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
                         <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#4D8AFF;">+100</div><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">operaciones</div></div>
                         <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#4D8AFF;">6 años</div><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">trayectoria</div></div>
@@ -970,6 +987,19 @@
                 </div>
                 <p style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;margin:0;">Video próximamente</p>
             </div>
+        </div>
+    </section>
+
+    <!-- ══ BANDA DE PLAZO (2.2) ══
+         Tercera aparición de las 48 h, a mitad del scroll. Las otras dos (hero y
+         junto al botón del form) quedan ambas arriba del fold, así que sin esta
+         banda la promesa no se repite en el recorrido. La repetición es lo que
+         la vuelve creíble. Sin colores nuevos: verde #32E5A7 y azul del sistema. -->
+    <section style="padding:28px 5%;background:linear-gradient(180deg,#0A0E1F 0%,#0F1730 100%);border-top:1px solid rgba(31,105,255,0.12);border-bottom:1px solid rgba(31,105,255,0.12);">
+        <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;text-align:center;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#32E5A7;flex-shrink:0;"></span>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.06em;color:#32E5A7;">Tasación gratuita en 48 horas</span>
+            <span style="font-family:'Inter',sans-serif;font-size:14px;color:rgba(255,255,255,0.65);">— sin compromiso, y el informe queda tuyo.</span>
         </div>
     </section>
 
@@ -1062,25 +1092,12 @@
             });
         })();
 
-        // Zonas por tipo de propiedad (mismo patrón que compradores):
-        // la granularidad fina viaja en utm_content de los ads y el detalle
-        // sale en la primera conversación de WhatsApp.
-        const ZONAS_POR_TIPO = {
-            'Casa': ['CABA', 'PBA'],
-            'Departamento': ['CABA', 'PBA'],
-            'PH': ['CABA', 'PBA'],
-            'Terreno': ['CABA', 'PBA'],
-            'Lote-Casa en barrio privado': ['Canning', 'Berazategui']
-        };
-
-        function actualizarZonaPropietarios(sel) {
-            const zonaSel = sel.form.querySelector('select[name="zona"]');
-            const zonas = ZONAS_POR_TIPO[sel.value] || [];
-            zonaSel.innerHTML = '<option value="">' +
-                (zonas.length ? 'Seleccionar zona' : 'Elegí primero el tipo') + '</option>' +
-                zonas.map(z => '<option value="' + z + '">' + z + '</option>').join('');
-            zonaSel.disabled = zonas.length === 0;
-        }
+        // 2.4: `ZONAS_POR_TIPO` y `actualizarZonaPropietarios` se eliminaron. Las
+        // zonas ahora son un select fijo en el HTML, independiente del tipo de
+        // propiedad. La dependencia agregaba riesgo (form enviable con zona
+        // vacía si el `change` no disparaba) sin aportar valor: la granularidad
+        // fina sigue viajando en utm_content de los ads y el detalle sale en la
+        // primera conversación de WhatsApp.
 
         // Form submission handler — persistencia + pixel + redirect vía GTrack (_tracking.js).
         // Mensaje de WhatsApp CONGELADO: el CRM de Diego lo clasifica por IA. No tocar.
